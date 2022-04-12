@@ -1,0 +1,88 @@
+# If not stated otherwise in this file or this component's LICENSE
+# file the following copyright and licenses apply:
+#
+#Copyright [2019] [RDK Management]
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+
+#!/usr/bin/env bash
+
+unset _RDK_FLAVOR
+
+TOP_DIR=$(pwd)
+export RDK_BSP_LAYER=none
+
+# default BSP layer is meta-marvell for turris-omnia board
+export RDK_BSP_LAYER=meta-cmf-filogic
+
+source meta-cmf/setup-environment $1
+if [ $? -ne 0 ]; then
+    return 1
+fi
+
+# at this point the current directory should be the build dir
+BUILD_DIR=$(pwd)
+_RDK_FLAVOR="rdkb"
+
+if [[ -z $(grep 'meta-cmf-filogic' conf/bblayers.conf) ]] && [[ -d  ../meta-cmf-filogic ]]
+then
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-cmf-filogic"
+EOF
+fi
+
+if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-filogic') -eq 0 ]] && [[ -d  ../meta-filogic ]]
+then
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-filogic"
+EOF
+fi
+
+# Add meta-rdk-opensync only if not already present.
+if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-rdk-opensync') -eq 0 ]] && [[ -d  ../meta-rdk-opensync ]]
+then
+    echo 'LAYERSERIES_COMPAT_opensync = "dunfell"' >> ../meta-rdk-opensync/conf/layer.conf
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-rdk-opensync"
+EOF
+fi
+
+# Add meta-amx(prplmesh used) only if not already present.
+if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-amx') -eq 0 ]] && [[ -d  ../meta-amx ]]
+then
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-amx"
+EOF
+fi
+# Add meta-prplmesh only if not already present.
+if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-prplmesh') -eq 0 ]] && [[ -d  ../meta-prplmesh ]]
+then
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-prplmesh"
+EOF
+fi
+
+if [ -L ${TOP_DIR}/.repo/manifest.xml ] ; then
+    MANIFEST="$(basename `readlink -f ${TOP_DIR}/.repo/manifest.xml` .xml)"
+else
+    MANIFEST=$(grep include ${TOP_DIR}/.repo/manifest.xml | cut -d '"' -f 2 | xargs basename -s .xml )
+fi
+echo "Manifest Name = ${MANIFEST}.xml"
+if [ -f "${TOP_DIR}/.repo/manifests/turris-tags/${MANIFEST}.conf" ]; then
+    cat ${TOP_DIR}/.repo/manifests/turris-tags/${MANIFEST}.conf >> $BUILD_DIR/conf/auto.conf
+    if [ $? == 0 ]; then
+        echo "${MANIFEST}.conf copied to auto.conf successfully"
+    else
+        echo "FAILED to copy auto.conf"
+    fi
+fi

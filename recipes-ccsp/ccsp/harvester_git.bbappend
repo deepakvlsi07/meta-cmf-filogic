@@ -1,0 +1,2 @@
+CFLAGS_append_aarch64 = " -D_64BIT_ARCH_SUPPORT_ "
+CFLAGS_append  = " -DWIFI_HAL_VERSION_3"
