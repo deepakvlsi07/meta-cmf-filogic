@@ -36,6 +36,8 @@ do_install_append() {
    <Record name="dmsb.wanmanager.if.1.Marking.DATA.SKBPort" type="astr">1</Record> \
    <Record name="dmsb.wanmanager.if.1.Marking.DATA.SKBMark" type="astr"> </Record> \
    <Record name="dmsb.wanmanager.if.1.Marking.DATA.EthernetPriorityMark" type="astr"></Record> \
+   <Record name="dmsb.wanmanager.if.1.EnableDHCP" type="astr">TRUE</Record> \
+   <Record name="dmsb.wanmanager.if.1.EnableIPoE" type="astr">TRUE</Record> \
    <Record name="dmsb.wanmanager.if.1.PPPEnable" type="astr">FALSE</Record> \
    <Record name="dmsb.wanmanager.if.1.PPPLinkType" type="astr">PPPoE</Record> \
    <Record name="dmsb.wanmanager.if.1.PPPIPCPEnable" type="astr">TRUE</Record> \
