@@ -15,8 +15,6 @@ IMAGE_INSTALL += " packagegroup-turris-core \
     linux-mt76 \
     kernel-module-mt76 \
     kernel-module-mt7915e \
-    linux-firmware-mt76 \
-    linux-firmware-ath10k \
     network-hotplug \
     libmcrypt \
     bzip2 \
