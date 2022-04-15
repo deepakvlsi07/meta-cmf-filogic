@@ -1,0 +1,82 @@
+#!/usr/bin/python3 -u
+import argparse
+import os
+import sys
+import traceback
+
+__author__ = "Sam Shih <sam.shih@medaitek.com>"
+__copyright__ = "Copyright 2022,  MediaTek Inc"
+
+
+class formatter(argparse.HelpFormatter):
+    def _format_usage(self, usage, actions, groups, prefix):
+        if prefix is None:
+            prefix = "usage: "
+        if usage is not None:
+            usage = usage % dict(prog=self._prog)
+
+        elif usage is None and not actions:
+            usage = "%(prog)s" % dict(prog=self._prog)
+        elif usage is None:
+            prog = "%(prog)s" % dict(prog=self._prog)
+            action_usage = self._format_actions_usage(actions, groups)
+            usage = " ".join([s for s in [prog, action_usage] if s])
+        return "%s%s\n\n" % (prefix, usage)
+
+
+parser = argparse.ArgumentParser(formatter_class=formatter)
+parser.add_argument(
+    "input", nargs="+", help="openwrt patch folder which should be converted"
+)
+parser.add_argument(
+    "--output", help="output .inc file used by RDKB", default="$(name).inc"
+)
+args = parser.parse_args()
+
+
+def find_patch_series(root, level=0, max_level=1):
+    patch = []
+    dir_l = os.listdir(root)
+    dir_l.sort()
+    for name in dir_l:
+        path = os.path.join(root, name)
+        if not os.path.isdir(path):
+            if "." in name:
+                if name.split(".")[-1] == "patch":
+                    if "cover-letter" not in name:
+                        patch.append(name)
+    patch.sort()
+    return patch
+
+
+def create_inc_file(output, name, patch_l):
+    f = open(output, "w")
+    header_code = (
+        "#patch %s (come from openwrt/lede/target/linux/mediatek)\n" % name
+    )
+    script_code = "SRC_URI_append = \" \\\n"
+    space = "    "
+    prefix = "%sfile://" % space
+    postfix = " \\"
+    patch_l_code = "\n".join((prefix + t + postfix) for t in patch_l) + "\n"
+    footer = '%s"\n' % space
+    code = header_code + script_code + patch_l_code + footer
+    f.write(code)
+    f.close()
+
+
+try:
+    input_l = args.input
+    if len(input_l) == 1:
+        name = os.path.basename(os.path.realpath(input_l[0]))
+    else:
+        name = "_".join(os.path.basename(os.path.realpath(t)) for t in input_l)
+    output = args.output.replace("$(name)", name)
+    patch_l = []
+    for input in input_l:
+        patch_l.extend(find_patch_series(input))
+    create_inc_file(output, name, patch_l)
+    print('saved RDKB .inc file to "%s"' % output)
+
+except:
+    traceback.print_exc()
