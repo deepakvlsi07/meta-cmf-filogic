@@ -11,7 +11,7 @@ cp openwrt/package/kernel/mt76/patches/100-Revert-of-net-pass-the-dst-buffer-to-
 cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/package/ mac80211_package/
 
 echo "gen mt76 patches.........."
-cp meta-cmf-filogic/scripts/rdkb_inc_helper mac80211_package/package/kernel/mt76
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/kernel/mt76
 cd mac80211_package/package/kernel/mt76
 ./rdkb_inc_helper patches
 mv patches.inc patches
@@ -20,7 +20,7 @@ rm -rf meta-filogic/recipes-kernel/linux-mt76/files/patches
 cp -rf mac80211_package/package/kernel/mt76/patches meta-filogic/recipes-kernel/linux-mt76/files/
 
 echo "gen mac80211 patches.........."
-cp meta-cmf-filogic/scripts/rdkb_inc_helper mac80211_package/package/kernel/mac80211/patches
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/kernel/mac80211/patches
 cd mac80211_package/package/kernel/mac80211/patches
 ./rdkb_inc_helper subsys/
 ./rdkb_inc_helper build/

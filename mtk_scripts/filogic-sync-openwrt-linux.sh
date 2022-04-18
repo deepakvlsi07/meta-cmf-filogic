@@ -18,7 +18,7 @@ cd openwrt/
 remove_patches
 cd -
 echo "sync generic kernel..........."
-cp meta-cmf-filogic/scripts/rdkb_inc_helper openwrt/target/linux/generic/
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper openwrt/target/linux/generic/
 cd openwrt/target/linux/generic/
 ./rdkb_inc_helper backport-5.4
 mv backport-5.4.inc backport-5.4
@@ -39,7 +39,7 @@ cp -rf openwrt/target/linux/generic/files meta-filogic/recipes-kernel/linux/linu
 cp -rf openwrt/target/linux/generic/files-5.4 meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/generic/
 cp openwrt/target/linux/generic/config-5.4 meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/generic/defconfig
 echo "sync medaitek kernel..........."
-cp meta-cmf-filogic/scripts/rdkb_inc_helper openwrt/target/linux/mediatek
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper openwrt/target/linux/mediatek
 cd openwrt/target/linux/mediatek
 ./rdkb_inc_helper patches-5.4/
 mv patches-5.4.inc patches-5.4
