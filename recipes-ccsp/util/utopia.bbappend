@@ -189,7 +189,9 @@ ln -s \/var\/spool\/cron\/crontabs \/ \
 mkdir -p \/var\/run\/firewall \
 touch \/nvram\/ETHWAN_ENABLE ' ${D}${sysconfdir}/utopia/utopia_init.sh
 
-
+    echo "firewall" >> ${D}${sysconfdir}/utopia/utopia_init.sh
+    echo "execute_dir /etc/utopia/post.d/" >> ${D}${sysconfdir}/utopia/utopia_init.sh
+    echo "touch /tmp/.postd_started" >> ${D}${sysconfdir}/utopia/utopia_init.sh
     sed -i '/lan-status started/a \
 sysevent set wan-status started ' ${D}${sysconfdir}/utopia/utopia_init.sh
     fi
