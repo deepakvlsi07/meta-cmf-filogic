@@ -46,7 +46,7 @@ if [ ! -f /nvram/hostapd0.conf ]
 then
 	cp /etc/hostapd-2G.conf /nvram/hostapd0.conf
 	#Set bssid for wifi0
-        NEW_MAC=$(echo 0x$WIFI0_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+2, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI0_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+2), $2, $3, $4 ,$5, $6}')
 	sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd0.conf
         echo "wpa_psk_file=/tmp/hostapd0.psk" >> /nvram/hostapd0.conf
 fi
@@ -55,7 +55,7 @@ if [ ! -f /nvram/hostapd1.conf ]
 then
 	cp /etc/hostapd-5G.conf /nvram/hostapd1.conf
 	#Set bssid for wifi1
-        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+2, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+2), $2, $3, $4 ,$5, $6}')
         sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd1.conf
         echo "wpa_psk_file=/tmp/hostapd1.psk" >> /nvram/hostapd1.conf
 fi
@@ -64,7 +64,7 @@ if [ ! -f /nvram/hostapd2.conf ]
 then
 	cp /etc/hostapd-bhaul2G.conf /nvram/hostapd2.conf
 	#Set bssid for wifi2
-        NEW_MAC=$(echo 0x$WIFI0_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+4, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI0_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+4), $2, $3, $4 ,$5, $6}')
         sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd2.conf
         echo "wpa_psk_file=/tmp/hostapd2.psk" >> /nvram/hostapd2.conf
 fi
@@ -73,7 +73,7 @@ if [ ! -f /nvram/hostapd3.conf ]
 then
 	cp /etc/hostapd-bhaul5G.conf /nvram/hostapd3.conf
 	#Set bssid for wifi3
-        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+4, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+4), $2, $3, $4 ,$5, $6}')
         sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd3.conf
         echo "wpa_psk_file=/tmp/hostapd3.psk" >> /nvram/hostapd3.conf
 fi
@@ -82,7 +82,7 @@ if [ ! -f /nvram/hostapd4.conf ]
 then
 	cp /etc/hostapd-bhaul2G.conf /nvram/hostapd4.conf
 	#Set bssid for wifi4
-        NEW_MAC=$(echo 0x$WIFI0_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+6, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI0_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+6), $2, $3, $4 ,$5, $6}')
         sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd4.conf
         sed -i "/^interface=/c\interface=wifi4" /nvram/hostapd4.conf
         sed -i "/^accept_mac/c\accept_mac_file=/tmp/hostapd-acl4"  /nvram/hostapd4.conf
@@ -93,7 +93,7 @@ if [ ! -f /nvram/hostapd5.conf ]
 then
 	cp /etc/hostapd-bhaul5G.conf /nvram/hostapd5.conf
 	#Set bssid for wifi5
-        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+6, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+6), $2, $3, $4 ,$5, $6}')
         sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd5.conf
         sed -i "/^interface=/c\interface=wifi5" /nvram/hostapd5.conf
         sed -i "/^accept_mac/c\accept_mac_file=/tmp/hostapd-acl5" /nvram/hostapd5.conf
@@ -104,7 +104,7 @@ if [ ! -f /nvram/hostapd6.conf ]
 then
 	cp /etc/hostapd-bhaul2G.conf /nvram/hostapd6.conf
 	#Set bssid for wifi6
-        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+8, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+8), $2, $3, $4 ,$5, $6}')
         sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd6.conf
         sed -i "/^interface=/c\interface=wifi6" /nvram/hostapd6.conf
         sed -i "/^accept_mac/c\accept_mac_file=/tmp/hostapd-acl6"  /nvram/hostapd6.conf
@@ -115,7 +115,7 @@ if [ ! -f /nvram/hostapd7.conf ]
 then
 	cp /etc/hostapd-bhaul5G.conf /nvram/hostapd7.conf
 	#Set bssid for wifi7
-        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", strtonum($1)+8, $2, $3, $4 ,$5, $6}')
+        NEW_MAC=$(echo 0x$WIFI1_MAC| awk -F: '{printf "%02x:%s:%s:%s:%s:%s", (expr $1+8), $2, $3, $4 ,$5, $6}')
         sed -i "/^bssid=/c\bssid=$NEW_MAC" /nvram/hostapd7.conf
         sed -i "/^interface=/c\interface=wifi7" /nvram/hostapd7.conf
         sed -i "/^accept_mac/c\accept_mac_file=/tmp/hostapd-acl7"  /nvram/hostapd7.conf
