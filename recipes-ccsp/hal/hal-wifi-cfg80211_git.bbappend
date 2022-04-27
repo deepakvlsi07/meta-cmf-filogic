@@ -1,5 +1,5 @@
 
-BRANCH_MTK_IMPL= "nightly/20220329-dunfell"
+BRANCH_MTK_IMPL= "master"
 
 SRC_URI = "${CMF_GITHUB_ROOT}/hal-wifi-cfg80211;protocol=${CMF_GIT_PROTOCOL};branch=${BRANCH_MTK_IMPL};name=wifihal"
 
