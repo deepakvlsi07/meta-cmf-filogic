@@ -27,6 +27,7 @@ IMAGE_INSTALL += " packagegroup-turris-core \
     iw \
     ethtool \
     bc \
+    procps \
     mesh-agent \
     opensync \
     openvswitch \
