@@ -45,4 +45,22 @@ sed -i 's/PV =.*/PV = "'${ver2%-*}'"/g' meta-filogic/recipes-kernel/linux-mac802
 ver3=`grep "PKG_HASH" mac80211_package/package/kernel/mac80211/Makefile | cut -c 11-`
 sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-kernel/linux-mac80211/linux-mac80211.bb
 
+echo "gen hostapd patches.........."
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/services/hostapd
+cd mac80211_package/package/network/services/hostapd
+./rdkb_inc_helper patches
+mv patches.inc patches
+echo "some patch do not apply to RDKB"
+sed -i 's/450-scan_wait.patch/&;apply=no/' patches/patches.inc
+
+cd -
+rm -rf meta-filogic/recipes-connectivity/hostapd/files/patches
+cp -rf mac80211_package/package/network/services/hostapd/patches meta-filogic/recipes-connectivity/hostapd/files/
+rm -rf meta-filogic/recipes-connectivity/hostapd/files/src
+cp -rf mac80211_package/package/network/services/hostapd/src meta-filogic/recipes-connectivity/hostapd/files/
+
+echo "Update hostapd bb file version.........."
+ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/services/hostapd/Makefile | cut -c 21-`
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/hostapd//hostapd_2.10.bb
+
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
