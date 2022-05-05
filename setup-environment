@@ -22,7 +22,7 @@ unset _RDK_FLAVOR
 TOP_DIR=$(pwd)
 export RDK_BSP_LAYER=none
 
-# default BSP layer is meta-marvell for turris-omnia board
+# default BSP layer is meta-filogic for filogic series board
 export RDK_BSP_LAYER=meta-cmf-filogic
 
 source meta-cmf/setup-environment $1

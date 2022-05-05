@@ -6,31 +6,18 @@ SYSTEMD_TOOLS = "systemd-analyze systemd-bootchart"
 # systemd-bootchart doesn't currently build with musl libc
 SYSTEMD_TOOLS_remove_libc-musl = "systemd-bootchart"
 
-IMAGE_INSTALL += " packagegroup-turris-core \
+IMAGE_INSTALL += " packagegroup-filogic-core \
     ${SYSTEMD_TOOLS} \
-    linux-mac80211 \
-    kernel-module-compat \
-    kernel-module-cfg80211 \
-    kernel-module-mac80211 \
-    linux-mt76 \
-    kernel-module-mt76 \
-    kernel-module-mt7915e \
-    regs \
-    mii-mgr \
     network-hotplug \
     libmcrypt \
-    bzip2 \
-    nmap \
-    libpcap \
-    tcpdump \
-    ebtables \
-    iw \
-    ethtool \
-    bc \
+    coreutils \
+    util-linux-readprofile \    
+    iputils \ 
+    bc \ 
+    python-core \
+    pptp-linux \
+    rp-pppoe  \
     procps \
-    mesh-agent \
-    opensync \
-    openvswitch \
     "
 
 BB_HASH_IGNORE_MISMATCH = "1"

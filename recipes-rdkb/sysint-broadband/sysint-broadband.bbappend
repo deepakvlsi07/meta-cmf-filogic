@@ -10,7 +10,6 @@ SRCREV_FORMAT = "${AUTOREV}"
 
 SRC_URI_remove = "${CMF_GIT_ROOT}/rdkb/devices/intel-x86-pc/emulator/sysint;module=.;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};destsuffix=git/device;name=sysintdevice"
 
-SRC_URI += "file://TurrisFwUpgrade.sh"
 SRC_URI += "file://swupdate_utility.sh"
 SRC_URI += "file://swupdate.service"
 SRC_URI += "file://commonUtils.sh \
@@ -30,11 +29,10 @@ SYSTEMD_SERVICE_${PN} = "swupdate.service"
 SYSTEMD_SERVICE_${PN} = "dcm-log.service"
 
 do_install_append() {
-    echo "BOX_TYPE=turris" >> ${D}${sysconfdir}/device.properties
+    echo "BOX_TYPE=Filogic" >> ${D}${sysconfdir}/device.properties
     echo "ARM_INTERFACE=erouter0" >> ${D}${sysconfdir}/device.properties
     install -d ${D}${base_libdir}/rdk
     install -d ${D}${systemd_unitdir}/system
-    install -m 0755 ${WORKDIR}/TurrisFwUpgrade.sh ${D}${base_libdir}/rdk
     install -m 0755 ${WORKDIR}/swupdate_utility.sh ${D}${base_libdir}/rdk
     install -m 0644 ${WORKDIR}/swupdate.service ${D}${systemd_unitdir}/system
     echo "CLOUDURL="http://35.155.171.121:9092/xconf/swu/stb?eStbMac="" >> ${D}${sysconfdir}/include.properties
@@ -57,7 +55,7 @@ do_install_append() {
     echo "DCM_HTTP_SERVER_URL="http://35.155.171.121/xconf/telemetry_upload.php"" >> ${D}${sysconfdir}/dcm.properties
     echo "DCM_LA_SERVER_URL="http://35.155.171.121/xconf/logupload.php"" >> ${D}${sysconfdir}/dcm.properties
     echo "TFTP_SERVER_IP=35.155.171.121" >> ${D}${sysconfdir}/device.properties
-    echo "MODEL_NAME=Turris" >> ${D}${sysconfdir}/device.properties
+    echo "MODEL_NAME=Filogic" >> ${D}${sysconfdir}/device.properties
 
     #Log Rotate Support
     sed -i "/if \[ \! -f \/usr\/bin\/GetConfigFile \]\;then/,+4d" ${D}/rdklogger/logfiles.sh
