@@ -1,4 +1,4 @@
-require recipes-ccsp/ccsp/ccsp_common_turris.inc
+require recipes-ccsp/ccsp/ccsp_common_filogic.inc
 
 do_install_append () {
     # Test and Diagonastics XML 

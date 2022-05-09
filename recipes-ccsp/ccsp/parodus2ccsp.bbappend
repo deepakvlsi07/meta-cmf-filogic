@@ -1,8 +1,8 @@
-SRC_URI += "${CMF_GIT_ROOT}/rdk/devices/raspberrypi/webpa-client;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};destsuffix=git/devices;name=rdkbturris"
+SRC_URI += "${CMF_GIT_ROOT}/rdk/devices/raspberrypi/webpa-client;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};destsuffix=git/devices;name=rdkbfilogic"
 
-SRCREV_rdkbturris = "${AUTOREV}"
-do_fetch[vardeps] += "SRCREV_rdkbturris"
-SRCREV_FORMAT .= "_rdkbturris"
+SRCREV_rdkbfilogic = "${AUTOREV}"
+do_fetch[vardeps] += "SRCREV_rdkbfilogic"
+SRCREV_FORMAT .= "_rdkbfilogic"
 
 inherit systemd
 

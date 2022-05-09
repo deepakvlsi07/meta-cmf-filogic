@@ -1,5 +1,5 @@
 [Unit]
-Description=TurrisOmnia WIFI Initialized Path
+Description=Filogic WIFI Initialized Path
 
 [Path]
 PathExists=/tmp/wifi_driver_initialized

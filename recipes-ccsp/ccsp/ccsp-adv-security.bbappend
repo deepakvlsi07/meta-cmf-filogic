@@ -1,1 +1,1 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc

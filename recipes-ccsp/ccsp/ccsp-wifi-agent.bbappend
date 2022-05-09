@@ -1,4 +1,4 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
@@ -25,7 +25,7 @@ SRC_URI_append = " \
 "
 
 # we need to patch to code for ccsp-wifi-agent
-do_turris_ccspwifiagent_patches() {
+do_filogic_ccspwifiagent_patches() {
     cd ${S}
     if [ ! -e patch_applied ]; then
         bbnote "Patching handle_mesh-rename-opensync.patch"
@@ -34,7 +34,7 @@ do_turris_ccspwifiagent_patches() {
         touch patch_applied
     fi
 }
-addtask turris_ccspwifiagent_patches after do_unpack before do_configure
+addtask filogic_ccspwifiagent_patches after do_unpack before do_configure
 
 EXTRA_OECONF_append  = " --with-ccsp-arch=arm"
 

@@ -1,7 +1,7 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 LDFLAGS_append_dunfell = " -lsafec-3.5.1"
 
-do_install_append_turris () {
+do_install_append_filogic () {
     ln -sf ${bindir}/dmcli ${D}${bindir}/ccsp_bus_client_tool
 }

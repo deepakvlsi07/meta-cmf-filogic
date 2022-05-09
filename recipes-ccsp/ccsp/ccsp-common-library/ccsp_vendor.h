@@ -17,6 +17,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#define CONFIG_VENDOR_NAME "Turris CZ"
+#define CONFIG_VENDOR_NAME "Mediatek Inc."
 #define CONFIG_VENDOR_ID "0xFFFFFFFE"
-#define CONFIG_TI_GW_DESCRIPTION "Turris Omnia Gateway device"
+#define CONFIG_TI_GW_DESCRIPTION "Filogic Gateway device"

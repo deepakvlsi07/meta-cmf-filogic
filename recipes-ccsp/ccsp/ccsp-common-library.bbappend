@@ -1,9 +1,9 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:${THISDIR}/files:"
 
-DEPENDS_append_turris = " breakpad"
-CXXFLAGS_append_turris = " \
+DEPENDS_append_filogic = " breakpad"
+CXXFLAGS_append_filogic = " \
                                 -I${STAGING_INCDIR}/breakpad \
                                 -std=c++11 \
                               "
@@ -11,10 +11,10 @@ CXXFLAGS_append_turris = " \
 SRC_URI_append = " \
     file://ccsp_vendor.h \
     file://wifiinitialized.service \
-    file://checkturriswifisupport.service \
+    file://checkfilogicwifisupport.service \
     file://wifiinitialized.path \
-    file://turriswifiinitialized.path \
-    file://checkturriswifisupport.path \
+    file://filogicwifiinitialized.path \
+    file://checkfilogicwifisupport.path \
     file://wifi-initialized.target \
     file://utopia.service \
 "
@@ -28,8 +28,8 @@ SRC_URI_append_dunfell = " file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch;apply=
 SRC_URI_append_dunfell = " file://0001-SSLeay_add_all_algorithms-remove-in-openssl-1.1.patch;apply=no"
 
 
-# we need to patch to code for Turris
-do_turris_patches() {
+# we need to patch to code for Filogic
+do_filogic_patches() {
     cd ${S}
     if [ ! -e patch_applied ]; then
         patch -p1 < ${WORKDIR}/0003-add-dependency-to-pandm.patch
@@ -41,7 +41,7 @@ do_turris_patches() {
        touch patch_applied
     fi
 }
-addtask turris_patches after do_unpack before do_compile
+addtask filogic_patches after do_unpack before do_compile
 
 do_install_append_class-target(){
     # Config files and scripts
@@ -81,11 +81,11 @@ do_install_append_class-target(){
     install -D -m 0644 ${S}/systemd_units/rfc.service ${D}${systemd_unitdir}/system/rfc.service
 
     install -D -m 0644 ${WORKDIR}/wifiinitialized.service ${D}${systemd_unitdir}/system/wifiinitialized.service
-    install -D -m 0644 ${WORKDIR}/checkturriswifisupport.service ${D}${systemd_unitdir}/system/checkturriswifisupport.service
+    install -D -m 0644 ${WORKDIR}/checkfilogicwifisupport.service ${D}${systemd_unitdir}/system/checkfilogicwifisupport.service
 
     install -D -m 0644 ${WORKDIR}/wifiinitialized.path ${D}${systemd_unitdir}/system/wifiinitialized.path
-    install -D -m 0644 ${WORKDIR}/turriswifiinitialized.path ${D}${systemd_unitdir}/system/turriswifiinitialized.path
-    install -D -m 0644 ${WORKDIR}/checkturriswifisupport.path ${D}${systemd_unitdir}/system/checkturriswifisupport.path
+    install -D -m 0644 ${WORKDIR}/filogicwifiinitialized.path ${D}${systemd_unitdir}/system/filogicwifiinitialized.path
+    install -D -m 0644 ${WORKDIR}/checkfilogicwifisupport.path ${D}${systemd_unitdir}/system/checkfilogicwifisupport.path
 
     install -D -m 0644 ${WORKDIR}/wifi-initialized.target ${D}${systemd_unitdir}/system/wifi-initialized.target
 
@@ -107,7 +107,7 @@ do_install_append_class-target(){
     #reduce sleep time to 12 sconds
     sed -i 's/300/12/g' ${D}${systemd_unitdir}/system/rfc.service
    
-    #change for turris omnia
+    #change for Filogic
     sed -i 's/PIDFile/#&/' ${D}${systemd_unitdir}/system/CcspPandMSsp.service 
 
     #WanManager - RdkWanManager.service
@@ -147,10 +147,10 @@ SYSTEMD_SERVICE_${PN} += "CcspTr069PaSsp.service"
 SYSTEMD_SERVICE_${PN} += "snmpSubAgent.service"
 SYSTEMD_SERVICE_${PN} += "CcspEthAgent.service"
 SYSTEMD_SERVICE_${PN} += "wifiinitialized.service"
-SYSTEMD_SERVICE_${PN} += "checkturriswifisupport.service"
+SYSTEMD_SERVICE_${PN} += "checkfilogicwifisupport.service"
 SYSTEMD_SERVICE_${PN} += "wifiinitialized.path"
-SYSTEMD_SERVICE_${PN} += "turriswifiinitialized.path"
-SYSTEMD_SERVICE_${PN} += "checkturriswifisupport.path"
+SYSTEMD_SERVICE_${PN} += "filogicwifiinitialized.path"
+SYSTEMD_SERVICE_${PN} += "checkfilogicwifisupport.path"
 SYSTEMD_SERVICE_${PN} += "wifi-initialized.target"
 SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.path"
 SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.service"
@@ -174,10 +174,10 @@ FILES_${PN}_append = " \
     ${systemd_unitdir}/system/snmpSubAgent.service \
     ${systemd_unitdir}/system/CcspEthAgent.service \
     ${systemd_unitdir}/system/wifiinitialized.service \
-    ${systemd_unitdir}/system/checkturriswifisupport.service \
+    ${systemd_unitdir}/system/checkfilogicwifisupport.service \
     ${systemd_unitdir}/system/wifiinitialized.path \
-    ${systemd_unitdir}/system/turriswifiinitialized.path \
-    ${systemd_unitdir}/system/checkturriswifisupport.path \
+    ${systemd_unitdir}/system/filogicwifiinitialized.path \
+    ${systemd_unitdir}/system/checkfilogicwifisupport.path \
     ${systemd_unitdir}/system/wifi-initialized.target \
     ${systemd_unitdir}/system/ProcessResetDetect.path \
     ${systemd_unitdir}/system/ProcessResetDetect.service \

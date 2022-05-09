@@ -1,4 +1,4 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 DEPENDS_append_dunfell = " ccsp-lm-lite"
 

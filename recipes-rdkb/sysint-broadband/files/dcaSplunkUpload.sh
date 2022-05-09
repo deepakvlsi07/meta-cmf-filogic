@@ -268,8 +268,8 @@ useDirectRequest()
            if [ -f "rtl_json.txt" ]; then
               echo "rtl_json.txt available,going for tftp upload"
               iptables -t raw -I OUTPUT -j CT -p udp -m udp --dport 69 --helper tftp
-              TurrisMacAddress=`ifconfig erouter0 | grep HWaddr | cut -c39-55`
-              extractVal=`echo $TurrisMacAddress | sed -e 's/://g'`
+              FilogicMacAddress=`ifconfig erouter0 | grep HWaddr | cut -c39-55`
+              extractVal=`echo $FilogicMacAddress | sed -e 's/://g'`
               dt=`date "+%m-%d-%y-%I-%M%p"`
               cp /nvram/rtl_json.txt /nvram/$extractVal-TELE-$dt.json
               tftp -p -r $extractVal-TELE-$dt.json $IP

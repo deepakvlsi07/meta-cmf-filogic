@@ -936,7 +936,7 @@ $wan_netmask=0.0.0.0
 $wan_default_gateway=0.0.0.0
 $nameserver1=0.0.0.0
 $nameserver2=0.0.0.0
-$hostname=TurrisOmnia-GW
+$hostname=Filogic-GW
 
 $IPv6subPrefix=true
 
@@ -981,4 +981,5 @@ $dslite_ipv6_frag_enable_1=0
 $tr_dhcpv6c_enabled=1
 $tr_dhcpv6c_iana_enabled=1
 $tr_dhcpv6c_iapd_enabled=1
-
+#Default for dhcpv4c.api enable UDHCPC_SWITCH
+$UDHCPEnable=true

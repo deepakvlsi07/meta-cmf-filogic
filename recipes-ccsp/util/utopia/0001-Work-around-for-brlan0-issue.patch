@@ -16,7 +16,7 @@ index 73f274f7..e84090cd 100755
                                  echo_t "Calling lan-start"
                                  eval  '$THIS lan-start NULL'
                  fi
-+                if [ "$BOX_TYPE" = "turris" ]; then
++                if [ "$BOX_TYPE" = "filogic" ]; then
 +                               sleep 2
 +                               echo_t "Calling lan-start"
 +                               eval  '$THIS lan-start NULL'

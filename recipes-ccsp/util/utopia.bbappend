@@ -1,4 +1,4 @@
-require recipes-ccsp/ccsp/ccsp_common_turris.inc
+require recipes-ccsp/ccsp/ccsp_common_filogic.inc
 
 DEPENDS_append = " kernel-autoconf utopia-headers libsyswrapper telemetry"
 
@@ -7,7 +7,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 EXTRA_OECONF_append  = " --with-ccsp-arch=arm"
 
 SRC_URI_append = " \
-    file://0001-fix-lan-handler-for-turris.patch;apply=no \
+    file://0001-fix-lan-handler-for-filogic.patch;apply=no \
     file://0003-remove-autoconf.patch;apply=no \
     file://system_defaults \
 "
@@ -26,12 +26,12 @@ LDFLAGS_append = " \
 CFLAGS_append = " -Wno-format-extra-args -Wno-error "
 CFLAGS_append += "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' -D_WAN_MANAGER_ENABLED_', '', d)}"
 
-# we need to patch to code for Turris
-do_turris_patches() {
+# we need to patch to code for Filogic
+do_filogic_patches() {
     cd ${S}
-    if [ ! -e turris_patch_applied ]; then
-        bbnote "Patching 0001-fix-lan-handler-for-turris.patch"
-        patch -p1 < ${WORKDIR}/0001-fix-lan-handler-for-turris.patch
+    if [ ! -e filogic_patch_applied ]; then
+        bbnote "Patching 0001-fix-lan-handler-for-filogic.patch"
+        patch -p1 < ${WORKDIR}/0001-fix-lan-handler-for-filogic.patch
 
         bbnote "Patching posix-gwprovapp.patch"
         patch -p1 < ${WORKDIR}/posix-gwprovapp.patch
@@ -42,19 +42,19 @@ do_turris_patches() {
         bbnote "Patching firewall-secure-onboard.patch"
         patch -p1 < ${WORKDIR}/firewall-secure-onboard.patch || echo "ERROR or Patch already applied"
 
-        touch turris_patch_applied
+        touch filogic_patch_applied
     fi
 }
 
-do_turris_patches-append_dunfell() {
+do_filogic_patches-append_dunfell() {
     cd ${S}
-    if [ ! -e dunfell_turris_patch_applied ]; then
+    if [ ! -e dunfell_filogic_patch_applied ]; then
 	patch -p1 < ${WORKDIR}/0001-Work-around-for-brlan0-issue.patch
     fi
-    touch dunfell_turris_patch_applied
+    touch dunfell_filogic_patch_applied
 }
 
-addtask turris_patches after do_unpack before do_compile
+addtask filogic_patches after do_unpack before do_compile
 
 do_install_append() {
 
@@ -107,7 +107,7 @@ do_install_append() {
     install -m 755 ${S}/source/scripts/init/service.d/service_dhcpv6_client_arm.sh ${D}${sysconfdir}/utopia/service.d/service_dhcpv6_client.sh
     install -m 755 ${S}/source/scripts/init/system/need_wifi_default.sh ${D}${sysconfdir}/utopia/
     touch ${D}${sysconfdir}/dhcp_static_hosts
-    #turris omnia uses default service_bridge.sh for now
+    #filogic uses default service_bridge.sh for now
     install -m 755 ${S}/source/scripts/init/service.d/service_bridge.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
 
     install -m 755 ${WORKDIR}/dhcp_script.sh ${D}${sysconfdir}/
@@ -155,10 +155,10 @@ do_install_append() {
     sed -i -e "s/dropbear -E -s -b \/etc\/sshbanner.txt/dropbear -R -E /g" ${D}/etc/utopia/service.d/service_sshd.sh
     sed -i -e "/dropbear -R -E  -a -r/s/$/ -B/" ${D}${sysconfdir}/utopia/service.d/service_sshd.sh
 
-    #MSG_QUEUE  files are not present in turris
+    #MSG_QUEUE  files are not present in Filogic
     sed -i '/TOT_MSG_MAX=\$/ s/^/#/g'  ${D}${sysconfdir}/utopia/utopia_init.sh    
 
-    echo "###TurrisOmnia specific lines###" >> ${D}${sysconfdir}/utopia/utopia_init.sh
+    echo "###Filogic specific lines###" >> ${D}${sysconfdir}/utopia/utopia_init.sh
     echo "#TODO: Need to replaced once the sky version 2 code is available" >> ${D}${sysconfdir}/utopia/utopia_init.sh
     echo "sysevent set lan-start 0" >> ${D}${sysconfdir}/utopia/utopia_init.sh
     echo "sysevent set bridge-stop 0" >> ${D}${sysconfdir}/utopia/utopia_init.sh
@@ -202,7 +202,7 @@ sysevent set wan-status started ' ${D}${sysconfdir}/utopia/utopia_init.sh
 
 do_install_append_dunfell() {
    #Following line is for adding Backhaul interface entries in dnsmasq.conf
-    sed -i '/XB6/i \ \ \ \ \ \ \ elif [ "$BOX_TYPE" = "turris" ]; then\n\ \ \ \ \ \ \ \ \ \ \ echo "interface=wifi2" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ echo "dhcp-range=169.254.0.2,169.254.0.254,255.255.255.0,infinite" >> $LOCAL_DHCP_CONF\n\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if [ "1" == "$NAMESERVERENABLED" ] && [ "$WAN_DHCP_NS" != "" ]; then\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo "${PREFIX}""dhcp-option=wifi2,6,$WAN_DHCP_NS" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fi\n\n\ \ \ \ \ \ \ \ \ \ \ echo "interface=wifi3" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ echo "dhcp-range=169.254.1.2,169.254.1.254,255.255.255.0,infinite" >> $LOCAL_DHCP_CONF\n\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if [ "1" == "$NAMESERVERENABLED" ] && [ "$WAN_DHCP_NS" != "" ]; then\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo "${PREFIX}""dhcp-option=wifi3,6,$WAN_DHCP_NS" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fi\n\n\ \ \ \ \ \ \ \ \ \ \ echo "interface=br-home" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ echo "dhcp-range=192.168.1.2,192.168.1.253,255.255.255.0,7d" >> $LOCAL_DHCP_CONF\n\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if [ "1" == "$NAMESERVERENABLED" ] && [ "$WAN_DHCP_NS" != "" ]; then\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo "${PREFIX}""dhcp-option=br-home,6,$WAN_DHCP_NS" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fi\n' ${D}${sysconfdir}/utopia/service.d/service_dhcp_server/dhcp_server_functions.sh
+    sed -i '/XB6/i \ \ \ \ \ \ \ elif [ "$BOX_TYPE" = "filogic" ]; then\n\ \ \ \ \ \ \ \ \ \ \ echo "interface=wifi2" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ echo "dhcp-range=169.254.0.2,169.254.0.254,255.255.255.0,infinite" >> $LOCAL_DHCP_CONF\n\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if [ "1" == "$NAMESERVERENABLED" ] && [ "$WAN_DHCP_NS" != "" ]; then\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo "${PREFIX}""dhcp-option=wifi2,6,$WAN_DHCP_NS" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fi\n\n\ \ \ \ \ \ \ \ \ \ \ echo "interface=wifi3" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ echo "dhcp-range=169.254.1.2,169.254.1.254,255.255.255.0,infinite" >> $LOCAL_DHCP_CONF\n\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if [ "1" == "$NAMESERVERENABLED" ] && [ "$WAN_DHCP_NS" != "" ]; then\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo "${PREFIX}""dhcp-option=wifi3,6,$WAN_DHCP_NS" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fi\n\n\ \ \ \ \ \ \ \ \ \ \ echo "interface=br-home" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ echo "dhcp-range=192.168.1.2,192.168.1.253,255.255.255.0,7d" >> $LOCAL_DHCP_CONF\n\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if [ "1" == "$NAMESERVERENABLED" ] && [ "$WAN_DHCP_NS" != "" ]; then\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ echo "${PREFIX}""dhcp-option=br-home,6,$WAN_DHCP_NS" >> $LOCAL_DHCP_CONF\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fi\n' ${D}${sysconfdir}/utopia/service.d/service_dhcp_server/dhcp_server_functions.sh
 }
 
 FILES_${PN} += " \
@@ -215,6 +215,6 @@ FILES_${PN} += " \
     /etc/utopia/system_defaults \
 "
 
-# 0001-fix-lan-handler-for-turris.patch contains bash specific syntax which doesn't run with busybox sh
+# 0001-fix-lan-handler-for-filogic.patch contains bash specific syntax which doesn't run with busybox sh
 RDEPENDS_${PN} += "bash"
 

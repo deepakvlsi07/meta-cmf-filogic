@@ -305,8 +305,8 @@ uploadLogOnReboot()
                 #proUpdel=$((proUpdel - 1))
                 uploadProtocolla=`cat /tmp/DCMSettings.conf | grep -i urn:settings:TelemetryProfile | cut -d '"' -f$proUpdel`
                 echo "Upload protocol logupload is:"$uploadProtocolla
-                TurrisMacAddress=`ifconfig erouter0 | grep HWaddr | cut -c39-55`
-                cp $LOG_FILE $TurrisMacAddress-Logs-$LOG_FILE
+                FilogicMacAddress=`ifconfig erouter0 | grep HWaddr | cut -c39-55`
+                cp $LOG_FILE $FilogicMacAddress-Logs-$LOG_FILE
 		 if [ "$uploadProtocolla" != "TFTP" ];then
                      echo "before HTTP log upload"
 		     HTTPLOGUPLOADURL=`cat /tmp/DCMSettings.conf | grep -i "urn:settings:LogUploadSettings:RepositoryURL" | cut -d "=" -f2`
@@ -316,7 +316,7 @@ uploadLogOnReboot()
                      fi
                      echo "HTTPLOGUPLOADURL:"$HTTPLOGUPLOADURL
                      echo "upload log file is:"$LOG_FILE
-                     CURL_CMD="curl -w '%{http_code}\n' -F filename=@$PREV_LOG_PATH/$TurrisMacAddress-Logs-$LOG_FILE '$HTTPLOGUPLOADURL' --connect-timeout 100 -m 100"
+                     CURL_CMD="curl -w '%{http_code}\n' -F filename=@$PREV_LOG_PATH/$FilogicMacAddress-Logs-$LOG_FILE '$HTTPLOGUPLOADURL' --connect-timeout 100 -m 100"
                      #echo_t "CURL_CMD http proto log upload: $CURL_CMD" >> $DCM_LOG_FILE
                      echo "------CURL_CMD2:"$CURL_CMD
                      HTTP_CODE=`result= eval $CURL_CMD`
@@ -329,7 +329,7 @@ uploadLogOnReboot()
                          while [ $loguploadRetryCount -lt 2 ]
                          do
                              echo "Trying to upload log file..."
-                             CURL_CMD="curl -w '%{http_code}\n' -F filename=@$PREV_LOG_PATH/$TurrisMacAddress-Logs-$LOG_FILE '$HTTPLOGUPLOADURL' --connect-timeout 100 -m 100"
+                             CURL_CMD="curl -w '%{http_code}\n' -F filename=@$PREV_LOG_PATH/$FilogicMacAddress-Logs-$LOG_FILE '$HTTPLOGUPLOADURL' --connect-timeout 100 -m 100"
                              HTTP_CODE=`result= eval $CURL_CMD`
                              http_code_la=$(echo $HTTP_CODE | cut -d "." -f 2)
                              echo "http_code is :"$http_code_la
@@ -347,7 +347,7 @@ uploadLogOnReboot()
                       fi
                 else
                         echo "Uploading logs $LOG_FILE  onto $TFTP_SERVER" >> $LOG_PATH/dcmscript.log
-                        tftp -p  -r $TurrisMacAddress-Logs-$LOG_FILE -l $TurrisMacAddress-Logs-$LOG_FILE $TFTP_SERVER >> $LOG_PATH/dcmscript.log 2>&1
+                        tftp -p  -r $FilogicMacAddress-Logs-$LOG_FILE -l $FilogicMacAddress-Logs-$LOG_FILE $TFTP_SERVER >> $LOG_PATH/dcmscript.log 2>&1
                         ret=$?
                         echo $ret
                         if [ "$ret" -eq 1 ]; then
@@ -355,7 +355,7 @@ uploadLogOnReboot()
                              while [ "$tftplauploadRetryCount" -lt 2 ]
                              do
                                 echo "Trying to upload logs file using tftp again..."
-                                tftp -p  -r $TurrisMacAddress-Logs-$LOG_FILE -l $TurrisMacAddress-Logs-$LOG_FILE $TFTP_SERVER >> $LOG_PATH/dcmscript.log 2>&1
+                                tftp -p  -r $FilogicMacAddress-Logs-$LOG_FILE -l $FilogicMacAddress-Logs-$LOG_FILE $TFTP_SERVER >> $LOG_PATH/dcmscript.log 2>&1
                                 ret=$?
                                 if [ "$ret" -eq 1 ]; then
                                      echo "error in uploading logs using tftp"
@@ -377,7 +377,7 @@ uploadLogOnReboot()
                  fi
                 sleep 60
                 echo "Done Uploading Logs and removing rtl_json.txt file"
-                rm -rf $PREV_LOG_PATH/$TurrisMacAddress-Logs-$LOG_FILE
+                rm -rf $PREV_LOG_PATH/$FilogicMacAddress-Logs-$LOG_FILE
                 rm -rf $TELEMETRY_JSON_RESPONSE
                 rm -rf $PERSISTENT_PATH/*TELE*
 	fi

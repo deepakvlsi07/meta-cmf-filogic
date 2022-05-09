@@ -1,5 +1,5 @@
 [Unit]
-Description=Check WIFI support on Turris Omnia device
+Description=Check WIFI support on Filogic device
 After=hostapd.service
 
 [Service]

@@ -1,4 +1,4 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
@@ -13,12 +13,12 @@ do_install_append () {
     install -d ${D}${sysconfdir}
     install -m 755 ${S}/../Styles/xb3/config/php.ini ${D}${sysconfdir}
 
-    # delete wan0 reference for TurrisOmnia
-    sed -i "/wan0:80/a  echo \"This interface is not available in Turris\""  ${D}${sysconfdir}/webgui.sh
-    sed -i "/wan0:443/a  echo \"This interface is not available in Turris\""  ${D}${sysconfdir}/webgui.sh
+    # delete wan0 reference for Filogic
+    sed -i "/wan0:80/a  echo \"This interface is not available in Filogic\""  ${D}${sysconfdir}/webgui.sh
+    sed -i "/wan0:443/a  echo \"This interface is not available in Filogic\""  ${D}${sysconfdir}/webgui.sh
     sed -i '/wan0/d' ${D}${sysconfdir}/webgui.sh
 
-    #delete server.pem reference for TurrisOmnia
+    #delete server.pem reference for Filogic
     sed -e '/server.pem/ s/^#*/echo "Removed server.pem references for R-pi"\n#/' -i ${D}${sysconfdir}/webgui.sh
 
     sed -i -e "s/'TCP',\ 'UDP',\ 'TCP\/UDP'/'TCP',\ 'UDP',\ 'BOTH'/g" ${D}/usr/www/actionHandler/ajax_managed_services.php
@@ -27,7 +27,7 @@ do_install_append () {
 	sed -i -e "s/https:\/\/webui-xb3-cpe-srvr.xcal.tv/http:\/\/'.\$ip_addr.'/g" ${D}/usr/www/index.php
 	sed -i -e "s/LIGHTTPD_PID=\`pidof lighttpd\`/LIGHTTPD_PID=\`pidof lighttpd php-cgi\`/g" ${D}${sysconfdir}/webgui.sh
 	sed -i -e "s/\/bin\/kill \$LIGHTTPD_PID/\/bin\/kill -9 \$LIGHTTPD_PID/g" ${D}${sysconfdir}/webgui.sh
-        #Remove Mesh-Mode Validation on TurrisOmnia
+        #Remove Mesh-Mode Validation on Filogic
         sed -i -e "s/&& (\$Mesh_Mode==\"false\")//g" ${D}/usr/www/actionHandler/ajaxSet_wireless_network_configuration_edit.php
 	sed -i "/setting ConfigureWiFi to true/a echo \"}\" >> \$LIGHTTPD_CONF" ${D}${sysconfdir}/webgui.sh
 	sed -i "/setting ConfigureWiFi to true/a echo \"}\" >> \$LIGHTTPD_CONF" ${D}${sysconfdir}/webgui.sh

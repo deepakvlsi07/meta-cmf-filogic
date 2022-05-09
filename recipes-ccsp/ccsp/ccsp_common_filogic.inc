@@ -1,4 +1,4 @@
-SUMMARY = "common inc for turris"
+SUMMARY = "common inc for filogic"
 
 CFLAGS_append += " -U_COSA_SIM_ -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -fno-strict-aliasing \
            -D_ANSC_LINUX -D_ANSC_USER -D_ANSC_LITTLE_ENDIAN_ -D_CCSP_CWMP_TCP_CONNREQ_HANDLER \

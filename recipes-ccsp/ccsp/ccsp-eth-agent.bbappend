@@ -1,4 +1,4 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 CFLAGS_aarch64_append = " -Werror=format-truncation=1 "
 

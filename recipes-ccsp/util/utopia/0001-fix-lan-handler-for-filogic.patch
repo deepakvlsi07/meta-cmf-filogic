@@ -30,7 +30,7 @@ index 7fd1b46c..4e95ed54 100755
          fi
  
 +        # --------------------------------------------------------------------
-+        # Turris Omnia specific change begin
++        # Filogic specific change begin
 +        # --------------------------------------------------------------------
 +
 +        PHY_BRIDGE_IFNAME=`syscfg get lan_ifname`
@@ -44,7 +44,7 @@ index 7fd1b46c..4e95ed54 100755
 +        done
 +
 +        # --------------------------------------------------------------------
-+        # Turris Omnia specific change end
++        # Filogic specific change end
 +        # --------------------------------------------------------------------
 +
          echo_t "LAN HANDLER : Triggering RDKB_FIREWALL_RESTART after nfqhandler"

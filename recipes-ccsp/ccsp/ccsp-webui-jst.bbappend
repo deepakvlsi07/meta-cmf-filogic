@@ -1,4 +1,4 @@
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
@@ -17,14 +17,14 @@ do_install_append () {
                 install -d ${D}${base_libdir}/rdk/
                 install -d ${D}${systemd_unitdir}/system/
 
-                # delete wan0 reference for Turris
-                sed -i "/wan0:80/a  echo \"This interface is not available in Turris\""  ${D}${sysconfdir}/webgui.sh
-                sed -i "/wan0:443/a  echo \"This interface is not available in Turris\""  ${D}${sysconfdir}/webgui.sh
+                # delete wan0 reference for Filogic
+                sed -i "/wan0:80/a  echo \"This interface is not available in Filogic\""  ${D}${sysconfdir}/webgui.sh
+                sed -i "/wan0:443/a  echo \"This interface is not available in Filogic\""  ${D}${sysconfdir}/webgui.sh
                 sed -i "s/if \[ \"\$BOX_TYPE\" == \"HUB4\" \]/if \[ \"\$BOX_TYPE\" = \"HUB4\" \]/g" ${D}${sysconfdir}/webgui.sh
                 sed -i '/wan0/d' ${D}${sysconfdir}/webgui.sh
 
-                #delete server.pem reference for TurrisOmnia
-                sed -e '/server.pem/ s/^#*/echo "Removed server.pem references for Turris"\n#/' -i ${D}${sysconfdir}/webgui.sh
+                #delete server.pem reference for Filogic
+                sed -e '/server.pem/ s/^#*/echo "Removed server.pem references for Filogic"\n#/' -i ${D}${sysconfdir}/webgui.sh
 
                 install -m 755 ${WORKDIR}/CcspWebUI.sh ${D}${base_libdir}/rdk/
                 install -m 644 ${WORKDIR}/CcspWebUI.service ${D}${systemd_unitdir}/system/

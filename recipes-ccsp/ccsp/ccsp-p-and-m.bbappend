@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-require ccsp_common_turris.inc
+require ccsp_common_filogic.inc
 
 DEPENDS_append = " utopia curl "
 

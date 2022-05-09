@@ -176,8 +176,8 @@ firmwareLocation=`jsonparse firmwareLocation`
 rebootImmediately=`jsonparse rebootImmediately`
 
 download_image
-/lib/rdk/TurrisFwUpgrade.sh
-check "TurrisFwUpgrade.sh failed to flash new Image"
+/lib/rdk/FilogicFwUpgrade.sh
+check "FilogicFwUpgrade.sh failed to flash new Image"
 
 if [ $rebootImmediately == true ]; then
    reboot
