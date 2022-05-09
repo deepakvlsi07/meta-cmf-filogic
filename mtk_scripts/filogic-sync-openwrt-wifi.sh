@@ -55,15 +55,22 @@ sed -i 's/450-scan_wait.patch/&;apply=no/' patches/patches.inc
 
 cd -
 rm -rf meta-filogic/recipes-connectivity/hostapd/files/patches
+rm -rf meta-filogic/recipes-connectivity/wpa-supplicant/files/patches
 cp -rf mac80211_package/package/network/services/hostapd/patches meta-filogic/recipes-connectivity/hostapd/files/
+cp -rf mac80211_package/package/network/services/hostapd/patches meta-filogic/recipes-connectivity/wpa-supplicant/files/
 rm -rf meta-filogic/recipes-connectivity/hostapd/files/src
+rm -rf meta-filogic/recipes-connectivity/wpa-supplicant/files/src
 cp -rf mac80211_package/package/network/services/hostapd/src meta-filogic/recipes-connectivity/hostapd/files/
+cp -rf mac80211_package/package/network/services/hostapd/src meta-filogic/recipes-connectivity/wpa-supplicant/files/
 echo "cp defconfig and remove ubus"
 cp mac80211_package/package/network/services/hostapd/files/hostapd-full.config meta-filogic/recipes-connectivity/hostapd/files/
+cp mac80211_package/package/network/services/hostapd/files/wpa_supplicant-full.config meta-filogic/recipes-connectivity/wpa-supplicant/files/
 sed -i 's/CONFIG_UBUS=y.*//g' meta-filogic/recipes-connectivity/hostapd/files/hostapd-full.config
+sed -i 's/CONFIG_UBUS=y.*//g' meta-filogic/recipes-connectivity/wpa-supplicant/files/wpa_supplicant-full.config
 
 echo "Update hostapd bb file version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/services/hostapd/Makefile | cut -c 21-`
-sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/hostapd//hostapd_2.10.bb
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/hostapd/hostapd_2.10.bb
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/wpa-supplicant/wpa-supplicant_2.10.bb
 
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
