@@ -1,25 +1,34 @@
-From db41fa4fb08c4d6e7f7d89f3283b875a89408763 Mon Sep 17 00:00:00 2001
+From 59559e1a49a9d7df861f31a15831a639b9cc38d4 Mon Sep 17 00:00:00 2001
 From: Allen Ye <allen.ye@mediatek.com>
-Date: Tue, 12 Apr 2022 10:36:58 +0800
+Date: Fri, 6 May 2022 18:10:44 +0800
 Subject: [PATCH] HAL: add wifi_getApAssociatedDevice()
 
 ---
- source/wifi/wifi_hal.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ source/wifi/wifi_hal.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/source/wifi/wifi_hal.c b/source/wifi/wifi_hal.c
-index f6c2aa2..19a6281 100644
+index 0060769..7fa978a 100644
 --- a/source/wifi/wifi_hal.c
 +++ b/source/wifi/wifi_hal.c
-@@ -9607,7 +9607,11 @@ INT wifi_getApAssociatedDevice(INT ap_index, mac_address_t *output_deviceMacAddr
+@@ -9645,7 +9645,20 @@ INT wifi_getApAssociatedDevice(INT ap_index, mac_address_t *output_deviceMacAddr
  #else
  INT wifi_getApAssociatedDevice(INT ap_index, CHAR *output_buf, INT output_buf_size)
  {
 -     return RETURN_OK;
 +    char cmd[128];
++    BOOL status = false;
++
++    if(ap_index > MAX_APS)
++        return RETURN_ERR;
++
++    wifi_getApEnable(ap_index,&status);
++    if (!status)
++        return RETURN_OK;
 +
 +    sprintf(cmd, "hostapd_cli -i %s%d list_sta | tr -d \"\\n\"", AP_PREFIX, ap_index);
 +    _syscmd(cmd, output_buf, output_buf_size);
++    
 +    return RETURN_OK;
  }
  #endif
