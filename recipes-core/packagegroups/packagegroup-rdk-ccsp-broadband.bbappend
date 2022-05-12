@@ -35,7 +35,8 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband_append = "\
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove_dunfell = "start-parodus"
 
 #TODO: need to revisit if it breaks functionality. removing since it depends on ucresolv
-#RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "parodus"
+RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "parodus"
+RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "parodus2ccsp"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' rdk-wanmanager ', '', d)} "
 
