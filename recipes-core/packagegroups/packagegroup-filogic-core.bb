@@ -28,5 +28,6 @@ RDEPENDS_packagegroup-filogic-core = " \
     ebtables \
     regs \
     mii-mgr \
-    mtd  \ 
+    mtd \
+    smp \
     "
