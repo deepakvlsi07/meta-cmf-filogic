@@ -30,4 +30,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     mii-mgr \
     mtd \
     smp \
+    mtk-factory-rw \
     "
