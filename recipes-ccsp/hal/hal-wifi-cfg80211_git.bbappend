@@ -17,3 +17,4 @@ do_mtk_patches() {
 }
 addtask mtk_patches after do_unpack before do_compile
 
+CFLAGS_append = " -DWIFI_HAL_VERSION_3"
