@@ -1,0 +1,45 @@
+diff -urN a/core/src/bm/src/bm_ieee80211.c b/core/src/bm/src/bm_ieee80211.c
+--- a/core/src/bm/src/bm_ieee80211.c	2022-06-02 13:18:30.792245507 +0800
++++ b/core/src/bm/src/bm_ieee80211.c	2022-06-02 13:19:57.178711952 +0800
+@@ -294,7 +294,7 @@
+     memset(&client->op_classes, 0, sizeof(client->op_classes));
+ 
+     if (len > BM_CLIENT_MAX_OP_CLASSES) {
+-        LOGW("%s Size of operating classes more than expected (%d): %d",
++        LOGW("%s Size of operating classes more than expected (%zu): %d",
+              client->mac_addr, len, BM_CLIENT_MAX_OP_CLASSES);
+         client->op_classes.size = BM_CLIENT_MAX_OP_CLASSES;
+     } else {
+diff -urN a/platform/rdk/src/lib/target/src/bsal_legacy.c b/platform/rdk/src/lib/target/src/bsal_legacy.c
+--- a/platform/rdk/src/lib/target/src/bsal_legacy.c	2022-06-02 13:03:06.764635550 +0800
++++ b/platform/rdk/src/lib/target/src/bsal_legacy.c	2022-06-02 13:03:48.023904674 +0800
+@@ -1068,7 +1068,7 @@
+                 memcpy(info, &client_info_cache->client, sizeof(*info));
+             }
+ #endif
+-            LOGI("BSAL Client "MAC_ADDR_FMT" is connected apIndex: %d, SNR: %d, rx: %lld, tx: %lld", MAC_ADDR_UNPACK(mac_addr),
++            LOGI("BSAL Client "MAC_ADDR_FMT" is connected apIndex: %d, SNR: %d, rx: %zu, tx: %zu", MAC_ADDR_UNPACK(mac_addr),
+                 apIndex, info->snr, info->rx_bytes, info->tx_bytes);
+ 
+             break;
+diff -urN a/platform/rdk/src/tools/band_steering_test/bs_testd/bs_testd.c b/platform/rdk/src/tools/band_steering_test/bs_testd/bs_testd.c
+--- a/platform/rdk/src/tools/band_steering_test/bs_testd/bs_testd.c	2022-06-02 13:32:26.222966518 +0800
++++ b/platform/rdk/src/tools/band_steering_test/bs_testd/bs_testd.c	2022-06-02 13:35:42.306842191 +0800
+@@ -906,7 +906,7 @@
+         }
+ 
+         total_bytes += bytes;
+-        LOGD("total_bytes = %d\n", total_bytes);
++        LOGD("total_bytes = %zu\n", total_bytes);
+ 
+         if (total_bytes >= (ssize_t)sizeof(buf) && buf[sizeof(buf) - 1] != '\0')
+         {
+@@ -921,7 +921,7 @@
+             // Otherwise we're blocking (on purpose).
+             // in case of client malfunction this loop needs to be interrupted by a signal.
+             // Non-blocking variant may be implemented in the future.
+-            LOGD("incomplete, bytes = %d , buf = >>%s<<\n", bytes, buf);
++            LOGD("incomplete, bytes = %zu , buf = >>%s<<\n", bytes, buf);
+             incomplete = true;
+             ptr += bytes;
+             continue;

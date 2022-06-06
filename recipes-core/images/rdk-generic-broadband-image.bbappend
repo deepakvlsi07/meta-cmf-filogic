@@ -19,6 +19,7 @@ IMAGE_INSTALL += " packagegroup-filogic-core \
     pptp-linux \
     rp-pppoe  \  
     "
+#IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
 BB_HASH_IGNORE_MISMATCH = "1"
 IMAGE_NAME[vardepsexclude] = "DATETIME"

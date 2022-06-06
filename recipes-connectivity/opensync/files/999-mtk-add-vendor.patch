@@ -1,0 +1,12 @@
+diff -urN a/vendor/turris/build/vendor-arch.mk b/vendor/turris/build/vendor-arch.mk
+--- a/vendor/turris/build/vendor-arch.mk	2022-06-02 12:40:23.648854464 +0800
++++ b/vendor/turris/build/vendor-arch.mk	2022-06-02 12:41:07.232071037 +0800
+@@ -9,7 +9,7 @@
+ 
+ # To customize: This vendor layer supports Turris Omnia as a residential / business gateway
+ # and Turris Omnia as Extender/GW. Put your machine name here.
+-ifeq ($(RDK_MACHINE),$(filter $(RDK_MACHINE),turris turris-extender turris-bci turris_5.10))
++ifeq ($(RDK_MACHINE),$(filter $(RDK_MACHINE),filogic830 turris turris-extender turris-bci turris_5.10))
+ 
+ # To customize: put OEM and MODEL names here
+ RDK_OEM = turris
