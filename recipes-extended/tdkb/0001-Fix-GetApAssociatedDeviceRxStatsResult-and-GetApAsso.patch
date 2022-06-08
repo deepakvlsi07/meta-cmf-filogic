@@ -1,0 +1,38 @@
+From d2c388f3a4d2124dc17f4b914af4f25bc628b385 Mon Sep 17 00:00:00 2001
+From: Allen Ye <allen.ye@mediatek.com>
+Date: Tue, 26 Apr 2022 17:28:12 +0800
+Subject: [PATCH] Fix GetApAssociatedDeviceRxStatsResult and
+ GetApAssociatedDeviceTxStatsResult output buffer didn't allocate space bug
+
+---
+ WIFIHAL_stub/src/WIFIHAL.cpp | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/WIFIHAL_stub/src/WIFIHAL.cpp b/WIFIHAL_stub/src/WIFIHAL.cpp
+index d3d5827f..96f2a087 100644
+--- a/WIFIHAL_stub/src/WIFIHAL.cpp
++++ b/WIFIHAL_stub/src/WIFIHAL.cpp
+@@ -2154,8 +2154,8 @@ void WIFIHAL::WIFIHAL_GetApAssociatedDeviceStats(IN const Json::Value& req, OUT
+ void WIFIHAL::WIFIHAL_GetApAssociatedDeviceTxStatsResult(IN const Json::Value& req, OUT Json::Value& response)
+ {
+     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceTxStatsResult ----->Entry\n");
+-//    wifi_associated_dev_rate_info_tx_stats_t *stats_array = (wifi_associated_dev_rate_info_tx_stats_t*)malloc(sizeof(wifi_associated_dev_rate_info_tx_stats_t));
+-    wifi_associated_dev_rate_info_tx_stats_t *tx_stats = NULL;
++   wifi_associated_dev_rate_info_tx_stats_t *tx_stats = (wifi_associated_dev_rate_info_tx_stats_t*)malloc(sizeof(wifi_associated_dev_rate_info_tx_stats_t));
++    // wifi_associated_dev_rate_info_tx_stats_t *tx_stats = NULL;
+     unsigned int output_array_size = 0;
+     unsigned long long handle = 0;
+     int radioIndex = 1;
+@@ -2219,7 +2219,8 @@ void WIFIHAL::WIFIHAL_GetApAssociatedDeviceTxStatsResult(IN const Json::Value& r
+ void WIFIHAL::WIFIHAL_GetApAssociatedDeviceRxStatsResult(IN const Json::Value& req, OUT Json::Value& response)
+ {
+     DEBUG_PRINT(DEBUG_TRACE,"\n WIFIHAL_GetApAssociatedDeviceRxStatsResult ----->Entry\n");
+-    wifi_associated_dev_rate_info_rx_stats_t *stats_array = NULL;
++    wifi_associated_dev_rate_info_rx_stats_t *stats_array = (wifi_associated_dev_rate_info_rx_stats_t*)malloc(sizeof(wifi_associated_dev_rate_info_rx_stats_t));
++    // wifi_associated_dev_rate_info_rx_stats_t *stats_array = NULL;
+     unsigned int output_array_size = 0;
+     unsigned long long handle = 0;
+     int radioIndex = 1;
+-- 
+2.18.0
+

@@ -1,0 +1,66 @@
+From 9cb7739f4c26a770b76a6694f6e2b483f492e337 Mon Sep 17 00:00:00 2001
+From: "Allen.Ye" <allen.ye@mediatek.com>
+Date: Wed, 8 Jun 2022 10:36:58 +0800
+Subject: [PATCH] Add tdk utility functions
+
+---
+ platform/turris/agent/scripts/tdk_platform_utility.sh | 36 ++++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 4 deletions(-)
+
+diff --git a/platform/turris/agent/scripts/tdk_platform_utility.sh b/platform/turris/agent/scripts/tdk_platform_utility.sh
+index fefc194..210d8a9 100755
+--- a/platform/turris/agent/scripts/tdk_platform_utility.sh
++++ b/platform/turris/agent/scripts/tdk_platform_utility.sh
+@@ -37,17 +37,45 @@ getCMMACAddress()
+     echo $macaddress
+ }
+ 
++getAp0DTIMInterval()
++{
++     hostapd_cli -i wifi0 status| grep -i dtim | cut -d '=' -f2
++}
++
++getAp1DTIMInterval()
++{
++     hostapd_cli -i wifi1 status| grep -i dtim | cut -d '=' -f2
++}
++
++getAp0BeaconInterval()
++{
++     hostapd_cli -i wifi0 status | grep beacon_int | cut -d '=' -f2
++}
++
++getAp1BeaconInterval()
++{
++     hostapd_cli -i wifi0 status | grep beacon_int | cut -d '=' -f2
++}
++
+ # Store the arguments to a variable
+ event=$1
+ processName=$2
+ 
+ # Invoke the function based on the argument passed
+ case $event in
+-   "checkProcess")
++     "checkProcess")
+         checkProcess;;
+-   "killProcess")
++     "killProcess")
+         killProcess;;
+-   "getCMMACAddress")
++     "getCMMACAddress")
+         getCMMACAddress;;
+-   *) echo "Invalid Argument passed";;
++     "getAp0DTIMInterval")
++        getAp0DTIMInterval;;
++     "getAp1DTIMInterval")
++        getAp1DTIMInterval;;
++     "getAp0BeaconInterval")
++        getAp0BeaconInterval;;
++     "getAp1BeaconInterval")
++        getAp1BeaconInterval;;
++     *) echo "Invalid Argument passed";;
+ esac
+-- 
+2.18.0
+
