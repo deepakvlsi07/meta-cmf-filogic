@@ -29,7 +29,7 @@ SYSTEMD_SERVICE_${PN} = "swupdate.service"
 SYSTEMD_SERVICE_${PN} = "dcm-log.service"
 
 do_install_append() {
-    echo "BOX_TYPE=Filogic" >> ${D}${sysconfdir}/device.properties
+    echo "BOX_TYPE=turris" >> ${D}${sysconfdir}/device.properties
     echo "ARM_INTERFACE=erouter0" >> ${D}${sysconfdir}/device.properties
     install -d ${D}${base_libdir}/rdk
     install -d ${D}${systemd_unitdir}/system
