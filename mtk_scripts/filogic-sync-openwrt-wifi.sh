@@ -73,4 +73,46 @@ ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/services/hostapd
 sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/hostapd/hostapd_2.10.bb
 sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/wpa-supplicant/wpa-supplicant_2.10.bb
 
+echo "GEN iw patches.........."
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/utils/iw
+cd mac80211_package/package/network/utils/iw
+./rdkb_inc_helper patches
+mv patches.inc patches
+
+cd -
+rm -rf meta-filogic/recipes-connectivity/iw/patches
+cp -rf mac80211_package/package/network/utils/iw/patches meta-filogic/recipes-connectivity/iw
+ver=`grep "PKG_VERSION:=" mac80211_package/package/network/utils/iw/Makefile | cut -c 14-`
+newbb=iw_${ver}.bb
+cd meta-filogic/recipes-connectivity/iw/
+oldbb=`ls *.bb`
+echo "Update iw bb file name.........."
+mv ${oldbb} ${newbb}
+cd -
+
+echo "Update iw bb hash .........."
+hash1=`grep "PKG_HASH" mac80211_package/package/network/utils/iw/Makefile | cut -c 11-`
+sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${hash1}'"/g' meta-filogic/recipes-connectivity/iw/${newbb}
+
+echo "Gen wireless-regdb patches.........."
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/firmware/wireless-regdb/
+cd mac80211_package/package/firmware/wireless-regdb/
+./rdkb_inc_helper patches
+mv patches.inc patches
+
+cd -
+rm -rf meta-filogic/recipes-kernel/wireless-regdb/files/patches
+cp -rf mac80211_package/package/firmware/wireless-regdb/patches meta-filogic/recipes-kernel/wireless-regdb/files/
+ver=`grep "PKG_VERSION:=" mac80211_package/package/firmware/wireless-regdb/Makefile | cut -c 14-`
+newbb=wireless-regdb_${ver}.bb
+cd meta-filogic/recipes-kernel/wireless-regdb/
+oldbb=`ls *.bb`
+echo "Update wireless-regdb bb file name.........."
+mv ${oldbb} ${newbb}
+cd -
+
+echo "Update wireless-regdb bb hash.........."
+hash1=`grep "PKG_HASH" mac80211_package/package/firmware/wireless-regdb/Makefile | cut -c 11-`
+sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${hash1}'"/g' meta-filogic/recipes-kernel/wireless-regdb/${newbb}
+
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
