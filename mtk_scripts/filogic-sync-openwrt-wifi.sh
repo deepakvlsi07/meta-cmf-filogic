@@ -65,8 +65,8 @@ cp -rf mac80211_package/package/network/services/hostapd/src meta-filogic/recipe
 echo "cp defconfig and remove ubus"
 cp mac80211_package/package/network/services/hostapd/files/hostapd-full.config meta-filogic/recipes-connectivity/hostapd/files/
 cp mac80211_package/package/network/services/hostapd/files/wpa_supplicant-full.config meta-filogic/recipes-connectivity/wpa-supplicant/files/
-sed -i 's/CONFIG_UBUS=y.*//g' meta-filogic/recipes-connectivity/hostapd/files/hostapd-full.config
-sed -i 's/CONFIG_UBUS=y.*//g' meta-filogic/recipes-connectivity/wpa-supplicant/files/wpa_supplicant-full.config
+#sed -i 's/CONFIG_UBUS=y.*//g' meta-filogic/recipes-connectivity/hostapd/files/hostapd-full.config
+#sed -i 's/CONFIG_UBUS=y.*//g' meta-filogic/recipes-connectivity/wpa-supplicant/files/wpa_supplicant-full.config
 
 echo "Update hostapd bb file version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/services/hostapd/Makefile | cut -c 21-`

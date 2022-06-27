@@ -31,4 +31,6 @@ RDEPENDS_packagegroup-filogic-core = " \
     mtd \
     smp \
     mtk-factory-rw \
+    ubus  \
+    ubusd \
     "
