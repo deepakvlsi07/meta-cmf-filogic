@@ -33,4 +33,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     mtk-factory-rw \
     ubus  \
     ubusd \
+    usteer \
     "
