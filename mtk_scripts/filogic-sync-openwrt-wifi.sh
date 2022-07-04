@@ -115,4 +115,16 @@ echo "Update wireless-regdb bb hash.........."
 hash1=`grep "PKG_HASH" mac80211_package/package/firmware/wireless-regdb/Makefile | cut -c 11-`
 sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${hash1}'"/g' meta-filogic/recipes-kernel/wireless-regdb/${newbb}
 
+echo "Update libubox version.........."
+ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/libs/libubox/Makefile | cut -c 21-`
+sed -i 's/SRCREV =.*/SRCREV = "'$ver'"/g' meta-filogic/recipes-connectivity/libubox/libubox_git.bbappend
+
+echo "Update ubus version.........."
+ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/system/ubus/Makefile | cut -c 21-`
+sed -i 's/SRCREV =.*/SRCREV = "'$ver'"/g' meta-filogic/recipes-connectivity/ubus/ubus_git.bb
+
+echo "Update libnl-tiny version.........."
+ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/libs/libnl-tiny/Makefile | cut -c 21-`
+sed -i 's/SRCREV =.*/SRCREV = "'$ver'"/g' meta-filogic/recipes-connectivity/libnl-tiny/libnl-tiny_git.bb
+
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
