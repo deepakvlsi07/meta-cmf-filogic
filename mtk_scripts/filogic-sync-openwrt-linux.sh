@@ -11,6 +11,8 @@ remove_patches(){
 		echo "rm $aa"
 		rm -rf ./$aa
 	done
+	#remove old legacy mt7622 patch
+	rm -rf ./target/linux/mediatek/patches-5.4/0303-mtd-spinand-disable-on-die-ECC.patch
 }
 cp -fpR mtk_openwrt_feeds/target ./openwrt
 cp mtk_openwrt_feeds/remove.patch.list openwrt/
