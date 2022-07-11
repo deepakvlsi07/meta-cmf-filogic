@@ -1,7 +1,7 @@
 inherit rdk-image
 
 IMAGE_FEATURES_remove = "read-only-rootfs"
-
+IMAGE_FSTYPES_remove= "tar.gz"
 SYSTEMD_TOOLS = "systemd-analyze systemd-bootchart"
 # systemd-bootchart doesn't currently build with musl libc
 SYSTEMD_TOOLS_remove_libc-musl = "systemd-bootchart"
@@ -49,30 +49,6 @@ ROOTFS_POSTPROCESS_COMMAND_append = "remove_unused_file; "
 
 do_filogic_gen_image(){
 	if ${@bb.utils.contains('DISTRO_FEATURES','kernel_in_ubi','true','false',d)}; then
-        # create factory image align to openwrt (kernel in ubi)   
-
-            echo \[kernel\] > ubinize.cfg
-            echo mode=ubi >> ubinize.cfg
-            echo image=${DEPLOY_DIR_IMAGE}/fitImage >> ubinize.cfg
-            echo vol_id=0 >> ubinize.cfg
-            echo vol_type=dynamic >> ubinize.cfg
-            echo vol_name=kernel >> ubinize.cfg
-            echo \[rootfs\] >> ubinize.cfg
-            echo mode=ubi >> ubinize.cfg
-            echo image=${IMGDEPLOYDIR}/${PN}-${MACHINE}.squashfs-xz >> ubinize.cfg
-            echo vol_id=1 >> ubinize.cfg
-            echo vol_type=dynamic >> ubinize.cfg
-            echo vol_name=rootfs >> ubinize.cfg
-            echo \[rootfs_data\] >> ubinize.cfg
-            echo mode=ubi >> ubinize.cfg
-            echo vol_id=2 >> ubinize.cfg
-            echo vol_type=dynamic >> ubinize.cfg
-            echo vol_name=rootfs_data >> ubinize.cfg
-            echo vol_size=1MiB >> ubinize.cfg
-            echo vol_flags=autoresize >> ubinize.cfg
-            ubinize -o ${DEPLOY_DIR_IMAGE}/${PN}-${MACHINE}-factory.bin ${UBINIZE_ARGS} ubinize.cfg
-            mv ubinize.cfg ${DEPLOY_DIR_IMAGE}/
-
         # create sysupgrade image align to openwrt
 
             rm -rf ${IMGDEPLOYDIR}/sysupgrade-${PN}-${MACHINE}

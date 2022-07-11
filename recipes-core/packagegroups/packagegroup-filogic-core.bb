@@ -35,4 +35,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     ubusd \
     usteer \
     ${@bb.utils.contains('DISTRO_FEATURES','switch_gsw_mode','switch','',d)} \
+    mtd-utils-ubifs \
     "
