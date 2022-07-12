@@ -1,19 +1,18 @@
-From b9c9912e64f040ce214679925a434ec54685f1b0 Mon Sep 17 00:00:00 2001
-From: "howard.hsu" <howard-yh.hsu@mediatek.com>
-Date: Tue, 22 Feb 2022 17:02:42 +0800
-Subject: [PATCH 01/18] [patch] HAL: implement wifi_setRadioCountryCode() &
+From f804c8f10fc057308def2fb70c9c94922b03f161 Mon Sep 17 00:00:00 2001
+From: "Allen.Ye" <allen.ye@mediatek.com>
+Date: Mon, 11 Jul 2022 17:47:56 +0800
+Subject: [PATCH] [patch] HAL: implement wifi_setRadioCountryCode() &
  wifi_getRadioCountryCode()
 
-Change-Id: I32f948112e924379da5e1f8a5300257171841589
 ---
  source/wifi/wifi_hal.c | 37 +++++++++++++++++++++++++++++++++++--
  1 file changed, 35 insertions(+), 2 deletions(-)
 
 diff --git a/source/wifi/wifi_hal.c b/source/wifi/wifi_hal.c
-index 6a11b049..14452dd4 100644
+index 51f25c6..23572ac 100644
 --- a/source/wifi/wifi_hal.c
 +++ b/source/wifi/wifi_hal.c
-@@ -907,9 +907,16 @@ INT wifi_createInitialConfigFiles()
+@@ -929,9 +929,16 @@ INT wifi_createInitialConfigFiles()
  // outputs the country code to a max 64 character string
  INT wifi_getRadioCountryCode(INT radioIndex, CHAR *output_string)
  {
@@ -28,11 +27,11 @@ index 6a11b049..14452dd4 100644
 +        snprintf(output_string, 64, "%s", buf);
 +    else
          return RETURN_ERR;
--    snprintf(output_string, 64, "841");
+-    snprintf(output_string, 64, "US");
  
      return RETURN_OK;
  }
-@@ -917,6 +924,32 @@ INT wifi_getRadioCountryCode(INT radioIndex, CHAR *output_string)
+@@ -939,6 +946,32 @@ INT wifi_getRadioCountryCode(INT radioIndex, CHAR *output_string)
  INT wifi_setRadioCountryCode(INT radioIndex, CHAR *CountryCode)
  {
      //Set wifi config. Wait for wifi reset to apply
@@ -66,5 +65,5 @@ index 6a11b049..14452dd4 100644
  }
  
 -- 
-2.29.2
+2.18.0
 
