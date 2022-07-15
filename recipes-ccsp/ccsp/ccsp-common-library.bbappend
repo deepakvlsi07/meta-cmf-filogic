@@ -122,6 +122,10 @@ do_install_append_class-target(){
      install -D -m 0644 ${S}/systemd_units/RdkVlanManager.service ${D}${systemd_unitdir}/system/RdkVlanManager.service
     fi
 
+     DISTRO_FW_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','fwupgrade_manager','true','false',d)}"
+     if [ $DISTRO_FW_ENABLED = 'true' ]; then
+     	install -D -m 0644 ${S}/systemd_units/RdkFwUpgradeManager.service ${D}${systemd_unitdir}/system/RdkFwUpgradeManager.service
+     fi
     ##### erouter0 ip issue
     sed -i '/Factory/a \
 IsErouterRunningStatus=\`ifconfig erouter0 | grep RUNNING | grep -v grep | wc -l\` \
@@ -156,6 +160,7 @@ SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.path"
 SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.service"
 SYSTEMD_SERVICE_${PN} += "rfc.service"
 SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', 'RdkWanManager.service utopia.service ', '', d)}"
+SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', 'RdkFwUpgradeManager.service ', '', d)}"
 
 FILES_${PN}_append = " \
     /usr/ccsp/ccspSysConfigEarly.sh \
@@ -184,3 +189,4 @@ FILES_${PN}_append = " \
     ${systemd_unitdir}/system/rfc.service \
 "
 FILES_${PN}_append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' ${systemd_unitdir}/system/RdkWanManager.service ${systemd_unitdir}/system/utopia.service ${systemd_unitdir}/system/RdkVlanManager.service ${systemd_unitdir}/system/RdkTelcoVoiceManager.service ', '', d)}"
+FILES_${PN}_append = "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', ' ${systemd_unitdir}/system/RdkFwUpgradeManager.service ', '', d)}"

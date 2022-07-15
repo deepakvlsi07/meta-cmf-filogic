@@ -25,7 +25,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "xupnp"
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdktelcovoicemanager"
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdk-vlanmanager"
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdk-ppp-manager"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdk-fwupgrade-manager"
+RDEPENDS_packagegroup-rdk-ccsp-broadband_append = " rdk-fwupgrade-manager"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband_append = "\
     rdk-logger \
