@@ -18,6 +18,8 @@ IMAGE_INSTALL += " packagegroup-filogic-core \
     dosfstools \
     pptp-linux \
     rp-pppoe  \  
+    xl2tpd \
+    strongswan \  
     "
 #IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
