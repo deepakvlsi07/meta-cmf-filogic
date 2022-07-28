@@ -38,4 +38,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     mtd-utils-ubifs \
     u-boot-fw-utils \
     fw-upgrade \
+    init-filogic \
     "
