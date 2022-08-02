@@ -76,6 +76,9 @@ sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/wp
 echo "GEN iw patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/utils/iw
 cd mac80211_package/package/network/utils/iw
+#remove patches not work for wifi hal 
+rm -rf patches/200-reduce_size.patch
+
 ./rdkb_inc_helper patches
 mv patches.inc patches
 
