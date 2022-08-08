@@ -39,4 +39,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     u-boot-fw-utils \
     fw-upgrade \
     init-filogic \
+    uci \
     "
