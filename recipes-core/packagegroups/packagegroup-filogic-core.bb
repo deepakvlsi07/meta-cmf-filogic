@@ -40,4 +40,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     fw-upgrade \
     init-filogic \
     uci \
+    mac-sec \
     "
