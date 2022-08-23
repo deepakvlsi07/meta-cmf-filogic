@@ -41,4 +41,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     init-filogic \
     uci \
     mac-sec \
+    mt76-vendor \
     "
