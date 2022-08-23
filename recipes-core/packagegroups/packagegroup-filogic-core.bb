@@ -42,4 +42,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     uci \
     mac-sec \
     mt76-vendor \
+    wifi-test-tool \
     "
