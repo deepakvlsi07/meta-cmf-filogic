@@ -23,7 +23,7 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "xupnp"
 
 #removing wanmanager components for now following runtime issues
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdktelcovoicemanager"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdk-vlanmanager"
+RDEPENDS_packagegroup-rdk-ccsp-broadband_append = " rdk-vlanmanager"
 RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdk-ppp-manager"
 RDEPENDS_packagegroup-rdk-ccsp-broadband_append = " rdk-fwupgrade-manager"
 
