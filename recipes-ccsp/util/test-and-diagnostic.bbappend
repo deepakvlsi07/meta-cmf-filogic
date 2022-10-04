@@ -8,7 +8,7 @@ SRC_URI_append = " \
 
 do_filogic_patches() {
     cd ${S}
-    if [ ! -e patch_applied ]; then
+    if [ ! -e patch_applied ] && [ -e ${S}/source/dmltad/cosa_wanconnectivity_operations.c ]; then
         patch  -p1 < ${WORKDIR}/fix_64bit_build_error.patch ${S}/source/dmltad/cosa_wanconnectivity_operations.c
         touch patch_applied
     fi
