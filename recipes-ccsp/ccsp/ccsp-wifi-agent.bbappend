@@ -5,7 +5,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 LDFLAGS += " \
 	-lutopiautil \
 	   "
-CFLAGS_append = " -Wno-error -DWIFI_HAL_VERSION_3"
+CFLAGS_append = " -Wno-error -DWIFI_HAL_VERSION_3 -DCONFIG_DFS"
 
 #work around for wifi restart_flag=false, for meshagent synchroniztaion
 do_configure_prepend() {
