@@ -43,4 +43,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     mac-sec \
     mt76-vendor \
     wifi-test-tool \
+    atenl \
     "
