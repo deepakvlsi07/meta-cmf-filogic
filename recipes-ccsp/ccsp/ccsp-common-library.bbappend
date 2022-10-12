@@ -121,6 +121,8 @@ do_install_append_class-target(){
      install -D -m 0644 ${S}/systemd_units/RdkVlanManager.service ${D}${systemd_unitdir}/system/RdkVlanManager.service
     fi
 
+    sed -i "s/After=CcspPandMSsp.service/After=CcspPandMSsp.service hostapd.service/g" ${D}${systemd_unitdir}/system/ccspwifiagent.service
+    sed -i "/EnvironmentFile/a ExecStartPre=/bin/sleep 7" ${D}${systemd_unitdir}/system/ccspwifiagent.service
      DISTRO_FW_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','fwupgrade_manager','true','false',d)}"
      if [ $DISTRO_FW_ENABLED = 'true' ]; then
      	install -D -m 0644 ${S}/systemd_units/RdkFwUpgradeManager.service ${D}${systemd_unitdir}/system/RdkFwUpgradeManager.service
