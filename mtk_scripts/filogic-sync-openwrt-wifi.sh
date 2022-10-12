@@ -135,4 +135,7 @@ cp -rf mtk_openwrt_feeds/feed/atenl/src meta-filogic/recipes-devtools/atenl/file
 cp -f mtk_openwrt_feeds/feed/atenl/files/ated.sh meta-filogic/recipes-devtools/atenl/files/
 cp -f mtk_openwrt_feeds/feed/atenl/files/iwpriv.sh meta-filogic/recipes-devtools/atenl/files/
 
+echo "Update mt76-verdor ...... "
+cp -rf mtk_openwrt_feeds/feed/mt76-vendor/src meta-filogic/recipes-devtools/mt76-vendor/files/
+
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
