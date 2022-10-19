@@ -74,7 +74,9 @@ rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/patches-5.4
 rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/files-5.4
 cp -rf openwrt/target/linux/mediatek/patches-5.4 meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek
 cp -rf openwrt/target/linux/mediatek/files-5.4 meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek
+#cp platform kernel config
 cp openwrt/target/linux/mediatek/mt7986/config-5.4 meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/mt7986.cfg
+cp openwrt/target/linux/mediatek/mt7988/config-5.4 meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/mt7988.cfg
 #flowblock patch
 rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/flow_patch
 cp -rf openwrt/target/linux/mediatek/flow_patch meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek
