@@ -44,4 +44,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     mt76-vendor \
     wifi-test-tool \
     atenl \
+    mtkhnat-util \
     "
