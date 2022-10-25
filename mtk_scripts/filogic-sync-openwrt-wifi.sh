@@ -3,6 +3,7 @@ echo "clone.........."
 git clone --branch master https://gerrit.mediatek.inc/openwrt/lede mac80211_package
 git clone --branch openwrt-21.02 https://gerrit.mediatek.inc/openwrt/lede openwrt
 git clone --branch master https://gerrit.mediatek.inc/openwrt/feeds/mtk_openwrt_feeds
+git clone --branch master https://gerrit.mediatek.inc/gateway/autobuild_v5
 git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
 
 echo "copy.........."
@@ -137,5 +138,8 @@ cp -f mtk_openwrt_feeds/feed/atenl/files/iwpriv.sh meta-filogic/recipes-devtools
 
 echo "Update mt76-verdor ...... "
 cp -rf mtk_openwrt_feeds/feed/mt76-vendor/src meta-filogic/recipes-devtools/mt76-vendor/files/
+
+echo "Update Wmm Script ......."
+cp -rf  autobuild_v5/mt7986-mac80211/target/linux/mediatek/base-files/sbin/wmm-*.sh  meta-filogic/recipes-devtools/wifi-test-tool/files/wmm_script
 
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
