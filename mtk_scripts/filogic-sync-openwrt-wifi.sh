@@ -40,7 +40,7 @@ cp -rf mac80211_package/package/kernel/mt76/src meta-filogic/recipes-connectivit
 
 echo "Update bb file version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/kernel/mt76/Makefile | cut -c 21-`
-sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/linux-mt76/linux-mt76.bb
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/linux-mt76/mt76.inc
 ver2=`grep "PKG_VERSION:=" mac80211_package/package/kernel/mac80211/Makefile | cut -c 14-`
 sed -i 's/PV =.*/PV = "'${ver2%-*}'"/g' meta-filogic/recipes-connectivity/linux-mac80211/linux-mac80211.bb
 ver3=`grep "PKG_HASH" mac80211_package/package/kernel/mac80211/Makefile | cut -c 11-`
