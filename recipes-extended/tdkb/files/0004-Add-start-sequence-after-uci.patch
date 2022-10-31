@@ -1,0 +1,25 @@
+From 794cae8d7f1b5e8174db03ef2cc4383331b5eff7 Mon Sep 17 00:00:00 2001
+From: "Allen.Ye" <allen.ye@mediatek.com>
+Date: Mon, 31 Oct 2022 14:49:16 +0800
+Subject: [PATCH] Add start sequence after uci
+
+---
+ tdk.service | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tdk.service b/tdk.service
+index dc66adb6..e26aaf28 100644
+--- a/tdk.service
++++ b/tdk.service
+@@ -18,7 +18,7 @@
+ ##########################################################################
+ [Unit]
+ Description=TDK Test Agent Start
+-After=dbus.service
++After=dbus.service init-uci-config.service
+ Wants=dbus.service
+ 
+ [Service]
+-- 
+2.18.0
+

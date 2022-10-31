@@ -1,0 +1,26 @@
+From 1c6bef3e8c640970c30f7e09414dab52f5587875 Mon Sep 17 00:00:00 2001
+From: "Allen.Ye" <allen.ye@mediatek.com>
+Date: Mon, 31 Oct 2022 10:59:27 +0800
+Subject: [PATCH] Add Set property script
+
+---
+ platform/turris/agent/scripts/StartTDK.sh | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/platform/turris/agent/scripts/StartTDK.sh b/platform/turris/agent/scripts/StartTDK.sh
+index f9f0d58..689898b 100755
+--- a/platform/turris/agent/scripts/StartTDK.sh
++++ b/platform/turris/agent/scripts/StartTDK.sh
+@@ -40,6 +40,9 @@ then
+         sh tdk_firewall_service.sh &
+ fi
+ 
++echo "Going to set tdk platform properties"
++sh Set_properties.sh &
++
+ echo "Going to start Agent"
+ cd $TDK_BIN_PATH/
+ ./rdk_tdk_agent_process &
+-- 
+2.18.0
+
