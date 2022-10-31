@@ -17,8 +17,8 @@ cd mac80211_package/package/kernel/mt76
 ./rdkb_inc_helper patches
 mv patches.inc patches
 cd -
-rm -rf meta-filogic/recipes-kernel/linux-mt76/files/patches
-cp -rf mac80211_package/package/kernel/mt76/patches meta-filogic/recipes-kernel/linux-mt76/files/
+rm -rf meta-filogic/recipes-connectivity/linux-mt76/files/patches
+cp -rf mac80211_package/package/kernel/mt76/patches meta-filogic/recipes-connectivity/linux-mt76/files/
 
 echo "gen mac80211 patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/kernel/mac80211/patches
@@ -31,20 +31,20 @@ mkdir patches
 cp -r subsys patches
 cp -r build patches
 cd -
-rm -rf meta-filogic/recipes-kernel/linux-mac80211/files/patches
-cp -rf mac80211_package/package/kernel/mac80211/patches/patches meta-filogic/recipes-kernel/linux-mac80211/files
+rm -rf meta-filogic/recipes-connectivity/linux-mac80211/files/patches
+cp -rf mac80211_package/package/kernel/mac80211/patches/patches meta-filogic/recipes-connectivity/linux-mac80211/files
 
 echo "copy mt76 firmware.........."
-rm -rf meta-filogic/recipes-kernel/linux-mt76/files/src
-cp -rf mac80211_package/package/kernel/mt76/src meta-filogic/recipes-kernel/linux-mt76/files/
+rm -rf meta-filogic/recipes-connectivity/linux-mt76/files/src
+cp -rf mac80211_package/package/kernel/mt76/src meta-filogic/recipes-connectivity/linux-mt76/files/
 
 echo "Update bb file version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/kernel/mt76/Makefile | cut -c 21-`
-sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-kernel/linux-mt76/linux-mt76.bb
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-connectivity/linux-mt76/linux-mt76.bb
 ver2=`grep "PKG_VERSION:=" mac80211_package/package/kernel/mac80211/Makefile | cut -c 14-`
-sed -i 's/PV =.*/PV = "'${ver2%-*}'"/g' meta-filogic/recipes-kernel/linux-mac80211/linux-mac80211.bb
+sed -i 's/PV =.*/PV = "'${ver2%-*}'"/g' meta-filogic/recipes-connectivity/linux-mac80211/linux-mac80211.bb
 ver3=`grep "PKG_HASH" mac80211_package/package/kernel/mac80211/Makefile | cut -c 11-`
-sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-kernel/linux-mac80211/linux-mac80211.bb
+sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-connectivity/linux-mac80211/linux-mac80211.bb
 
 echo "gen hostapd patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/services/hostapd
@@ -105,11 +105,11 @@ cd mac80211_package/package/firmware/wireless-regdb/
 mv patches.inc patches
 
 cd -
-rm -rf meta-filogic/recipes-kernel/wireless-regdb/files/patches
-cp -rf mac80211_package/package/firmware/wireless-regdb/patches meta-filogic/recipes-kernel/wireless-regdb/files/
+rm -rf meta-filogic/recipes-connectivity/wireless-regdb/files/patches
+cp -rf mac80211_package/package/firmware/wireless-regdb/patches meta-filogic/recipes-connectivity/wireless-regdb/files/
 ver=`grep "PKG_VERSION:=" mac80211_package/package/firmware/wireless-regdb/Makefile | cut -c 14-`
 newbb=wireless-regdb_${ver}.bb
-cd meta-filogic/recipes-kernel/wireless-regdb/
+cd meta-filogic/recipes-connectivity/wireless-regdb/
 oldbb=`ls *.bb`
 echo "Update wireless-regdb bb file name.........."
 mv ${oldbb} ${newbb}
@@ -117,7 +117,7 @@ cd -
 
 echo "Update wireless-regdb bb hash.........."
 hash1=`grep "PKG_HASH" mac80211_package/package/firmware/wireless-regdb/Makefile | cut -c 11-`
-sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${hash1}'"/g' meta-filogic/recipes-kernel/wireless-regdb/${newbb}
+sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${hash1}'"/g' meta-filogic/recipes-connectivity/wireless-regdb/${newbb}
 
 echo "Update libubox version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/libs/libubox/Makefile | cut -c 21-`
@@ -132,14 +132,14 @@ ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/libs/libnl-tiny/Makefile
 sed -i 's/SRCREV =.*/SRCREV = "'$ver'"/g' meta-filogic/recipes-connectivity/libnl-tiny/libnl-tiny_git.bb
 
 echo "Update atenl ...... "
-cp -rf mtk_openwrt_feeds/feed/atenl/src meta-filogic/recipes-devtools/atenl/files/
-cp -f mtk_openwrt_feeds/feed/atenl/files/ated.sh meta-filogic/recipes-devtools/atenl/files/
-cp -f mtk_openwrt_feeds/feed/atenl/files/iwpriv.sh meta-filogic/recipes-devtools/atenl/files/
+cp -rf mtk_openwrt_feeds/feed/atenl/src meta-filogic/recipes-connectivity/atenl/files/
+cp -f mtk_openwrt_feeds/feed/atenl/files/ated.sh meta-filogic/recipes-connectivity/atenl/files/
+cp -f mtk_openwrt_feeds/feed/atenl/files/iwpriv.sh meta-filogic/recipes-connectivity/atenl/files/
 
 echo "Update mt76-verdor ...... "
-cp -rf mtk_openwrt_feeds/feed/mt76-vendor/src meta-filogic/recipes-devtools/mt76-vendor/files/
+cp -rf mtk_openwrt_feeds/feed/mt76-vendor/src meta-filogic/recipes-connectivity/mt76-vendor/files/
 
 echo "Update Wmm Script ......."
-cp -rf  autobuild_v5/mt7986-mac80211/target/linux/mediatek/base-files/sbin/wmm-*.sh  meta-filogic/recipes-devtools/wifi-test-tool/files/wmm_script
+cp -rf  autobuild_v5/mt7986-mac80211/target/linux/mediatek/base-files/sbin/wmm-*.sh  meta-filogic/recipes-connectivity/wifi-test-tool/files/wmm_script
 
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
