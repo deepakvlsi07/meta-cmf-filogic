@@ -24,25 +24,11 @@ RDEPENDS_packagegroup-filogic-core = " \
     kernel-module-mt76 \
     kernel-module-mt7915e \
     iw \
-    ethtool \
-    ebtables \
-    regs \
-    mii-mgr \
-    mtd \
-    smp \
-    mtk-factory-rw \
     ubus  \
     ubusd \
     usteer \
-    ${@bb.utils.contains('DISTRO_FEATURES','switch_gsw_mode','switch','',d)} \
-    mtd-utils-ubifs \
-    u-boot-fw-utils \
-    fw-upgrade \
-    init-filogic \
     uci \
-    mac-sec \
     mt76-vendor \
     wifi-test-tool \
     atenl \
-    mtkhnat-util \
     "

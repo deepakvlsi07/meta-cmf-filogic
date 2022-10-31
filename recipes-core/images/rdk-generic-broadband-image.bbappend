@@ -8,6 +8,20 @@ SYSTEMD_TOOLS_remove_libc-musl = "systemd-bootchart"
 
 IMAGE_INSTALL += " packagegroup-filogic-core \
     ${SYSTEMD_TOOLS} \
+    ethtool \
+    ebtables \
+    regs \
+    mii-mgr \
+    mtd \
+    smp \
+    mtk-factory-rw \
+    ${@bb.utils.contains('DISTRO_FEATURES','switch_gsw_mode','switch','',d)} \
+    mtd-utils-ubifs \
+    u-boot-fw-utils \
+    fw-upgrade \
+    init-filogic \
+    mac-sec \
+    mtkhnat-util \
     network-hotplug \
     libmcrypt \
     coreutils \
