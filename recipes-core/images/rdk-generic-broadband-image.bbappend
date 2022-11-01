@@ -33,7 +33,9 @@ IMAGE_INSTALL += " packagegroup-filogic-core \
     pptp-linux \
     rp-pppoe  \  
     xl2tpd \
-    strongswan \  
+    strongswan \
+    libpcap \
+    tcpdump \  
     "
 #IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
