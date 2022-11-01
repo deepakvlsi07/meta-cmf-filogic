@@ -35,7 +35,8 @@ IMAGE_INSTALL += " packagegroup-filogic-core \
     xl2tpd \
     strongswan \
     libpcap \
-    tcpdump \  
+    tcpdump \
+    perf \
     "
 #IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
