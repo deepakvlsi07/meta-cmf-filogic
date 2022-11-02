@@ -1,0 +1,10 @@
+--- dropbear-2019.78/default_options.h.bak	2022-11-02 09:20:47.161488100 +0800
++++ dropbear-2019.78/default_options.h	2022-11-02 09:23:24.519786633 +0800
+@@ -295,6 +295,6 @@
+ #define DEFAULT_IDLE_TIMEOUT 0
+ 
+ /* The default path. This will often get replaced by the shell */
+-#define DEFAULT_PATH "/usr/bin:/bin"
++#define DEFAULT_PATH "/usr/sbin:/usr/bin:/sbin:/bin"
+ 
+ #endif /* DROPBEAR_DEFAULT_OPTIONS_H_ */
