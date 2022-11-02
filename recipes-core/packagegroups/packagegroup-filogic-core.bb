@@ -17,12 +17,7 @@ RDEPENDS_packagegroup-filogic-core = " \
     wpa-supplicant \
     wireless-regdb-static \
     linux-mac80211 \
-    kernel-module-compat \
-    kernel-module-cfg80211 \
-    kernel-module-mac80211 \
     linux-mt76 \
-    kernel-module-mt76 \
-    kernel-module-mt7915e \
     iw \
     ubus  \
     ubusd \
