@@ -81,4 +81,8 @@ cp openwrt/target/linux/mediatek/mt7988/config-5.4 meta-filogic/recipes-kernel/l
 rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/flow_patch
 cp -rf openwrt/target/linux/mediatek/flow_patch meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek
 #end
+
+echo "Update switch tool ...... "
+cp -rf mtk_openwrt_feeds/feed/switch/src meta-filogic/recipes-devtools/switch/files/
+
 echo "sync done..........."
