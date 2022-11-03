@@ -85,4 +85,7 @@ cp -rf openwrt/target/linux/mediatek/flow_patch meta-filogic/recipes-kernel/linu
 echo "Update switch tool ...... "
 cp -rf mtk_openwrt_feeds/feed/switch/src meta-filogic/recipes-devtools/switch/files/
 
+echo "Update mii_mgr tool ...... "
+cp -rf mtk_openwrt_feeds/feed/mii_mgr/src meta-filogic/recipes-devtools/mii-mgr/files/
+
 echo "sync done..........."
