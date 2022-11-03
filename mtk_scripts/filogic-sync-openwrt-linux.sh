@@ -88,4 +88,10 @@ cp -rf mtk_openwrt_feeds/feed/switch/src meta-filogic/recipes-devtools/switch/fi
 echo "Update mii_mgr tool ...... "
 cp -rf mtk_openwrt_feeds/feed/mii_mgr/src meta-filogic/recipes-devtools/mii-mgr/files/
 
+echo "Update regs tool ...... "
+cp -rf mtk_openwrt_feeds/feed/regs/src meta-filogic/recipes-devtools/regs/files/
+
+echo "Update mtk-factory-rw tool ...... "
+cp -rf mtk_openwrt_feeds/feed/mtk_factory_rw/files/ meta-filogic/recipes-devtools/mtk-factory-rw/
+
 echo "sync done..........."
