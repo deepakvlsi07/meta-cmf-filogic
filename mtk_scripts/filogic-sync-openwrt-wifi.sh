@@ -73,7 +73,9 @@ echo "Update hostapd bb file version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/services/hostapd/Makefile | cut -c 21-`
 sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-wifi/hostapd/hostapd_2.10.bb
 sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-wifi/wpa-supplicant/wpa-supplicant_2.10.bb
-
+#cp openwrt hostapd script
+cp -rf mac80211_package/package/network/services/hostapd/files/hostapd.sh meta-filogic/recipes-wifi/hostapd/files/openwrt_script/
+cp -rf mac80211_package/package/kernel/mac80211/files/lib/netifd/wireless/mac80211.sh meta-filogic/recipes-wifi/hostapd/files/openwrt_script/
 echo "GEN iw patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/utils/iw
 cd mac80211_package/package/network/utils/iw
