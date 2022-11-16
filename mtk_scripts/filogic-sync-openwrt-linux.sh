@@ -82,6 +82,11 @@ rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/flow_patch
 cp -rf openwrt/target/linux/mediatek/flow_patch meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek
 #end
 
+#update kernel version
+ver=`grep "LINUX_KERNEL_HASH-5" openwrt/include/kernel-version.mk | cut -c 19-25`
+sed -i 's/LINUX_VERSION ?=.*/LINUX_VERSION ?= "'${ver}'"/g' meta-filogic/recipes-kernel/linux/linux-mediatek_5.4.bb
+#end
+
 echo "Update switch tool ...... "
 cp -rf mtk_openwrt_feeds/feed/switch/src meta-filogic/recipes-devtools/switch/files/
 
