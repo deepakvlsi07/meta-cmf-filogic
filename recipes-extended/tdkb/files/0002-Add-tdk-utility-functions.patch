@@ -1,38 +1,48 @@
-From 9cb7739f4c26a770b76a6694f6e2b483f492e337 Mon Sep 17 00:00:00 2001
+From 352aa2e4a0ff90ef04957c3ba729d5c12716c9d1 Mon Sep 17 00:00:00 2001
 From: "Allen.Ye" <allen.ye@mediatek.com>
-Date: Wed, 8 Jun 2022 10:36:58 +0800
+Date: Fri, 18 Nov 2022 17:51:13 +0800
 Subject: [PATCH] Add tdk utility functions
 
 ---
- platform/turris/agent/scripts/tdk_platform_utility.sh | 36 ++++++++++++++++++++++++---
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ .../agent/scripts/tdk_platform_utility.sh     | 50 +++++++++++++++++--
+ 1 file changed, 46 insertions(+), 4 deletions(-)
 
 diff --git a/platform/turris/agent/scripts/tdk_platform_utility.sh b/platform/turris/agent/scripts/tdk_platform_utility.sh
-index fefc194..210d8a9 100755
+index fefc1947..94917ef4 100755
 --- a/platform/turris/agent/scripts/tdk_platform_utility.sh
 +++ b/platform/turris/agent/scripts/tdk_platform_utility.sh
-@@ -37,17 +37,45 @@ getCMMACAddress()
+@@ -37,17 +37,59 @@ getCMMACAddress()
      echo $macaddress
  }
  
 +getAp0DTIMInterval()
 +{
-+     hostapd_cli -i wifi0 status| grep -i dtim | cut -d '=' -f2
++     hostapd_cli -i wifi0 status| grep -i ^dtim | cut -d '=' -f2
 +}
 +
 +getAp1DTIMInterval()
 +{
-+     hostapd_cli -i wifi1 status| grep -i dtim | cut -d '=' -f2
++     hostapd_cli -i wifi1 status| grep -i ^dtim | cut -d '=' -f2
 +}
 +
 +getAp0BeaconInterval()
 +{
-+     hostapd_cli -i wifi0 status | grep beacon_int | cut -d '=' -f2
++     hostapd_cli -i wifi0 status | grep ^beacon_int | cut -d '=' -f2
 +}
 +
 +getAp1BeaconInterval()
 +{
-+     hostapd_cli -i wifi0 status | grep beacon_int | cut -d '=' -f2
++     hostapd_cli -i wifi1 status | grep ^beacon_int | cut -d '=' -f2
++}
++
++getRadio0ObssCoexistenceEnable()
++{
++    cat /nvram/hostapd0.conf | grep ^ht_coex | cut -d '=' -f2
++}
++
++getRadio1ObssCoexistenceEnable()
++{
++    cat /nvram/hostapd1.conf | grep ^ht_coex | cut -d '=' -f2
 +}
 +
  # Store the arguments to a variable
@@ -59,6 +69,10 @@ index fefc194..210d8a9 100755
 +        getAp0BeaconInterval;;
 +     "getAp1BeaconInterval")
 +        getAp1BeaconInterval;;
++     "getRadio0ObssCoexistenceEnable")
++        getRadio0ObssCoexistenceEnable;;
++     "getRadio1ObssCoexistenceEnable")
++        getRadio1ObssCoexistenceEnable;;
 +     *) echo "Invalid Argument passed";;
  esac
 -- 

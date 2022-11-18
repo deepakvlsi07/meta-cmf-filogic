@@ -37,3 +37,6 @@ echo "RADIO_MODES_2G=n:11NGHT40MINUS:4,n:11NGHT40MINUS:8,ax:11AXHE40MINUS:32,ax:
 echo "RADIO_MODES_5G=ac:11ACVHT80:16,n:11NAHT40MINUS:8,ax:11AXHE80:32,ax:11AXHE80:0" >> /etc/tdk_platform.properties
 echo "getAp0DTIMInterval=1" >> /etc/tdk_platform.properties
 echo "getAp1DTIMInterval=1" >> /etc/tdk_platform.properties
+echo "DFS_SUPPORT=Enabled" >> /etc/tdk_platform.properties
+sed -i "s/\(FRAGMENTATION_THRESHOLD_RANGE *= *\).*/\1256-2346/" /etc/tdk_platform.properties
+
