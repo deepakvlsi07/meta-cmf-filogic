@@ -133,6 +133,10 @@ echo "Update libnl-tiny version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/libs/libnl-tiny/Makefile | cut -c 21-`
 sed -i 's/SRCREV =.*/SRCREV = "'$ver'"/g' meta-filogic/recipes-wifi/libnl-tiny/libnl-tiny_git.bb
 
+echo "Update iwinfo version.........."
+ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/utils/iwinfo/Makefile | cut -c 21-`
+sed -i 's/SRCREV =.*/SRCREV = "'$ver'"/g' meta-filogic/recipes-wifi/iwinfo/iwinfo_git.bb
+
 echo "Update atenl ...... "
 cp -rf mtk_openwrt_feeds/feed/atenl/src meta-filogic/recipes-wifi/atenl/files/
 cp -f mtk_openwrt_feeds/feed/atenl/files/ated.sh meta-filogic/recipes-wifi/atenl/files/

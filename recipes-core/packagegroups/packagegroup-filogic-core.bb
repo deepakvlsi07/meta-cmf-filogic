@@ -27,4 +27,5 @@ RDEPENDS_packagegroup-filogic-core = " \
     wifi-test-tool \
     atenl \
     mt76-test \
+    iwinfo \
     "
