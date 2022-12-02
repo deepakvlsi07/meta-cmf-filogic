@@ -6,6 +6,8 @@ SYSTEMD_TOOLS = "systemd-analyze systemd-bootchart"
 # systemd-bootchart doesn't currently build with musl libc
 SYSTEMD_TOOLS_remove_libc-musl = "systemd-bootchart"
 
+DEPENDS += "cryptsetup-native"
+
 IMAGE_INSTALL += " packagegroup-filogic-core \
     ${SYSTEMD_TOOLS} \
     ethtool \
@@ -41,6 +43,8 @@ IMAGE_INSTALL += " packagegroup-filogic-core \
 #IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
 IMAGE_INSTALL_append_mt7988 += " marvell-eth-firmware "
+
+#IMAGE_INSTALL_append_secureboot += " mtk-efuse-nl-drv mtk-efuse-nl-tool "
 
 BB_HASH_IGNORE_MISMATCH = "1"
 IMAGE_NAME[vardepsexclude] = "DATETIME"
@@ -86,24 +90,48 @@ do_filogic_gen_image(){
             cd ${IMGDEPLOYDIR}
             tar cvf ${PN}-${MACHINE}-sysupgrade.bin sysupgrade-${PN}-${MACHINE}
             mv ${PN}-${MACHINE}-sysupgrade.bin ${DEPLOY_DIR_IMAGE}/
-    else
-            rm -f ${NAND_FILE}
+            
+        if ${@bb.utils.contains('DISTRO_FEATURES','secure_boot','true','false',d)}; then
 
-            # 1. dump fitImage into firmware
-            dd if=${DEPLOY_DIR_IMAGE}/fitImage >> ${NAND_FILE}
+            rm -rf ${IMGDEPLOYDIR}/sysupgrade-${PN}-${MACHINE}-sb
+            rm -rf ${IMGDEPLOYDIR}/${PN}-${MACHINE}-sb-sysupgrade.bin
 
-            # 2. pad to 256K
-            dd if=${NAND_FILE} of=${NAND_FILE}.new bs=256k conv=sync
-            mv -f ${NAND_FILE}.new ${NAND_FILE}
+            mkdir ${IMGDEPLOYDIR}/sysupgrade-${PN}-${MACHINE}-sb
 
-            # 3. pad to kernel size = 0x800000 = 8388608
-            dd if=${NAND_FILE} of=${NAND_FILE}.new bs=8388608 conv=sync
-            mv -f ${NAND_FILE}.new ${NAND_FILE}
+            cp ${DEPLOY_DIR_IMAGE}/fitImage-sb ${IMGDEPLOYDIR}/sysupgrade-${PN}-${MACHINE}-sb/kernel
+            cp ${IMGDEPLOYDIR}/${PN}-${MACHINE}.squashfs-xz ${IMGDEPLOYDIR}/sysupgrade-${PN}-${MACHINE}-sb/root
 
-            # 4. dump filesystem into firmware
-            dd if=${IMGDEPLOYDIR}/${PN}-${MACHINE}.${NAND_ROOTFS_TYPE} >> ${NAND_FILE}
-            mv ${NAND_FILE} ${DEPLOY_DIR_IMAGE}/         
+            cd ${IMGDEPLOYDIR}
+            tar cvf ${PN}-${MACHINE}-sb-sysupgrade.bin sysupgrade-${PN}-${MACHINE}-sb
+            mv ${PN}-${MACHINE}-sb-sysupgrade.bin ${DEPLOY_DIR_IMAGE}/
+        fi      
     fi
 
 }
 addtask filogic_gen_image after do_image_complete before do_populate_lic_deploy
+
+python do_hash_rootfs (){
+    deploy_path = d.getVar('IMGDEPLOYDIR', d, 1)
+    PN = d.getVar('PN', d, 1)
+    MACHINE = d.getVar('MACHINE', d, 1)
+    SQUASHFS_FILE_PATH="%s/%s-%s.squashfs-xz" %(deploy_path, PN, MACHINE)    
+    DEPLOY_DIR_IMAGE = d.getVar('DEPLOY_DIR_IMAGE', d, 1)
+    SUMMARY_FILE="%s/hash-summary" %(DEPLOY_DIR_IMAGE)
+    FILE_SIZE = os.path.getsize(SQUASHFS_FILE_PATH) 
+    BLOCK_SIZE= int(d.getVar('NAND_PAGE_SIZE', d, 1))
+    DATA_BLOCKS= FILE_SIZE / BLOCK_SIZE
+
+    if ((FILE_SIZE % BLOCK_SIZE) != 0):
+        DATA_BLOCKS = DATA_BLOCKS+1
+    
+    HASH_OFFSET=DATA_BLOCKS * BLOCK_SIZE
+    
+    import subprocess
+    subprocess.Popen("veritysetup format --data-blocks=%d --hash-offset=%d %s %s > %s" %(DATA_BLOCKS, HASH_OFFSET, SQUASHFS_FILE_PATH, SQUASHFS_FILE_PATH, SUMMARY_FILE), shell=True)
+}
+
+addtask hash_rootfs after do_image_complete before do_filogic_gen_image
+
+python __anonymous () {
+    d.appendVarFlag('do_filogic_gen_image', 'depends', ' linux-mediatek:do_deploy')
+} 
