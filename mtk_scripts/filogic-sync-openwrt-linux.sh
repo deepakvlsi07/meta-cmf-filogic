@@ -83,7 +83,7 @@ cp -rf openwrt/target/linux/mediatek/flow_patch meta-filogic/recipes-kernel/linu
 #end
 
 #update kernel version
-ver=`grep "LINUX_KERNEL_HASH-5" openwrt/include/kernel-version.mk | cut -c 19-25`
+ver=`grep "LINUX_KERNEL_HASH-5" openwrt/include/kernel-5.4 | cut -c 19-25`
 sed -i 's/LINUX_VERSION ?=.*/LINUX_VERSION ?= "'${ver}'"/g' meta-filogic/recipes-kernel/linux/linux-mediatek_5.4.bb
 #end
 
