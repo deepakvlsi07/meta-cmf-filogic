@@ -19,9 +19,7 @@ SRC_URI_append = " \
     file://checkwifi.sh \
     file://radio_param_def.cfg \
     file://synclease.sh \
-    file://handle_mesh-rename-opensync.patch;apply=no \
-    file://avoid_gssidcount_error.patch;apply=no \
-    file://fix_guardInterval_set_issue.patch;apply=no \
+    file://*.patch;apply=no \
 "
 
 # we need to patch to code for ccsp-wifi-agent
@@ -32,6 +30,7 @@ do_filogic_ccspwifiagent_patches() {
         patch  -p1 < ${WORKDIR}/handle_mesh-rename-opensync.patch ${S}/scripts/handle_mesh
         patch  -p1 < ${WORKDIR}/avoid_gssidcount_error.patch || echo "ERROR or Patch already applied"
         patch  -p1 < ${WORKDIR}/fix_guardInterval_set_issue.patch ${S}/source/TR-181/sbapi/cosa_wifi_apis.c
+        patch  -p1 < ${WORKDIR}/Fix-dmcli-can-not-set-password.patch ${S}/source/TR-181/ml/cosa_wifi_dml.c
         touch patch_applied
     fi
 }
