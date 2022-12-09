@@ -42,9 +42,9 @@ echo "Update bb file version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/kernel/mt76/Makefile | cut -c 21-`
 sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-wifi/linux-mt76/mt76.inc
 ver2=`grep "PKG_VERSION:=" mac80211_package/package/kernel/mac80211/Makefile | cut -c 14-`
-sed -i 's/PV =.*/PV = "'${ver2%-*}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211.bb
+sed -i 's/PV =.*/PV = "'${ver2%-*}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211_5.15.%.bb
 ver3=`grep "PKG_HASH" mac80211_package/package/kernel/mac80211/Makefile | cut -c 11-`
-sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211.bb
+sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211_5.15.%.bb
 
 echo "gen hostapd patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/services/hostapd
