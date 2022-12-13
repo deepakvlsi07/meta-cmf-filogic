@@ -1,17 +1,16 @@
 #!/bin/sh
 echo "clone.........."
 git clone --branch master https://gerrit.mediatek.inc/openwrt/lede mac80211_package
-git clone --branch openwrt-21.02 https://gerrit.mediatek.inc/openwrt/lede openwrt
 git clone --branch master https://gerrit.mediatek.inc/openwrt/feeds/mtk_openwrt_feeds
 git clone --branch master https://gerrit.mediatek.inc/gateway/autobuild_v5
 git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
 
 echo "copy.........."
 mkdir -p mac80211_package/package/kernel/mt76/patches 
-cp openwrt/package/kernel/mt76/patches/100-Revert-of-net-pass-the-dst-buffer-to-of_get_mac_addr.patch mac80211_package/package/kernel/mt76/patches 
+rm -rf mac80211_package/package/kernel/mac80211
 cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/package/ mac80211_package/
 
-echo "gen mt76 patches.........."
+echo "gen wifi mt76 patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/kernel/mt76
 cd mac80211_package/package/kernel/mt76
 ./rdkb_inc_helper patches
@@ -20,7 +19,8 @@ cd -
 rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches
 cp -rf mac80211_package/package/kernel/mt76/patches meta-filogic/recipes-wifi/linux-mt76/files/
 
-echo "gen mac80211 patches.........."
+echo "gen wifi6 mac80211 patches.........."
+tar xvf mtk_openwrt_feeds/autobuild_mac80211_release/package/kernel/mac80211/mac80211_v5.15.81_077622a1.tar.gz -C mac80211_package/package/kernel/
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/kernel/mac80211/patches
 cd mac80211_package/package/kernel/mac80211/patches
 ./rdkb_inc_helper subsys/
@@ -147,5 +147,41 @@ cp -rf mtk_openwrt_feeds/feed/mt76-vendor/src meta-filogic/recipes-wifi/mt76-ven
 
 echo "Update Wmm Script ......."
 cp -rf  autobuild_v5/mt7986-mac80211/target/linux/mediatek/base-files/sbin/wmm-*.sh  meta-filogic/recipes-wifi/wifi-test-tool/files/wmm_script
+
+echo "update wifi7 mac80211"
+rm -rf mac80211_package
+git clone --branch master https://gerrit.mediatek.inc/openwrt/lede mac80211_package
+
+rm -rf mtk_openwrt_feeds/autobuild_mac80211_release/package/kernel/mac80211
+cd mtk_openwrt_feeds/autobuild_mac80211_release/package/kernel/
+mv mac80211_dev mac80211
+cd -
+
+echo "copy.........."
+cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/package/ mac80211_package/
+
+echo "gen wifi7 mac80211 patches.........."
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/kernel/mac80211/patches
+cd mac80211_package/package/kernel/mac80211/patches
+./rdkb_inc_helper subsys/
+./rdkb_inc_helper build/
+mv subsys.inc subsys
+mv build.inc build
+mkdir patches
+cp -r subsys patches
+cp -r build patches
+cd -
+rm -rf meta-filogic/recipes-wifi/linux-mac80211/files/patches-6.x
+cp -rf mac80211_package/package/kernel/mac80211/patches/patches meta-filogic/recipes-wifi/linux-mac80211/files/patches-6.x
+
+ver2=`grep "PKG_VERSION:=" mac80211_package/package/kernel/mac80211/Makefile | cut -c 14-`
+sed -i 's/PV =.*/PV = "'${ver2}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211_6.%.bb
+ver3=`grep "PKG_HASH" mac80211_package/package/kernel/mac80211/Makefile | cut -c 11-`
+sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211_6.%.bb
+
+echo "refactor mt76_3.x patches for backport-6.x support "
+rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
+cp -rf meta-filogic/recipes-wifi/linux-mt76/files/patches meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
+rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/*revert-for-backports*.patch
 
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
