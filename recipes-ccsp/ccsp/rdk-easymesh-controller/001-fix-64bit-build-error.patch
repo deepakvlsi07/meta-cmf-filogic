@@ -1,0 +1,22 @@
+diff --git a/source/libplatform/src/acu_utils.c b/source/libplatform/src/acu_utils.c
+index bd27dc2..e5eb6bb 100644
+--- a/source/libplatform/src/acu_utils.c
++++ b/source/libplatform/src/acu_utils.c
+@@ -457,7 +457,7 @@ acu_retcode_t acu_evloop_timer_change_period(acu_evloop_timer_t *evloop_timer,
+ 	}
+ 
+ 	/* Subtract running time and limit between 0 and period_ms */
+-	if ((remaining = uloop_timeout_remaining(&evloop_timer->u_timeout)) >= 0) {
++	if ((remaining = uloop_timeout_remaining64(&evloop_timer->u_timeout)) >= 0) {
+ 		new_timeout -= ((int)evloop_timer->period_ms - remaining);
+ 
+ 		if (new_timeout < 0) {
+@@ -480,7 +480,7 @@ acu_retcode_t acu_evloop_timer_remaining(acu_evloop_timer_t *evloop_timer,
+ 
+ 	if (evloop_timer) {
+ 		/* Returns -1 when timer is not running */
+-		r = uloop_timeout_remaining(&evloop_timer->u_timeout);
++		r = uloop_timeout_remaining64(&evloop_timer->u_timeout);
+ 	}
+ 
+ 	*remaining = (r >= 0) ? r : 0;

@@ -1,0 +1,32 @@
+diff --git a/source/libplatform/src/map_config.c b/source/libplatform/src/map_config.c
+index 42647d5..80d399c 100644
+--- a/source/libplatform/src/map_config.c
++++ b/source/libplatform/src/map_config.c
+@@ -498,7 +498,7 @@ static int cfg_load(map_cfg_t *cfg, bool init)
+         DataGet(CtlDeviceInfoSerialNumber, &cfg->serial_number);        /* NOT mandatory */
+         DataGet(CtlStoragePath, &cfg->storage_path);                    /* NOT mandatory ? */
+ #endif
+-        cfg->interfaces = strdup("^lo$|^eth.*|^wl.*|^sw_.*|^n[rs]gmii.*");
++        cfg->interfaces = strdup("^lo$|^eth.*|^ra.*|^lan.*|^wifi.*");
+         vlan_id = -1;
+         pcp = 0;
+         cfg->primary_vlan_pattern = strdup("${ifname}.${pvid}");
+
+diff --git a/ssp/source/cosa_emctl_apis.c b/ssp/source/cosa_emctl_apis.c
+index e8eeee7..57a46e3 100644
+--- a/ssp/source/cosa_emctl_apis.c
++++ b/ssp/source/cosa_emctl_apis.c
+@@ -815,11 +815,11 @@ ANSC_STATUS CosaEmctlInitialize(ANSC_HANDLE hThisObject)
+     pEmctl_Cfg->ConfigureBackhaulStation = 1;
+     pEmctl_Cfg->DeadAgentDetectionInterval = 30;
+     pEmctl_Cfg->Enable = 1;
+-    AnscCopyString(pEmctl_Cfg->InterfaceList, "^lo$|^eth.*|^wl.*|^sw_.*|^n[rs]gmii.*");
++    AnscCopyString(pEmctl_Cfg->InterfaceList, "^lo$|^eth.*|^ra.*|^lan.*|^wifi.*");
+     pEmctl_Cfg->IsMaster = 1;
+     pEmctl_Cfg->LinkMetricsQueryInterval = 20;
+     pEmctl_Cfg->PrimaryVLANID = -1;
+-    AnscCopyString(pEmctl_Cfg->PrimaryVLANInterfacePattern, "^lo$|^eth.*|^wl.*|^sw_.*|^n[rs]gmii.*");
++    AnscCopyString(pEmctl_Cfg->PrimaryVLANInterfacePattern, "^lo$|^eth.*|^ra.*|^lan.*|^wifi.*");
+     if (1) {
+         device_wifi_dynamic_mapper(pEmctl_Cfg);
+     } else {
