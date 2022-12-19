@@ -182,6 +182,7 @@ sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogi
 echo "refactor mt76_3.x patches for backport-6.x support "
 rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
 cp -rf meta-filogic/recipes-wifi/linux-mt76/files/patches meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
-rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/*revert-for-backports*.patch
+#rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/*revert-for-backports*.patch
+sed -i 's/4003-mt76-revert-for-backports-5.15-wireless-stack.patch/&;apply=no/' meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/patches.inc
 
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
