@@ -191,4 +191,20 @@ cp -rf mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/packa
 #rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/*revert-for-backports*.patch
 #sed -i 's/4003-mt76-revert-for-backports-5.15-wireless-stack.patch/&;apply=no/' meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/patches.inc
 
+echo "gen new hostapd patches for mt76_3.x"
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/services/hostapd
+cd mac80211_package/package/network/services/hostapd
+rm -rf patches/999*mtk*.patch
+./rdkb_inc_helper patches
+mv patches.inc patches
+echo "some patch do not apply to RDKB"
+sed -i 's/450-scan_wait.patch/&;apply=no/' patches/patches.inc
+#define new hostapd version
+new_hostapd_ver=2.10.3
+cd -
+rm -rf meta-filogic/recipes-wifi/hostapd/files/patches-${new_hostapd_ver}
+rm -rf meta-filogic/recipes-wifi/wpa-supplicant/files/patches-${new_hostapd_ver}
+cp -rf mac80211_package/package/network/services/hostapd/patches meta-filogic/recipes-wifi/hostapd/files/patches-${new_hostapd_ver}
+cp -rf mac80211_package/package/network/services/hostapd/patches meta-filogic/recipes-wifi/wpa-supplicant/files/patches-${new_hostapd_ver}
+
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
