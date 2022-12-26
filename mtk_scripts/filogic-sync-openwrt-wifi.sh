@@ -179,10 +179,16 @@ sed -i 's/PV =.*/PV = "'${ver2}'"/g' meta-filogic/recipes-wifi/linux-mac80211/li
 ver3=`grep "PKG_HASH" mac80211_package/package/kernel/mac80211/Makefile | cut -c 11-`
 sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211_6.%.bb
 
-echo "refactor mt76_3.x patches for backport-6.x support "
+echo "mt76_3.x patches for backport-6.x support "
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/package/kernel/mt76
+cd mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/package/kernel/mt76
+./rdkb_inc_helper patches
+mv patches.inc patches
+cd -
 rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
-cp -rf meta-filogic/recipes-wifi/linux-mt76/files/patches meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
+cp -rf mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/package/kernel/mt76/patches meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
+#cp -rf meta-filogic/recipes-wifi/linux-mt76/files/patches meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x
 #rm -rf meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/*revert-for-backports*.patch
-sed -i 's/4003-mt76-revert-for-backports-5.15-wireless-stack.patch/&;apply=no/' meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/patches.inc
+#sed -i 's/4003-mt76-revert-for-backports-5.15-wireless-stack.patch/&;apply=no/' meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/patches.inc
 
 echo "Sync from OpenWRT done , ready to commit meta-filogic!!!"
