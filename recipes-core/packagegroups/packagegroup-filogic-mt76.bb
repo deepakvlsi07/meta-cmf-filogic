@@ -1,4 +1,4 @@
-SUMMARY = "Custom core image package group for filogic boards"
+SUMMARY = "Custom wifi driver mt76 image package group for filogic boards"
 
 LICENSE = "MIT"
 
@@ -7,10 +7,10 @@ inherit packagegroup
 DEPENDS = "libnl"
 
 PACKAGES = " \
-	  packagegroup-filogic-core \
+	  packagegroup-filogic-mt76 \
 	"
 
-RDEPENDS_packagegroup-filogic-core = " \
+RDEPENDS_packagegroup-filogic-mt76 = " \
     packagegroup-core-boot \
     wireless-tools \
     hostapd \

@@ -48,6 +48,13 @@ BBLAYERS =+ "\${RDKROOT}/meta-filogic"
 EOF
 fi
 
+if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-filogic-logan') -eq 0 ]] && [[ -d  ../meta-filogic-logan ]]
+then
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-filogic-logan"
+EOF
+fi
+
 # Add meta-rdk-opensync only if not already present.
 if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-rdk-opensync') -eq 0 ]] && [[ -d  ../meta-rdk-opensync ]]
 then
