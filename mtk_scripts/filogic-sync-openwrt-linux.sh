@@ -21,11 +21,14 @@ remove_patches
 cd -
 
 #flowblock
-#remove openwrt netfiler patch for new flowblock offload
-rm -rf openwrt/target/linux/generic/pending-5.4/64*.patch
-rm -rf openwrt/target/linux/generic/hack-5.4/647-netfilter-flow-acct.patch
-rm -rf openwrt/target/linux/generic/hack-5.4/650-netfilter-add-xt_OFFLOAD-target.patch
-rm -rf openwrt/target/linux/mediatek/patches-5.4/1002-mtkhnat-add-support-for-virtual-interface-acceleration.patch
+#move openwrt nf_hnat patch for new flowblock offload
+mkdir openwrt/target/linux/mediatek/nf_hnat
+
+mv openwrt/target/linux/generic/pending-5.4/64*.patch openwrt/target/linux/mediatek/nf_hnat/
+mv openwrt/target/linux/generic/hack-5.4/647-netfilter-flow-acct.patch openwrt/target/linux/mediatek/nf_hnat/
+mv openwrt/target/linux/generic/hack-5.4/650-netfilter-add-xt_OFFLOAD-target.patch openwrt/target/linux/mediatek/nf_hnat/
+mv openwrt/target/linux/mediatek/patches-5.4/1002-mtkhnat-add-support-for-virtual-interface-acceleration.patch openwrt/target/linux/mediatek/nf_hnat/
+
 #cp flowblock patch
 cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/target/ ./openwrt
 #find flow patch to create ext patch for rdkb kernel build
@@ -83,6 +86,10 @@ cp openwrt/target/linux/mediatek/mt7988/config-5.4 meta-filogic/recipes-kernel/l
 #flowblock patch
 rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/flow_patch
 cp -rf openwrt/target/linux/mediatek/flow_patch meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek
+#end
+#nf_hnat patch
+rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/nf_hnat
+cp -rf openwrt/target/linux/mediatek/nf_hnat meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek
 #end
 
 #update kernel version
