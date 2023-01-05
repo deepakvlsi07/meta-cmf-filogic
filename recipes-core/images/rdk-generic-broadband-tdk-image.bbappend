@@ -6,7 +6,7 @@ SYSTEMD_TOOLS = "systemd-analyze systemd-bootchart"
 # systemd-bootchart doesn't currently build with musl libc
 SYSTEMD_TOOLS_remove_libc-musl = "systemd-bootchart"
 
-IMAGE_INSTALL += " packagegroup-filogic-core \
+IMAGE_INSTALL += " \
     ${SYSTEMD_TOOLS} \
     ethtool \
     ebtables \
@@ -32,6 +32,9 @@ IMAGE_INSTALL += " packagegroup-filogic-core \
     pptp-linux \
     rp-pppoe  \
     procps \
+    ${@bb.utils.contains('DISTRO_FEATURES','mt76','packagegroup-filogic-mt76','',d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES','logan','packagegroup-filogic-logan','',d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES','mtk_easymesh','packagegroup-filogic-mtk-easymesh','',d)} \
     "
 
 BB_HASH_IGNORE_MISMATCH = "1"
