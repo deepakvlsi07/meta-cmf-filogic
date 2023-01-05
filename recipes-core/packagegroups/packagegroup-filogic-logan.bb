@@ -13,7 +13,10 @@ PACKAGES = " \
 RDEPENDS_packagegroup-filogic-logan = " \
     packagegroup-core-boot \
     wireless-tools \
+    linux-mac80211 \
     hostapd \
     wpa-supplicant \
     wireless-regdb-static \
+    ubus  \
+    ubusd \
     "
