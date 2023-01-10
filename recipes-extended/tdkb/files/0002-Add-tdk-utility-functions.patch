@@ -1,17 +1,17 @@
-From 352aa2e4a0ff90ef04957c3ba729d5c12716c9d1 Mon Sep 17 00:00:00 2001
+From 4534458007434bd32cf5275a4c974f415401ebee Mon Sep 17 00:00:00 2001
 From: "Allen.Ye" <allen.ye@mediatek.com>
-Date: Fri, 18 Nov 2022 17:51:13 +0800
+Date: Thu, 12 Jan 2023 14:11:04 +0800
 Subject: [PATCH] Add tdk utility functions
 
 ---
- .../agent/scripts/tdk_platform_utility.sh     | 50 +++++++++++++++++--
- 1 file changed, 46 insertions(+), 4 deletions(-)
+ .../agent/scripts/tdk_platform_utility.sh     | 74 ++++++++++++++++++-
+ 1 file changed, 70 insertions(+), 4 deletions(-)
 
 diff --git a/platform/turris/agent/scripts/tdk_platform_utility.sh b/platform/turris/agent/scripts/tdk_platform_utility.sh
-index fefc1947..94917ef4 100755
+index fefc1947..ef8fbc84 100755
 --- a/platform/turris/agent/scripts/tdk_platform_utility.sh
 +++ b/platform/turris/agent/scripts/tdk_platform_utility.sh
-@@ -37,17 +37,59 @@ getCMMACAddress()
+@@ -37,17 +37,83 @@ getCMMACAddress()
      echo $macaddress
  }
  
@@ -45,6 +45,24 @@ index fefc1947..94917ef4 100755
 +    cat /nvram/hostapd1.conf | grep ^ht_coex | cut -d '=' -f2
 +}
 +
++getAP0ScanFilter()
++{
++    essid=`cat /tmp/essid0.txt | head -n1 | tr -d '\n'`
++    echo -n "gscanfilter: $essid"
++}
++
++getAP1ScanFilter()
++{
++    essid=`cat /tmp/essid1.txt | head -n1 | tr -d '\n'`
++    echo -n "gscanfilter: $essid"
++}
++
++getAP2ScanFilter()
++{
++    essid=`cat /tmp/essid2.txt | head -n1 | tr -d '\n'`
++    echo -n "gscanfilter: $essid"
++}
++
  # Store the arguments to a variable
  event=$1
  processName=$2
@@ -73,6 +91,12 @@ index fefc1947..94917ef4 100755
 +        getRadio0ObssCoexistenceEnable;;
 +     "getRadio1ObssCoexistenceEnable")
 +        getRadio1ObssCoexistenceEnable;;
++     "getAP0ScanFilter")
++        getAP0ScanFilter;;
++     "getAP1ScanFilter")
++        getAP1ScanFilter;;
++     "getAP2ScanFilter")
++        getAP2ScanFilter;;
 +     *) echo "Invalid Argument passed";;
  esac
 -- 

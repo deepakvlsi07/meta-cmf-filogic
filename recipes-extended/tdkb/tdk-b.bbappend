@@ -33,3 +33,5 @@ FILES_${PN} += "${prefix}/ccsp/"
 FILES_${PN} += "/etc/*"
 FILES_${PN} += "${tdkdir}/*"
 
+CXXFLAGS_append = " -DWIFI_HAL_VERSION_3 "
+
