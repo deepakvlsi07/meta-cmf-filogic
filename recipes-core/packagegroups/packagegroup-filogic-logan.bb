@@ -19,4 +19,12 @@ RDEPENDS_packagegroup-filogic-logan = " \
     wireless-regdb-static \
     ubus  \
     ubusd \
+    iwinfo \
+    iw \
+    warp \
+    mt-wifi7 \
+    mt-hwifi\
+    mt-wifi-cmn \
+    mtfwd \
+    logan-insmod \
     "
