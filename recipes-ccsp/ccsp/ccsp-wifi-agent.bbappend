@@ -5,7 +5,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 LDFLAGS += " \
 	-lutopiautil \
 	   "
-CFLAGS_append = " -Wno-error -DWIFI_HAL_VERSION_3 -DCONFIG_DFS"
+CFLAGS_append = " -Wno-error "
 
 #work around for wifi restart_flag=false, for meshagent synchroniztaion
 do_configure_prepend() {
@@ -23,18 +23,16 @@ SRC_URI_append = " \
 "
 
 # we need to patch to code for ccsp-wifi-agent
-do_filogic_ccspwifiagent_patches() {
+do_ccspwifiagent_patches() {
     cd ${S}
     if [ ! -e patch_applied ]; then
         bbnote "Patching handle_mesh-rename-opensync.patch"
         patch  -p1 < ${WORKDIR}/handle_mesh-rename-opensync.patch ${S}/scripts/handle_mesh
         patch  -p1 < ${WORKDIR}/avoid_gssidcount_error.patch || echo "ERROR or Patch already applied"
-        patch  -p1 < ${WORKDIR}/fix_guardInterval_set_issue.patch ${S}/source/TR-181/sbapi/cosa_wifi_apis.c
-        patch  -p1 < ${WORKDIR}/Fix-dmcli-can-not-set-password.patch ${S}/source/TR-181/ml/cosa_wifi_dml.c
         touch patch_applied
     fi
 }
-addtask filogic_ccspwifiagent_patches after do_unpack before do_configure
+addtask ccspwifiagent_patches after do_unpack before do_configure
 
 EXTRA_OECONF_append  = " --with-ccsp-arch=arm"
 
