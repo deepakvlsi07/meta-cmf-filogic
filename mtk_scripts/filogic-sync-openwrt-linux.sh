@@ -110,3 +110,8 @@ echo "Update mtk-factory-rw tool ...... "
 cp -rf mtk_openwrt_feeds/feed/mtk_factory_rw/files/ meta-filogic/recipes-devtools/mtk-factory-rw/
 
 echo "sync done..........."
+
+#don't sync this kernl file,so remove it.it is download form logan repo
+rm -rf meta-filogic/recipes-kernel/linux/linux-mediatek-5.4/mediatek/files-5.4/include/uapi/
+#save sync mtk_openwrt_feeds log
+cd mtk_openwrt_feeds/ && git log --oneline -n 15 > mtk_openwrt_feeds.log
