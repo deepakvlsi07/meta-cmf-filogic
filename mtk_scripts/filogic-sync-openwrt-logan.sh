@@ -4,6 +4,7 @@ git clone --branch master https://gerrit.mediatek.inc/openwrt/lede mac80211_pack
 git clone --branch master https://gerrit.mediatek.inc/openwrt/feeds/mtk_openwrt_feeds
 git clone --branch master https://gerrit.mediatek.inc/gateway/autobuild_v5
 git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic-logan
+git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
 
 
 echo "GEN iw patches.........."
@@ -30,26 +31,7 @@ echo "Update iw bb hash .........."
 hash1=`grep "PKG_HASH" mac80211_package/package/network/utils/iw/Makefile | cut -c 11-`
 sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${hash1}'"/g' meta-filogic-logan/recipes-wifi/iw/${newbb}
 
-echo "Gen wireless-regdb patches.........."
-cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/firmware/wireless-regdb/
-cd mac80211_package/package/firmware/wireless-regdb/
-./rdkb_inc_helper patches
-mv patches.inc patches
 
-cd -
-rm -rf meta-filogic-logan/recipes-wifi/wireless-regdb/files/patches
-cp -rf mac80211_package/package/firmware/wireless-regdb/patches meta-filogic-logan/recipes-wifi/wireless-regdb/files/
-ver=`grep "PKG_VERSION:=" mac80211_package/package/firmware/wireless-regdb/Makefile | cut -c 14-`
-newbb=wireless-regdb_${ver}.bb
-cd meta-filogic-logan/recipes-wifi/wireless-regdb/
-oldbb=`ls *.bb`
-echo "Update wireless-regdb bb file name.........."
-mv ${oldbb} ${newbb}
-cd -
-
-echo "Update wireless-regdb bb hash.........."
-hash1=`grep "PKG_HASH" mac80211_package/package/firmware/wireless-regdb/Makefile | cut -c 11-`
-sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${hash1}'"/g' meta-filogic-logan/recipes-wifi/wireless-regdb/${newbb}
 
 echo "Update libubox version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/libs/libubox/Makefile | cut -c 21-`
@@ -67,7 +49,12 @@ echo "Update iwinfo version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/utils/iwinfo/Makefile | cut -c 21-`
 sed -i 's/SRCREV =.*/SRCREV = "'$ver'"/g' meta-filogic-logan/recipes-wifi/iwinfo/iwinfo_git.bb
 
-
-
-
+echo "sync ccsp hal wifi-test-tool from meta-filogic"
+rm -rf meta-filogic-logan/recipes-wifi/ccsp
+cp -rf meta-filogic/recipes-wifi/ccsp meta-filogic-logan/recipes-wifi/ccsp
+rm -rf meta-filogic-logan/recipes-wifi/hal/files meta-filogic-logan/recipes-wifi/hal/halinterface.bbappend
+cp -rf meta-filogic/recipes-wifi/hal/files meta-filogic-logan/recipes-wifi/hal/files
+cp -f  meta-filogic/recipes-wifi/hal/halinterface.bbappend meta-filogic-logan/recipes-wifi/hal/halinterface.bbappend
+rm -rf meta-filogic-logan/recipes-wifi/wifi-test-tool
+cp -rf meta-filogic/recipes-wifi/wifi-test-tool meta-filogic-logan/recipes-wifi/wifi-test-tool
 echo "Sync from OpenWRT done , ready to commit meta-filogic-logan!!!"
