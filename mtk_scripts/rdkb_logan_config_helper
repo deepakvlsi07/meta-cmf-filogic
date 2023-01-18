@@ -1,0 +1,32 @@
+#!/usr/bin/python3 -u
+import argparse
+import os
+import sys
+import traceback
+
+__author__ = "Sam Shih <sam.shih@medaitek.com>"
+__copyright__ = "Copyright 2023,  MediaTek Inc"
+
+
+
+def create_inc_file(config):
+    f = open(config, "r")
+    data = f.read()
+    f.close()
+    out = "PKG_MAKE_FLAGS = \" \\\n"
+    
+    for line in data.split("\n"):
+        if "#" not in line:
+            if "CONFIG_MTK_WIFI7" in line:
+                out += "\t"
+                out += (line.replace("_MTK_WIFI7", ""))
+                out += " \\"
+                out += "\n"
+    out += "    \""
+    f = open("config.inc", "w")
+    f.write(out)
+    f.close()
+
+
+
+create_inc_file (sys.argv[1])

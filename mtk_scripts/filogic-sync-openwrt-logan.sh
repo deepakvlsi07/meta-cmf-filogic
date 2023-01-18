@@ -7,6 +7,22 @@ git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic-logan
 git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
 
 
+echo "sync wifi config from openWrt"
+#remove old config
+rm -f meta-filogic-logan/recipes-wifi/mt-wifi7/files/openwrt_config
+rm -f meta-filogic-logan/recipes-wifi/mt-wifi7/files/config.inc
+rm -f meta-filogic-logan/recipes-wifi/mt-wifi7/files/wireless/l1profile.dat
+#copy new config from openwrt
+cp -f autobuild_v5/mt7988-mt7990-BE19000/.config meta-filogic-logan/recipes-wifi/mt-wifi7/files/openwrt_config
+cp meta-cmf-filogic/mtk_scripts/rdkb_logan_config_helper meta-filogic-logan/recipes-wifi/mt-wifi7/files/
+cd meta-filogic-logan/recipes-wifi/mt-wifi7/files/
+./rdkb_logan_config_helper openwrt_config
+python make-l1profile.py openwrt_config l1profile.dat
+mv l1profile.dat wireless
+rm -f rdkb_logan_config_helper
+
+cd -
+
 echo "GEN iw patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/utils/iw
 cd mac80211_package/package/network/utils/iw
