@@ -194,7 +194,7 @@ cp -rf mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/packa
 echo "gen new hostapd patches for mt76_3.x"
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/services/hostapd
 cd mac80211_package/package/network/services/hostapd
-rm -rf patches/999*mtk*.patch
+
 ./rdkb_inc_helper patches
 mv patches.inc patches
 echo "some patch do not apply to RDKB"
