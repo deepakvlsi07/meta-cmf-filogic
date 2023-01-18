@@ -172,15 +172,18 @@ $wan_proto=dhcp
 #    must be either: redial or demand
 # ppp_keepalive_interval - if ppp_conn_method=redial (should be 30-180)
 # ppp_idle_time - if ppp_conn_method=demand (should be 1-9999)
-$wan_proto_username=
-$wan_proto_password=
+$wan_proto_username=test
+$wan_proto_password=test
 $wan_proto_remote_name=
+$wan_proto_servicename=
+$wan_proto_acname=
 $pppoe_service_name=
 $pppoe_access_concentrator_name=
 # $ppp_conn_method=demand
-# $ppp_keepalive_interval=180
-# $ppp_idle_time=9999
-
+$lcp_interval=30
+$ppp_keepalive_interval=30
+$ppp_idle_time=80
+$MaxMRUSize=1492
 # if wan_proto=pptp then
 #    ---------------
 # wan_proto_username - the username
@@ -204,7 +207,7 @@ $pppoe_access_concentrator_name=
 #    must be either: redial or demand
 # ppp_keepalive_interval - if ppp_conn_method=redial (should be 30-180)
 # ppp_idle_time - if ppp_conn_method=demand (should be 1-9999)
-$wan_proto_server_address=
+$wan_proto_server_address=10.58.0.1
 $wan_domain=
 $pptp_address_static=0
 
@@ -551,7 +554,7 @@ $mgmt_wan_srcstart_ip=255.255.255.255
 $mgmt_wan_srcend_ip=255.255.255.255
 $mgmt_wan_fwupgrade=0
 $mgmt_lan_telnetaccess=0
-$mgmt_lan_sshaccess=0
+$mgmt_lan_sshaccess=1
 $mgmt_mta_telnetaccess=0
 $mgmt_mta_sshaccess=0
 
