@@ -9,11 +9,11 @@ __copyright__ = "Copyright 2023,  MediaTek Inc"
 
 
 
-def create_inc_file(config):
+def create_inc_file(config,output):
     f = open(config, "r")
     data = f.read()
     f.close()
-    out = "PKG_MAKE_FLAGS = \" \\\n"
+    out = "PKG_MAKE_FLAGS_%s= \" \\\n"% output
     
     for line in data.split("\n"):
         if "#" not in line:
@@ -23,10 +23,10 @@ def create_inc_file(config):
                 out += " \\"
                 out += "\n"
     out += "    \""
-    f = open("config.inc", "w")
+    f = open("%s.inc"% output, "w")
     f.write(out)
     f.close()
 
 
 
-create_inc_file (sys.argv[1])
+create_inc_file (sys.argv[1], sys.argv[2])

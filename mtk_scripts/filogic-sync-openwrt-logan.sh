@@ -9,17 +9,24 @@ git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
 
 echo "sync wifi config from openWrt"
 #remove old config
-rm -f meta-filogic-logan/recipes-wifi/mt-wifi7/files/openwrt_config
-rm -f meta-filogic-logan/recipes-wifi/mt-wifi7/files/config.inc
-rm -f meta-filogic-logan/recipes-wifi/mt-wifi7/files/wireless/l1profile.dat
+rm -rf meta-filogic-logan/recipes-wifi/mt-wifi7/files/config
+
 #copy new config from openwrt
-cp -f autobuild_v5/mt7988-mt7990-BE19000/.config meta-filogic-logan/recipes-wifi/mt-wifi7/files/openwrt_config
-cp meta-cmf-filogic/mtk_scripts/rdkb_logan_config_helper meta-filogic-logan/recipes-wifi/mt-wifi7/files/
-cd meta-filogic-logan/recipes-wifi/mt-wifi7/files/
-./rdkb_logan_config_helper openwrt_config
-python make-l1profile.py openwrt_config l1profile.dat
-mv l1profile.dat wireless
+mkdir -p meta-filogic-logan/recipes-wifi/mt-wifi7/files/config
+#copy origin openwrt config
+cp -f autobuild_v5/mt7988-mt7990-BE19000/.config meta-filogic-logan/recipes-wifi/mt-wifi7/files/config/openwrt_mt7990-be19000_config
+cp -f autobuild_v5/mt7988-mt7992-BE7200/.config meta-filogic-logan/recipes-wifi/mt-wifi7/files/config/openwrt_mt7992-be7200_config
+cp meta-cmf-filogic/mtk_scripts/rdkb_logan_config_helper meta-filogic-logan/recipes-wifi/mt-wifi7/files/config
+cp meta-filogic-logan/recipes-wifi/mt-wifi7/files/make-l1profile.py meta-filogic-logan/recipes-wifi/mt-wifi7/files/config
+#gen wifi config and l1 profile by different openwrt config
+cd meta-filogic-logan/recipes-wifi/mt-wifi7/files/config
+./rdkb_logan_config_helper openwrt_mt7990-be19000_config mt7990-be19000
+./rdkb_logan_config_helper openwrt_mt7992-be7200_config mt7992-be7200
+python make-l1profile.py openwrt_mt7990-be19000_config mt7990-be19000.dat
+python make-l1profile.py openwrt_mt7992-be7200_config mt7992-be7200.dat
+#remove script
 rm -f rdkb_logan_config_helper
+rm -f make-l1profile.py
 
 cd -
 
