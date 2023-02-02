@@ -109,6 +109,9 @@ cp -rf mtk_openwrt_feeds/feed/regs/src meta-filogic/recipes-devtools/regs/files/
 echo "Update mtk-factory-rw tool ...... "
 cp -rf mtk_openwrt_feeds/feed/mtk_factory_rw/files/ meta-filogic/recipes-devtools/mtk-factory-rw/
 
+echo "Update smp-m76 script"
+cp -f  mtk_openwrt_feeds/target/linux/mediatek/base-files/sbin/smp-mt76.sh meta-filogic/recipes-devtools/smp/files/
+
 echo "sync done..........."
 
 #don't sync this kernl file,so remove it.it is download form logan repo
