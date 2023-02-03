@@ -1,0 +1,95 @@
+diff --git a/source/DHCPServerUtils/service_dhcp_server.c b/source/DHCPServerUtils/service_dhcp_server.c
+index 35b819f..4bba388 100644
+--- a/source/DHCPServerUtils/service_dhcp_server.c
++++ b/source/DHCPServerUtils/service_dhcp_server.c
+@@ -230,11 +230,11 @@ void getRFC_Value(const char* dnsOption)
+         result = strcmp (status,l_DnsStrictOrderStatus);
+         if (result == 0){
+             strncpy((char *)dnsOption,dnsSet, strlen(dnsSet));
+-            fprintf(stdout, "DNSMASQ getRFC_Value %s %s %d\n",status,l_DnsStrictOrderStatus,sizeof(l_DnsStrictOrderStatus));
++            fprintf(stdout, "DNSMASQ getRFC_Value %s %s %ld\n",status,l_DnsStrictOrderStatus,sizeof(l_DnsStrictOrderStatus));
+             DHCPMGR_LOG_INFO("Starting dnsmasq with additional dns strict order option: %s",l_DnsStrictOrderStatus);
+         }
+         else{
+-            fprintf(stdout, "FAILURE: DNSMASQ getRFC_Value syscfg_get %s %s %d\n",status,l_DnsStrictOrderStatus,sizeof(l_DnsStrictOrderStatus));
++            fprintf(stdout, "FAILURE: DNSMASQ getRFC_Value syscfg_get %s %s %ld\n",status,l_DnsStrictOrderStatus,sizeof(l_DnsStrictOrderStatus));
+             DHCPMGR_LOG_INFO("RFC DNSTRICT ORDER is not defined or Enabled %s", l_DnsStrictOrderStatus);
+         }
+ }
+diff --git a/source/TR-181/board_sbapi/cosa_dhcpv6_apis.c b/source/TR-181/board_sbapi/cosa_dhcpv6_apis.c
+index 1429210..3ba45fa 100755
+--- a/source/TR-181/board_sbapi/cosa_dhcpv6_apis.c
++++ b/source/TR-181/board_sbapi/cosa_dhcpv6_apis.c
+@@ -3038,7 +3038,7 @@ static int _write_dibbler_sent_option_file(void)
+         for (i=0; i<g_sent_option_num; i++)
+         {
+             if (g_sent_options[i].bEnabled)
+-                fprintf(fp, "%lu:%d:%s\n",
++                fprintf(fp, "%lu:%ld:%s\n",
+                         g_sent_options[i].Tag,
+                         strlen((const char*)g_sent_options[i].Value)/2,
+                         g_sent_options[i].Value);
+diff --git a/source/TR-181/middle_layer_src/cosa_dhcpv4_dml.c b/source/TR-181/middle_layer_src/cosa_dhcpv4_dml.c
+index 0d96da6..44b3568 100644
+--- a/source/TR-181/middle_layer_src/cosa_dhcpv4_dml.c
++++ b/source/TR-181/middle_layer_src/cosa_dhcpv4_dml.c
+@@ -3945,7 +3945,7 @@ Server_SetParamStringValue
+             }
+             if (NULL != pStaticClients)
+             {
+-                CcspTraceWarning(("pStaticClients->entries_count is %u\n", pStaticClients->entries_count));
++                CcspTraceWarning(("pStaticClients->entries_count is %lu\n", pStaticClients->entries_count));
+                 CcspTraceWarning(("pStaticClients->subdoc_name is %s\n", pStaticClients->subdoc_name));
+                 CcspTraceWarning(("pStaticClients->version is %lu\n", (unsigned long)pStaticClients->version));
+                 CcspTraceWarning(("pStaticClients->transaction_id is %d\n", pStaticClients->transaction_id));
+@@ -4035,7 +4035,7 @@ Server_SetParamStringValue
+             if (NULL != pLanInfo)
+             {
+                 pLanInfo->entries_count = 1;// Assigned 1 by default.
+-                CcspTraceWarning(("pLanInfo->entries_count is %u\n", pLanInfo->entries_count));
++                CcspTraceWarning(("pLanInfo->entries_count is %lu\n", pLanInfo->entries_count));
+                 CcspTraceWarning(("pLanInfo->subdoc_name is %s\n", pLanInfo->subdoc_name));
+                 CcspTraceWarning(("pLanInfo->version is %lu\n", (unsigned long)pLanInfo->version));
+                 CcspTraceWarning(("pLanInfo->transaction_id is %d\n", pLanInfo->transaction_id));
+@@ -6100,7 +6100,7 @@ Pool_GetParamStringValue
+             CosaDmlDhcpsGetPoolCfg(NULL,&tmpCfg);
+             snprintf(pValue,sizeof(tmpCfg.DomainName),"%s", tmpCfg.DomainName);
+         }else {
+-            CcspTraceWarning(("%s: pPool->Cfg.DomainName: %s  0x%1x 0x%1x 0x%1x 0x%1x, sizeof: %d\n",
++            CcspTraceWarning(("%s: pPool->Cfg.DomainName: %s  0x%1x 0x%1x 0x%1x 0x%1x, sizeof: %ld\n",
+                               __FUNCTION__, pPool->Cfg.DomainName, (signed) (pPool->Cfg.DomainName[0]),
+                               (signed) (pPool->Cfg.DomainName[1]), (signed) (pPool->Cfg.DomainName[2]),
+                               (signed) (pPool->Cfg.DomainName[3]), sizeof(pPool->Cfg.DomainName)));
+@@ -7971,7 +7971,7 @@ StaticAddress_SetParamStringValue
+         }
+         else
+         {
+-            CcspTraceWarning(("'%s' value should be less than (%d) charecters\n", ParamName, ( sizeof(pDhcpStaticAddress->DeviceName) - 1 )));
++            CcspTraceWarning(("'%s' value should be less than (%ld) charecters\n", ParamName, ( sizeof(pDhcpStaticAddress->DeviceName) - 1 )));
+         }
+     }
+ 
+@@ -7990,7 +7990,7 @@ StaticAddress_SetParamStringValue
+         }
+         else
+         {
+-            CcspTraceWarning(("'%s' value should be less than (%d) charecters\n", ParamName, ( sizeof(pDhcpStaticAddress->Comment) - 1 )));
++            CcspTraceWarning(("'%s' value should be less than (%ld) charecters\n", ParamName, ( sizeof(pDhcpStaticAddress->Comment) - 1 )));
+         }
+     }
+ 
+diff --git a/source/service_udhcpc/service_udhcpc.c b/source/service_udhcpc/service_udhcpc.c
+index 45ef664..d89189d 100644
+--- a/source/service_udhcpc/service_udhcpc.c
++++ b/source/service_udhcpc/service_udhcpc.c
+@@ -705,9 +705,7 @@ void compare_and_delete_old_dns(udhcpc_script_t *pinfo)
+ 
+       for(i=0;i<dns_server_no;i++)
+       {
+-              char* ipv4_dns_match = NULL;
+-              ipv4_dns_match = (char *)(strstr(buffer,dns_server_list[i].data) || strstr(buffer,"nameserver 127.0.0.1"));
+-              if(ipv4_dns_match !=NULL)
++              if((strstr(buffer,dns_server_list[i].data) != NULL || strstr(buffer,"nameserver 127.0.0.1") !=NULL))
+               {
+                       search_ipv4_dns=1;
+               }

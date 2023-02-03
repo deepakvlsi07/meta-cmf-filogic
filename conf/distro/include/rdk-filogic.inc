@@ -16,6 +16,9 @@ DISTRO_FEATURES_append = " dlna"
 
 DISTRO_FEATURES_append = " webconfig_bin"
 
+# RDKB-44824: CoreNetLib move bb file location
+DISTRO_FEATURES_append = " core-net-lib"
+
 DISTRO_FEATURES_append = " meshwifi"
 DISTRO_FEATURES_append = " ipv6"
 DISTRO_FEATURES_append = " rdkb_wan_manager"
