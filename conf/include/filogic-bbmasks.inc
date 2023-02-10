@@ -17,3 +17,4 @@ BBMASK .= "${@'' if os.path.isdir('|meta-openembedded/meta-oe/recipes-devtools/b
 
 #To avoid build warning
 BBMASK .= "|meta-rdk-ext/recipes-support/iksemel/iksemel_1.5.bb"
+BBMASK .= "|meta-cmf-broadband/recipes-core/util-linux/"

@@ -43,6 +43,7 @@ IMAGE_INSTALL += " \
     ${@bb.utils.contains('DISTRO_FEATURES','logan','packagegroup-filogic-logan','',d)} \
     ${@bb.utils.contains('DISTRO_FEATURES','mtk_easymesh','packagegroup-filogic-mtk-easymesh','',d)} \
     ${@bb.utils.contains('DISTRO_FEATURES','emmc','e2fsprogs f2fs-tools','',d)} \
+    util-linux-blkid \
     "
 #IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
