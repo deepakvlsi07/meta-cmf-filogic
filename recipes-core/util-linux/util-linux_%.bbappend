@@ -13,7 +13,6 @@ do_install_append_broadband() {
  rm -rf ${D}${bindir}/setsid
  rm -rf ${D}${sbindir}/blkdiscard
  rm -rf ${D}${sbindir}/blkzone
- rm -rf ${D}${base_sbindir}/blockdev
  rm -rf ${D}${base_sbindir}/cfdisk
  rm -rf ${D}${bindir}/cal
  rm -rf ${D}${bindir}/chmem
