@@ -159,6 +159,7 @@ cd -
 
 echo "copy.........."
 cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/package/ mac80211_package/
+cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/package/kernel/mac80211 mac80211_package/package/kernel/
 
 echo "gen wifi7 mac80211 patches.........."
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/kernel/mac80211/patches
