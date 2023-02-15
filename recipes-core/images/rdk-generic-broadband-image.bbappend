@@ -45,12 +45,13 @@ IMAGE_INSTALL += " \
     ${@bb.utils.contains('DISTRO_FEATURES','emmc','e2fsprogs f2fs-tools','',d)} \
     util-linux-blkid \
     util-linux-blockdev \
+    ${@bb.utils.contains('DISTRO_FEATURES','secure_boot','dmsetup','',d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES','efuse_tools','mtk-efuse-nl-drv mtk-efuse-nl-tool','',d)} \
     "
 #IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
 IMAGE_INSTALL_append_mt7988 += " marvell-eth-firmware "
 
-#IMAGE_INSTALL_append_secureboot += " mtk-efuse-nl-drv mtk-efuse-nl-tool "
 
 BB_HASH_IGNORE_MISMATCH = "1"
 IMAGE_NAME[vardepsexclude] = "DATETIME"
