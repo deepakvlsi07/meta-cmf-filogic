@@ -27,4 +27,5 @@ RDEPENDS_packagegroup-filogic-logan = " \
     mt-wifi-cmn \
     mtfwd \
     logan-insmod \
+    mwctl \
     "
