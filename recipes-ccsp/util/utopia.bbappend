@@ -111,6 +111,9 @@ do_install_append() {
     install -m 755 ${S}/source/scripts/init/service.d/service_bridge.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
 
     install -m 755 ${WORKDIR}/dhcp_script.sh ${D}${sysconfdir}/
+    
+    #change default log level to 8
+    sed -i 's/level=6/level=8/g'  ${D}${sbindir}/log_start.sh
 
     # Creating symbolic links to install files in specific directory as in legacy builds
     ln -sf /usr/bin/10_firewall ${D}${sysconfdir}/utopia/post.d/10_firewall
