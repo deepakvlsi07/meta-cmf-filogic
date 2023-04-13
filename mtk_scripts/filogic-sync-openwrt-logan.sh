@@ -3,8 +3,27 @@ echo "clone.........."
 git clone --branch master https://gerrit.mediatek.inc/openwrt/lede mac80211_package
 git clone --branch master https://gerrit.mediatek.inc/openwrt/feeds/mtk_openwrt_feeds
 git clone --branch master https://gerrit.mediatek.inc/gateway/autobuild_v5
+git clone --branch master https://gerrit.mediatek.inc/gateway/big_sw
 git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic-logan
 git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
+
+
+echo "sync hostapd patch from openWrt"
+#remove old patch
+rm -rf meta-filogic-logan/recipes-wifi/hostapd/files/patches
+
+#copy new patch from openwrt
+mkdir -p meta-filogic-logan/recipes-wifi/hostapd/files/patches
+cp -f autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/patches/* meta-filogic-logan/recipes-wifi/hostapd/files/patches/
+
+
+echo "sync wifi profile from openWrt"
+#remove old profile
+rm -rf meta-filogic-logan/recipes-wifi/mt-wifi7/files/wireless/mediatek
+
+#copy new profile from openwrt
+mkdir -p meta-filogic-logan/recipes-wifi/mt-wifi7/files/wireless/mediatek
+cp -f big_sw/mtk/drivers/wifi-profile/files/mt7990/* meta-filogic-logan/recipes-wifi/mt-wifi7/files/wireless/mediatek
 
 
 echo "sync wifi config from openWrt"
