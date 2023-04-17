@@ -70,6 +70,7 @@ sed -i 's/0600-net-phylink-propagate-resolved-link-config-via-mac_l.patch/&;appl
 sed -i 's/738-mt7531-gsw-internal_phy_calibration.patch/&;apply=no/' patches-5.4/patches-5.4.inc
 sed -i 's/739-mt7531-gsw-port5_external_phy_init.patch/&;apply=no/' patches-5.4/patches-5.4.inc
 sed -i 's/753-net-mt753x-phy-coverity-scan.patch/&;apply=no/' patches-5.4/patches-5.4.inc
+sed -i 's/757-net-phy-add-phylink-pcs-support.patch/&;apply=no/' patches-5.4/patches-5.4.inc
 sed -i 's/9010-iwconfig-wireless-rate-fix.patch/&;apply=no/' patches-5.4/patches-5.4.inc
 echo "do rework medaitek kernel patch done..........."
 #cp 32bit dts
