@@ -37,6 +37,7 @@ cp -rf mac80211_package/package/kernel/mac80211/patches/patches meta-filogic/rec
 echo "copy mt76 firmware.........."
 rm -rf meta-filogic/recipes-wifi/linux-mt76/files/src
 cp -rf mac80211_package/package/kernel/mt76/src meta-filogic/recipes-wifi/linux-mt76/files/
+cp -rf mtk_openwrt_feeds/target/linux/mediatek/mt7988/base-files/lib/firmware/mediatek/* meta-filogic/recipes-wifi/linux-mt76/files/src/firmware
 
 echo "Update bb file version.........."
 ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/kernel/mt76/Makefile | cut -c 21-`
