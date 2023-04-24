@@ -1,0 +1,34 @@
+From c0441b669770b220e32573f6df709bd0b176b2b8 Mon Sep 17 00:00:00 2001
+From: "Allen.Ye" <allen.ye@mediatek.com>
+Date: Mon, 13 Feb 2023 16:01:17 +0800
+Subject: [PATCH] Fix wifi_getApAssociatedDeviceTidStatsResult print augument
+ not string error
+
+---
+ WIFIHAL_stub/src/WIFIHAL.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/WIFIHAL_stub/src/WIFIHAL.cpp b/WIFIHAL_stub/src/WIFIHAL.cpp
+index 0149f412..fb390bf5 100644
+--- a/WIFIHAL_stub/src/WIFIHAL.cpp
++++ b/WIFIHAL_stub/src/WIFIHAL.cpp
+@@ -3836,14 +3836,14 @@ void WIFIHAL::WIFIHAL_GetApAssociatedDeviceTidStatsResult(IN const Json::Value&
+               for (i=0; i< n; i++)
+               {
+                   s = &tid_stats.tid_array[i];
+-                  printf("ac : %s,tid:%s,ewma_time_ms:%llu,sum_time_ms:%llu,num_msdus:%llu",s->ac,s->tid,s->ewma_time_ms,s->sum_time_ms,s->num_msdus);
++                  printf("ac : %d,tid:%d,ewma_time_ms:%llu,sum_time_ms:%llu,num_msdus:%llu",s->ac,s->tid,s->ewma_time_ms,s->sum_time_ms,s->num_msdus);
+                   ac = s->ac;
+                   tid = s->tid;
+                   ewma_time_ms = s->ewma_time_ms;
+                   sum_time_ms = s->sum_time_ms;
+                   num_msdus = s->num_msdus;
+               }
+-              sprintf(details," Value returned is : ac : %s,tid:%s,ewma_time_ms:%llu,sum_time_ms:%llu,num_msdus:%llu",ac,tid,ewma_time_ms,sum_time_ms,num_msdus);
++              sprintf(details," Value returned is : ac : %d,tid:%d,ewma_time_ms:%llu,sum_time_ms:%llu,num_msdus:%llu",ac,tid,ewma_time_ms,sum_time_ms,num_msdus);
+               response["result"]="SUCCESS";
+               response["details"]=details;
+ 
+-- 
+2.18.0
+
