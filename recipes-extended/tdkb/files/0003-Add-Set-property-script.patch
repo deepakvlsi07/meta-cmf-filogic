@@ -11,12 +11,17 @@ diff --git a/platform/turris/agent/scripts/StartTDK.sh b/platform/turris/agent/s
 index f9f0d58..689898b 100755
 --- a/platform/turris/agent/scripts/StartTDK.sh
 +++ b/platform/turris/agent/scripts/StartTDK.sh
-@@ -40,6 +40,9 @@ then
+@@ -40,6 +40,14 @@ then
          sh tdk_firewall_service.sh &
  fi
  
 +echo "Going to set tdk platform properties"
-+sh Set_properties.sh &
++if [ -e /etc/wireless/l1profile.dat ];
++then
++	sh Set_properties_logan.sh &
++else
++	sh Set_properties.sh &
++fi
 +
  echo "Going to start Agent"
  cd $TDK_BIN_PATH/

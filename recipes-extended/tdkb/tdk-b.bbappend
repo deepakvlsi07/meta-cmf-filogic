@@ -10,12 +10,19 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI += "file://*.patch;apply=no \
     file://Set_properties.sh;subdir=git \
+	file://Set_properties_logan.sh;subdir=git \
 "
 
 do_mtk_patches() {
     cd ${S}
     if [ ! -e mtk_wifi_patch_applied ]; then
-        for i in ${WORKDIR}/*.patch; do patch -p1 < $i; done
+		patch -p1 < ${WORKDIR}/0001-Fix-GetApAssociatedDeviceRxStatsResult-and-GetApAsso.patch
+		patch -p1 < ${WORKDIR}/0002-Add-tdk-utility-functions.patch
+		patch -p1 < ${WORKDIR}/0003-Add-Set-property-script.patch
+		if ${@bb.utils.contains( 'DISTRO_FEATURES', 'logan', 'false', 'true', d)}; then
+			patch -p1 < ${WORKDIR}/0004-Add-start-sequence-after-uci.patch
+		fi
+		patch -p1 < ${WORKDIR}/0005-Fix-wifi_getApAssociatedDeviceTidStatsResult-print-a.patch
     fi
     touch mtk_wifi_patch_applied
 }
@@ -27,6 +34,7 @@ do_install_append () {
     install -p -m 755 ${S}/platform/turris/agent/scripts/*.sh ${D}${tdkdir}
     install -p -m 755 ${S}/platform/turris/agent/scripts/tdk_platform.properties ${D}/etc/
     install -p -m 755 ${S}/Set_properties.sh ${D}${tdkdir}
+    install -p -m 755 ${S}/Set_properties_logan.sh ${D}${tdkdir}
 }
 
 FILES_${PN} += "${prefix}/ccsp/"
