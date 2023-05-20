@@ -19,6 +19,9 @@ RDEPENDS_packagegroup-filogic-logan = " \
     wireless-regdb-static \
     ubus  \
     ubusd \
+    uci \
+    lua \
+    datconf \
     iwinfo \
     iw \
     warp \
