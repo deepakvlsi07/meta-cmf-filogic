@@ -4,18 +4,32 @@ git clone --branch master https://gerrit.mediatek.inc/openwrt/lede mac80211_pack
 git clone --branch master https://gerrit.mediatek.inc/openwrt/feeds/mtk_openwrt_feeds
 git clone --branch master https://gerrit.mediatek.inc/gateway/autobuild_v5
 git clone --branch master https://gerrit.mediatek.inc/gateway/big_sw
-git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic-logan
-git clone https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
-
+git clone --branch master https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic-logan
+git clone --branch master https://gerrit.mediatek.inc/gateway/rdk-b/meta-filogic
 
 echo "sync hostapd patch from openWrt"
-#remove old patch
+cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd
+cd autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd
+./rdkb_inc_helper patches
+mv patches.inc patches
+
+cd -
 rm -rf meta-filogic-logan/recipes-wifi/hostapd/files/patches
+rm -rf meta-filogic-logan/recipes-wifi/wpa-supplicant/files/patches
+cp -rf autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/patches meta-filogic-logan/recipes-wifi/hostapd/files/
+cp -rf autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/patches meta-filogic-logan/recipes-wifi/wpa-supplicant/files/
+rm -rf meta-filogic-logan/recipes-wifi/hostapd/files/src
+rm -rf meta-filogic-logan/recipes-wifi/wpa-supplicant/files/src
+cp -rf autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/src meta-filogic-logan/recipes-wifi/hostapd/files/
+cp -rf autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/src meta-filogic-logan/recipes-wifi/wpa-supplicant/files/
+echo "cp defconfig and remove ubus"
+cp autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/files/hostapd-full.config meta-filogic-logan/recipes-wifi/hostapd/files/
+cp autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/files/wpa_supplicant-full.config meta-filogic-logan/recipes-wifi/wpa-supplicant/files/
 
-#copy new patch from openwrt
-mkdir -p meta-filogic-logan/recipes-wifi/hostapd/files/patches
-cp -f autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/patches/* meta-filogic-logan/recipes-wifi/hostapd/files/patches/
-
+echo "Update hostapd bb file version.........."
+ver=`grep "PKG_SOURCE_VERSION" autobuild_v5/mt7988-mt7990-BE19000/package/network/services/hostapd/Makefile | cut -c 21-`
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic-logan/recipes-wifi/hostapd/hostapd_2.10.bb
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic-logan/recipes-wifi/wpa-supplicant/wpa-supplicant_2.10.bb
 
 echo "sync wifi profile from openWrt"
 #remove old profile
