@@ -48,6 +48,9 @@ ver3=`grep "PKG_HASH" mac80211_package/package/kernel/mac80211/Makefile | cut -c
 sed -i 's/SRC_URI\[sha256sum\].*/SRC_URI[sha256sum] = "'${ver3}'"/g' meta-filogic/recipes-wifi/linux-mac80211/linux-mac80211_5.15.%.bb
 
 echo "gen hostapd patches.........."
+rm -rf mac80211_package/package/network/services/hostapd
+tar xvf mtk_openwrt_feeds/autobuild_mac80211_release/package/network/services/hostapd/hostapd_v2.10_07730ff3.tar.gz -C mac80211_package/package/network/services/
+cp -rf  mtk_openwrt_feeds/autobuild_mac80211_release/package/network/services/hostapd/patches/* mac80211_package/package/network/services/hostapd/patches
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/services/hostapd
 cd mac80211_package/package/network/services/hostapd
 ./rdkb_inc_helper patches
@@ -154,6 +157,7 @@ rm -rf mac80211_package
 git clone --branch master https://gerrit.mediatek.inc/openwrt/lede mac80211_package
 
 rm -rf mtk_openwrt_feeds/autobuild_mac80211_release/package/kernel/mac80211
+rm -rf mtk_openwrt_feeds/autobuild_mac80211_release/package/network/services/hostapd
 cd mtk_openwrt_feeds/autobuild_mac80211_release/package/kernel/
 mv mac80211_dev mac80211
 cd -
@@ -194,6 +198,8 @@ cp -rf mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/packa
 #sed -i 's/4003-mt76-revert-for-backports-5.15-wireless-stack.patch/&;apply=no/' meta-filogic/recipes-wifi/linux-mt76/files/patches-3.x/patches.inc
 
 echo "gen new hostapd patches for mt76_3.x"
+
+cp -rf  mtk_openwrt_feeds/autobuild_mac80211_release/package/network/services/hostapd_new/patches/* mac80211_package/package/network/services/hostapd/patches
 cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper mac80211_package/package/network/services/hostapd
 cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/mt7988_mt7996_mac80211/package/network/services/hostapd mac80211_package/package/network/services/
 cd mac80211_package/package/network/services/hostapd
@@ -202,9 +208,16 @@ cd mac80211_package/package/network/services/hostapd
 mv patches.inc patches
 echo "some patch do not apply to RDKB"
 sed -i 's/450-scan_wait.patch/&;apply=no/' patches/patches.inc
+
+echo "Update hostapd bb file version.........."
 #define new hostapd version
 new_hostapd_ver=2.10.3
+
 cd -
+ver=`grep "PKG_SOURCE_VERSION" mac80211_package/package/network/services/hostapd/Makefile | cut -c 21-`
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-wifi/hostapd/hostapd_${new_hostapd_ver}.bb
+sed -i 's/SRCREV ?=.*/SRCREV ?= "'$ver'"/g' meta-filogic/recipes-wifi/wpa-supplicant/wpa-supplicant_${new_hostapd_ver}.bb
+
 rm -rf meta-filogic/recipes-wifi/hostapd/files/patches-${new_hostapd_ver}
 rm -rf meta-filogic/recipes-wifi/wpa-supplicant/files/patches-${new_hostapd_ver}
 cp -rf mac80211_package/package/network/services/hostapd/patches meta-filogic/recipes-wifi/hostapd/files/patches-${new_hostapd_ver}

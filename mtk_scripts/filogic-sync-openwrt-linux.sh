@@ -27,16 +27,14 @@ mkdir openwrt/target/linux/mediatek/nf_hnat
 mv openwrt/target/linux/generic/pending-5.4/64*.patch openwrt/target/linux/mediatek/nf_hnat/
 mv openwrt/target/linux/generic/hack-5.4/647-netfilter-flow-acct.patch openwrt/target/linux/mediatek/nf_hnat/
 mv openwrt/target/linux/generic/hack-5.4/650-netfilter-add-xt_OFFLOAD-target.patch openwrt/target/linux/mediatek/nf_hnat/
-mv openwrt/target/linux/mediatek/patches-5.4/1002-mtkhnat-add-support-for-virtual-interface-acceleration.patch openwrt/target/linux/mediatek/nf_hnat/
+mv openwrt/target/linux/mediatek/patches-5.4/999-2708-mtkhnat-add-support-for-virtual-interface-acceleration.patch openwrt/target/linux/mediatek/nf_hnat/
 
 #cp flowblock patch
 cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/target/ ./openwrt
 #find flow patch to create ext patch for rdkb kernel build
 cd openwrt/target/linux/mediatek/patches-5.4/
 mkdir ../flow_patch
-mv 1004-mtketh-*.patch ../flow_patch
-mv 1007-mtketh-*.patch ../flow_patch
-mv 99*.patch ../flow_patch
+mv 999-30*.patch ../flow_patch
 cd -
 #end flowblock
 
@@ -45,6 +43,7 @@ cp meta-cmf-filogic/mtk_scripts/rdkb_inc_helper openwrt/target/linux/generic/
 cd openwrt/target/linux/generic/
 ./rdkb_inc_helper backport-5.4
 mv backport-5.4.inc backport-5.4
+sed -i 's/999-2702-v5.9-net-phy-add-support-for-a-common-probe-between-shared-PHYs.patch/&;apply=no/' backport-5.4/backport-5.4.inc
 ./rdkb_inc_helper pending-5.4
 mv pending-5.4.inc pending-5.4
 ./rdkb_inc_helper hack-5.4
@@ -67,11 +66,12 @@ cd openwrt/target/linux/mediatek
 ./rdkb_inc_helper patches-5.4/
 mv patches-5.4.inc patches-5.4
 sed -i 's/0600-net-phylink-propagate-resolved-link-config-via-mac_l.patch/&;apply=no/' patches-5.4/patches-5.4.inc
-sed -i 's/738-mt7531-gsw-internal_phy_calibration.patch/&;apply=no/' patches-5.4/patches-5.4.inc
-sed -i 's/739-mt7531-gsw-port5_external_phy_init.patch/&;apply=no/' patches-5.4/patches-5.4.inc
-sed -i 's/753-net-mt753x-phy-coverity-scan.patch/&;apply=no/' patches-5.4/patches-5.4.inc
-sed -i 's/757-net-phy-add-phylink-pcs-support.patch/&;apply=no/' patches-5.4/patches-5.4.inc
-sed -i 's/9010-iwconfig-wireless-rate-fix.patch/&;apply=no/' patches-5.4/patches-5.4.inc
+sed -i 's/999-2713-mt7531-gsw-internal_phy_calibration.patch/&;apply=no/' patches-5.4/patches-5.4.inc
+sed -i 's/999-2714-mt7531-gsw-port5_external_phy_init.patch/&;apply=no/' patches-5.4/patches-5.4.inc
+sed -i 's/999-2721-net-mt753x-phy-coverity-scan.patch/&;apply=no/' patches-5.4/patches-5.4.inc
+sed -i 's/999-1710-net-phy-add-phylink-pcs-support.patch/&;apply=no/' patches-5.4/patches-5.4.inc
+sed -i 's/999-1712-net-phy-add-phylink-rate-matching-support.patch/&;apply=no/' patches-5.4/patches-5.4.inc
+sed -i 's/999-2725-iwconfig-wireless-rate-fix.patch/&;apply=no/' patches-5.4/patches-5.4.inc
 echo "do rework medaitek kernel patch done..........."
 #cp 32bit dts
 mkdir -p files-5.4/arch/arm/boot/dts/
