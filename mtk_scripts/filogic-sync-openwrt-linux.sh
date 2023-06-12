@@ -28,6 +28,7 @@ mv openwrt/target/linux/generic/pending-5.4/64*.patch openwrt/target/linux/media
 mv openwrt/target/linux/generic/hack-5.4/647-netfilter-flow-acct.patch openwrt/target/linux/mediatek/nf_hnat/
 mv openwrt/target/linux/generic/hack-5.4/650-netfilter-add-xt_OFFLOAD-target.patch openwrt/target/linux/mediatek/nf_hnat/
 mv openwrt/target/linux/mediatek/patches-5.4/999-2708-mtkhnat-add-support-for-virtual-interface-acceleration.patch openwrt/target/linux/mediatek/nf_hnat/
+mv openwrt/target/linux/mediatek/patches-5.4/999-2726-mtkhnat-tnl-interface-offload-check.patch openwrt/target/linux/mediatek/nf_hnat/
 
 #cp flowblock patch
 cp -rfa mtk_openwrt_feeds/autobuild_mac80211_release/target/ ./openwrt
