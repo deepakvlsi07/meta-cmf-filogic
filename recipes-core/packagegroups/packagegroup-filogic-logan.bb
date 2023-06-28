@@ -31,4 +31,5 @@ RDEPENDS_packagegroup-filogic-logan = " \
     mtfwd \
     logan-insmod \
     mwctl \
+    ated-ext \
     "
