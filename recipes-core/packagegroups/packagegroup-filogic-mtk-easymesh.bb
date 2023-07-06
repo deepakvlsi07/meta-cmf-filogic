@@ -17,4 +17,5 @@ RDEPENDS_packagegroup-filogic-mtk-easymesh = " \
     mapd \
     mapfilter \
     wappd \
+    libwpactrl \
     "

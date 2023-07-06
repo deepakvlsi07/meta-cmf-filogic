@@ -32,4 +32,5 @@ RDEPENDS_packagegroup-filogic-logan = " \
     logan-insmod \
     mwctl \
     ated-ext \
+    switch \
     "
