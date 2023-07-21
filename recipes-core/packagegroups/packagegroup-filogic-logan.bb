@@ -24,9 +24,9 @@ RDEPENDS_packagegroup-filogic-logan = " \
     datconf \
     iwinfo \
     iw \
-    warp \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', '', 'warp', d)} \
     mt-wifi7 \
-    mt-hwifi\
+    mt-hwifi \
     mt-wifi-cmn \
     mtfwd \
     logan-insmod \
