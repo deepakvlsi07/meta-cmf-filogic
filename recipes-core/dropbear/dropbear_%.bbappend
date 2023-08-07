@@ -4,7 +4,7 @@ SYSTEMD_SERVICE_${PN}_remove_broadband = "dropbear.socket"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append = "file://rdkb-dropbear-extend-default-path.patch"
+SRC_URI_append = " file://rdkb-dropbear-extend-default-path.patch "
 
 do_configure_prepend_hybrid () {
     export LIBS="${LIBS} -ltelemetry_msgsender"
