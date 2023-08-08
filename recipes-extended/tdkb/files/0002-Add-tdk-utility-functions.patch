@@ -11,7 +11,7 @@ diff --git a/platform/turris/agent/scripts/tdk_platform_utility.sh b/platform/tu
 index fefc1947..ef8fbc84 100755
 --- a/platform/turris/agent/scripts/tdk_platform_utility.sh
 +++ b/platform/turris/agent/scripts/tdk_platform_utility.sh
-@@ -37,17 +37,100 @@ getCMMACAddress()
+@@ -37,17 +37,104 @@ getCMMACAddress()
      echo $macaddress
  }
  
@@ -48,6 +48,8 @@ index fefc1947..ef8fbc84 100755
 +{
 + if [ -e /etc/wireless/mediatek/mt7990.b0.dat ]; then
 + 	cat /etc/wireless/mediatek/mt7990.b0.dat | grep ^HT_BSSCoexistence | cut -d '=' -f2
++ elif [ -e /etc/wireless/mediatek/mt7992.b0.dat ]; then
++ 	cat /etc/wireless/mediatek/mt7992.b0.dat | grep ^HT_BSSCoexistence | cut -d '=' -f2
 + else
 +	cat /nvram/hostapd0.conf | grep ^ht_coex | cut -d '=' -f2
 + fi
@@ -57,6 +59,8 @@ index fefc1947..ef8fbc84 100755
 +{
 + if [ -e /etc/wireless/mediatek/mt7990.b1.dat ]; then
 + 	cat /etc/wireless/mediatek/mt7990.b1.dat | grep ^HT_BSSCoexistence | cut -d '=' -f2
++ elif [ -e /etc/wireless/mediatek/mt7992.b1.dat ]; then
++ 	cat /etc/wireless/mediatek/mt7992.b1.dat | grep ^HT_BSSCoexistence | cut -d '=' -f2
 + else
 +	cat /nvram/hostapd1.conf | grep ^ht_coex | cut -d '=' -f2
 + fi
