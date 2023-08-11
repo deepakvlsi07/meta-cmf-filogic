@@ -33,4 +33,5 @@ RDEPENDS_packagegroup-filogic-logan = " \
     mwctl \
     ated-ext \
     switch \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'ioctl-test', '', d)} \
     "
