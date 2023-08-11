@@ -34,4 +34,6 @@ RDEPENDS_packagegroup-filogic-logan = " \
     ated-ext \
     switch \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'ioctl-test', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'tops', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'tops-insmod', '', d)} \
     "
