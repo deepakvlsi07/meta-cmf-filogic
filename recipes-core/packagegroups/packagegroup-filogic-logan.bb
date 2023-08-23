@@ -39,4 +39,6 @@ RDEPENDS_packagegroup-filogic-logan = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'eip-197', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'eip-197-insmod', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'dummy-clickos', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'mt-wifi-ce', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'scan-radio-insmod', '', d)} \
     "
