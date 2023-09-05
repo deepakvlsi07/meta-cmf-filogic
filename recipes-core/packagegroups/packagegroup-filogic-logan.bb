@@ -36,6 +36,7 @@ RDEPENDS_packagegroup-filogic-logan = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'ioctl-test', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'pce', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'pce-insmod', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'iap-test', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'tops', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'tops-insmod', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'eip-197', '', d)} \
