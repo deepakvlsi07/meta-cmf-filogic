@@ -11,6 +11,7 @@ SRC_URI_append = " \
     file://0001-fix-lan-handler-for-filogic.patch;apply=no \
     file://0003-remove-autoconf.patch;apply=no \
     file://system_defaults \
+    file://0004-enable-sshd-by-default-at-bootup.patch;apply=no \
 "
 SRC_URI_append_dunfell = "file://0001-Work-around-for-brlan0-issue.patch;apply=no"
 
@@ -42,6 +43,9 @@ do_filogic_patches() {
 
         bbnote "Patching firewall-secure-onboard.patch"
         patch -p1 < ${WORKDIR}/firewall-secure-onboard.patch || echo "ERROR or Patch already applied"
+
+	bbnote "Patching 0004-enable-sshd-by-default-at-bootup.patch"
+        patch -p1 < ${WORKDIR}/0004-enable-sshd-by-default-at-bootup.patch
 
         touch filogic_patch_applied
     fi
