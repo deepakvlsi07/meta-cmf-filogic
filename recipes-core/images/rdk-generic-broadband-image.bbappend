@@ -52,7 +52,7 @@ IMAGE_INSTALL += " \
     "
 #IMAGE_INSTALL += " opensync openvswitch mesh-agent e2fsprogs "
 
-IMAGE_INSTALL_append_mt7988 += " marvell-eth-firmware "
+IMAGE_INSTALL_append_mt7988 += " marvell-eth-firmware mediatek-eth-firmware "
 
 
 BB_HASH_IGNORE_MISMATCH = "1"
