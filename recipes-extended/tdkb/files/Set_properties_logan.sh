@@ -31,7 +31,7 @@ for _dev in /sys/class/ieee80211/*; do
 done
 
 
-echo "DEFAULT_CHANNEL_BANDWIDTH=40MHz,80MHz" >> /etc/tdk_platform.properties
+echo "DEFAULT_CHANNEL_BANDWIDTH=40MHz,160MHz" >> /etc/tdk_platform.properties
 echo "RADIO_MODES_2G=n:11NGHT40MINUS:4,n:11NGHT40MINUS:8,ax:11AXHE40MINUS:32,ax:11AXHE40MINUS:0" >> /etc/tdk_platform.properties
 echo "RADIO_MODES_5G=ac:11ACVHT80:16,n:11NAHT40MINUS:8,ax:11AXHE80:32,ax:11AXHE80:0" >> /etc/tdk_platform.properties
 echo "getAp0DTIMInterval=1" >> /etc/tdk_platform.properties
