@@ -18,6 +18,8 @@ do_install_append() {
    <Record name="dmsb.wanmanager.wanpolicy" type="astr">2</Record> \ 
    <Record name="dmsb.wanmanager.wanidletimeout" type="astr">0</Record> \
    <Record name="dmsb.selfheal.rebootstatus"  type="astr">0</Record> \
+   <Record name="dmsb.wanmanager.allowremoteinterfaces" type="astr">0</Record> \
+   <Record name="dmsb.wanmanager.RestorationDelay" type="astr">45</Record> \
    <Record name="dmsb.wanmanager.if.1.Name" type="astr">eth2</Record> \
    <Record name="dmsb.wanmanager.if.1.DisplayName" type="astr">WanOE</Record> \
    <Record name="dmsb.wanmanager.if.1.Enable" type="astr">TRUE</Record> \
@@ -42,7 +44,53 @@ do_install_append() {
    <Record name="dmsb.wanmanager.if.1.EnableMAPT" type="astr">FALSE</Record> \
    <Record name="dmsb.wanmanager.if.1.EnableDSLite" type="astr">FALSE</Record> \
    <Record name="dmsb.wanmanager.if.1.EnableIPoEHealthCheck" type="astr">FALSE</Record> \
-   <Record name="dmsb.wanmanager.if.1.RebootOnConfiguration" type="astr">FALSE</Record>' ${D}/usr/ccsp/config/bbhm_def_cfg.xml
+   <Record name="dmsb.wanmanager.if.1.RebootOnConfiguration" type="astr">FALSE</Record> \
+   <!-- ccsp-vlanmanager EthLink records --> \
+   <Record name="dmsb.ethlink.ifcount" type="astr">1</Record> \
+   <Record name="dmsb.ethlink.1.Enable" type="astr">FALSE</Record> \
+   <Record name="dmsb.ethlink.1.alias" type="astr">WANOE</Record> \
+   <Record name="dmsb.ethlink.1.name" type="astr">erouter0</Record> \
+   <Record name="dmsb.ethlink.1.lowerlayers" type="astr"></Record> \
+   <Record name="dmsb.ethlink.1.macoffset" type="astr">3</Record> \
+   <Record name="dmsb.ethlink.1.baseiface" type="astr">eth2</Record> \
+   <Record name="dmsb.ethlink.1.path" type="astr">Device.X_RDK_WanManager.Interface.1.VirtualInterface.1</Record> \
+   <Record name="dmsb.vlanmanager.ifcount" type="astr">1</Record> \
+   <Record name="dmsb.vlanmanager.1.Enable" type="astr">FALSE</Record> \
+   <Record name="dmsb.vlanmanager.1.alias" type="astr">WANOE</Record> \
+   <Record name="dmsb.vlanmanager.1.name" type="astr">erouter0</Record> \
+   <Record name="dmsb.vlanmanager.1.lowerlayers" type="astr">Device.X_RDK_Ethernet.Link.3</Record> \
+   <Record name="dmsb.vlanmanager.1.baseinterface" type="astr">eth2</Record> \
+   <Record name="dmsb.vlanmanager.1.vlanid" type="astr">-1</Record> \
+   <Record name="dmsb.vlanmanager.1.tpid" type="astr">0</Record> \
+   <Record name="dmsb.vlanmanager.1.path" type="astr">Device.X_RDK_WanManager.Interface.1.VirtualInterface.1</Record> \
+   <!-- Wanmanger Unified  struct --> \
+   <Record name="dmsb.wanmanager.wan.interfacecount" type="astr">1</Record> \
+   <Record name="dmsb.wanmanager.group.Count" type="astr">1</Record> \
+   <Record name="dmsb.wanmanager.group.1.policy" type="astr">6</Record> \
+   <Record name="dmsb.wanmanager.if.1.BaseInterface" type="astr">Device.Ethernet.X_RDK_Interface.3</Record> \
+   <Record name="dmsb.wanmanager.if.1.Selection.Enable" type="astr">TRUE</Record> \
+   <Record name="dmsb.wanmanager.if.1.Selection.ActiveLink" type="astr">FALSE</Record> \
+   <Record name="dmsb.wanmanager.if.1.Selection.RequiresReboot" type="astr">FALSE</Record> \
+   <Record name="dmsb.wanmanager.if.1.Selection.Group" type="astr">1</Record> \
+   <Record name="dmsb.wanmanager.if.1.Selection.Priority" type="astr">1</Record> \
+   <Record name="dmsb.wanmanager.if.1.Selection.Timeout" type="astr">20</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterfaceifcount" type="astr">1</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.Enable" type="astr">TRUE</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.Alias" type="astr">WANOE</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.Name" type="astr">erouter0</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.EnableMAPT" type="astr">TRUE</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.EnableDSLite" type="astr">FALSE</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.EnableIPoE" type="astr">TRUE</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.PPPInterface" type="astr"></Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.IPInterface" type="astr">Device.IP.Interface.1</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.IP.Mode" type="astr">3</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.IP.IPv4Source" type="astr">2</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.IP.IPv6Source" type="astr">2</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.VlanInUse" type="astr">Device.X_RDK_Ethernet.VLANTermination.1</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.Timeout" type="astr">20</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.VlanCount" type="astr">1</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.VLAN.1.Interface" type="astr">Device.X_RDK_Ethernet.VLANTermination.1</Record> \
+   <Record name="dmsb.wanmanager.if.1.VirtualInterface.1.MarkingCount" type="astr">0</Record>' ${D}/usr/ccsp/config/bbhm_def_cfg.xml
     fi
 }
 
