@@ -2,6 +2,8 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 require ccsp_common_filogic.inc
 
+SRC_URI_append += " file://filogic-factoryReset.patch"
+
 DEPENDS_append = " utopia curl "
 
 CFLAGS_append = " \
