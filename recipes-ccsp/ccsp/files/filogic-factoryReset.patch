@@ -1,0 +1,12 @@
+diff --git a/source-arm/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c b/source-arm/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
+index 757fa2bcd..71b0ead0a 100755
+--- a/source-arm/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
++++ b/source-arm/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
+@@ -2478,6 +2478,7 @@ CosaDmlDcSetFactoryReset
+ 		pthread_create(&logs, NULL, &backuplogs, (void*)wifiThread);
+ 	      }else
+ 		pthread_create(&logs, NULL, &backuplogs, NULL);
++		v_secure_system("touch /reset-default");
+ 	}
+ #ifdef RDK_ONEWIFI
+ 	if( (factory_reset_mask & FR_ROUTER) && (factory_reset_mask & FR_WIFI)){
