@@ -12,6 +12,7 @@ SRC_URI_append = " \
     file://0003-remove-autoconf.patch;apply=no \
     file://system_defaults \
     file://0004-enable-sshd-by-default-at-bootup.patch;apply=no \
+    file://service_bridge_mtk.sh \
 "
 SRC_URI_append_dunfell = "file://0001-Work-around-for-brlan0-issue.patch;apply=no"
 
@@ -113,7 +114,7 @@ do_install_append() {
     install -m 755 ${S}/source/scripts/init/system/need_wifi_default.sh ${D}${sysconfdir}/utopia/
     touch ${D}${sysconfdir}/dhcp_static_hosts
     #filogic uses default service_bridge.sh for now
-    install -m 755 ${S}/source/scripts/init/service.d/service_bridge.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
+    install -m 755 ${WORKDIR}/service_bridge_mtk.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
 
     install -m 755 ${WORKDIR}/dhcp_script.sh ${D}${sysconfdir}/
     
