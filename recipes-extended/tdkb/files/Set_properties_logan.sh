@@ -14,15 +14,15 @@ for _dev in /sys/class/ieee80211/*; do
 	echo "main_inf: $main_inf"
 
 	if [ "$main_inf" == "ra0" ]; then
-			echo "APINDEX_2G_PUBLIC_WIFI=$devidx" >> /etc/tdk_platform.properties
+			echo "APINDEX_2G_PUBLIC_WIFI=0" >> /etc/tdk_platform.properties
 			sed -i "s/\(AP_IF_NAME_2G *= *\).*/\1$main_inf/" /etc/tdk_platform.properties
 			sed -i "s/\(RADIO_IF_2G *= *\).*/\1$main_inf/" /etc/tdk_platform.properties
 	elif [ "$main_inf" == "rai0" ]; then
-			echo "APINDEX_5G_PUBLIC_WIFI=$devidx" >> /etc/tdk_platform.properties
+			echo "APINDEX_5G_PUBLIC_WIFI=1" >> /etc/tdk_platform.properties
 			sed -i "s/\(AP_IF_NAME_5G *= *\).*/\1$main_inf/" /etc/tdk_platform.properties
 			sed -i "s/\(RADIO_IF_5G *= *\).*/\1$main_inf/" /etc/tdk_platform.properties
 	elif [ "$main_inf" == "rax0" ]; then
-			echo "PRIVATE_6G_AP_INDEX=$devidx" >> /etc/tdk_platform.properties
+			echo "PRIVATE_6G_AP_INDEX=16" >> /etc/tdk_platform.properties
 			echo "AP_IF_NAME_6G=$main_inf" >> /etc/tdk_platform.properties
 			echo "RADIO_IF_6G=$main_inf" >> /etc/tdk_platform.properties
 	fi
