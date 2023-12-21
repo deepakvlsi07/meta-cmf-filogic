@@ -1,0 +1,26 @@
+From 6e0958b5f732c008020c42769f0c5dc565c12327 Mon Sep 17 00:00:00 2001
+From: chank chen <chank.chen@mediatek.com>
+Date: Thu, 21 Dec 2023 17:34:30 +0800
+Subject: [PATCH] fix out of array access
+
+Signed-off-by: chank chen <chank.chen@mediatek.com>
+---
+ .../DataModel/dml/components/DslhObjRecord/dslh_objro_access.c  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c b/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
+index 8266196d..9b13adb4 100755
+--- a/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
++++ b/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
+@@ -1591,7 +1591,7 @@ static void Notify_Table_Entry(PDSLH_OBJ_RECORD_OBJECT pMyObject, ULONG old_valu
+ 
+ 	rc = strcpy_s(Param_NumberOfEntry, sizeof(Param_NumberOfEntry), pMyObject->FullName);
+ 	ERR_CHK(rc);
+-	len = _ansc_strlen(Param_NumberOfEntryTemp);
++	len = sizeof(Param_NumberOfEntryTemp);
+ 	Param_NumberOfEntryTemp[len-1]= '\0';
+ 
+ 	/*CID: 65627 Copy of overlapping memory*/
+-- 
+2.18.0
+
