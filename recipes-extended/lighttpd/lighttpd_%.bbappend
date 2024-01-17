@@ -18,7 +18,7 @@ do_install_append() {
 
 FILES_${PN}_append_morty = " /usr/lib/mod_fastcgi.so"
 
-RDEPENDS_${PN}_append_dunfell = " \
+RDEPENDS_${PN}_append = " \
     lighttpd-module-fastcgi \
     lighttpd-module-proxy \
     " 

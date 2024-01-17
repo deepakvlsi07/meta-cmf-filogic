@@ -58,7 +58,7 @@ fi
 # Add meta-rdk-opensync only if not already present.
 if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-rdk-opensync') -eq 0 ]] && [[ -d  ../meta-rdk-opensync ]]
 then
-    echo 'LAYERSERIES_COMPAT_opensync = "dunfell"' >> ../meta-rdk-opensync/conf/layer.conf
+    echo 'LAYERSERIES_COMPAT_opensync = "dunfell kirkstone"' >> ../meta-rdk-opensync/conf/layer.conf
     cat >> conf/bblayers.conf <<EOF
 BBLAYERS =+ "\${RDKROOT}/meta-rdk-opensync"
 EOF
@@ -91,5 +91,39 @@ if [ -f "${TOP_DIR}/.repo/manifests/turris-tags/${MANIFEST}.conf" ]; then
         echo "${MANIFEST}.conf copied to auto.conf successfully"
     else
         echo "FAILED to copy auto.conf"
+    fi
+fi
+
+
+case "$(sed -n 's/^__version__ = "\(.*\)"/\1/p' ${TOP_DIR}/openembedded-core/bitbake/bin/bitbake)"
+in
+    2.0.*) YOCTO_CODENAME="kirkstone" ;;
+    2.2.*) YOCTO_CODENAME="kirkstone" ;;
+    1.46.*) YOCTO_CODENAME="dunfell" ;;
+    1.37.*|1.38.*) YOCTO_CODENAME="sumo" ;;
+    1.35.*|1.36.*) YOCTO_CODENAME="rocko" ;;
+    1.34.*) YOCTO_CODENAME="pyro" ;;
+    1.32.*) YOCTO_CODENAME="morty" ;;
+    1.30.*) YOCTO_CODENAME="krogoth" ;;
+    *)      YOCTO_CODENAME="daisy" ;;
+esac
+
+if [ $(grep -c 'tune-cortexa53' $TOP_DIR/meta-filogic/conf/machine/filogic.conf) -eq 0 ]; then
+    if [ ${YOCTO_CODENAME} == "kirkstone" ]; then
+        echo "${YOCTO_CODENAME} tune-cortexa53.inc"
+        echo "require conf/machine/include/arm/armv8a/tune-cortexa53.inc" >> $TOP_DIR/meta-filogic/conf/machine/filogic.conf
+    else
+        echo "${YOCTO_CODENAME} tune-cortexa53.inc"
+        echo "require conf/machine/include/tune-cortexa53.inc" >> $TOP_DIR/meta-filogic/conf/machine/filogic.conf
+    fi
+fi
+
+if [ $(grep -c 'whitelist' $TOP_DIR/meta-cmf-filogic/conf/distro/include/rdk-filogic.inc) -eq 0 ]; then
+    if [ ${YOCTO_CODENAME} == "kirkstone" ]; then
+        echo "${YOCTO_CODENAME} whitelist.inc"
+        echo "require conf/distro/include/whitelist_kirkstone.inc" >> $TOP_DIR/meta-cmf-filogic/conf/distro/include/rdk-filogic.inc
+    else
+        echo "${YOCTO_CODENAME} whitelist.inc"
+        echo "require conf/distro/include/whitelist_dunfell.inc" >> $TOP_DIR/meta-cmf-filogic/conf/distro/include/rdk-filogic.inc
     fi
 fi

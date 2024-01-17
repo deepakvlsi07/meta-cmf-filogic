@@ -8,7 +8,12 @@ SRCREV_FORMAT = "tdk_tdkbturris"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI += "file://*.patch;apply=no \
+SRC_URI += " \
+    file://0001-Fix-GetApAssociatedDeviceRxStatsResult-and-GetApAsso.patch;apply=no \
+    file://0002-Add-tdk-utility-functions.patch;apply=no \
+    file://0003-Add-Set-property-script.patch;apply=no \
+    file://0004-Add-start-sequence-after-uci.patch;apply=no \
+    file://0005-Fix-wifi_getApAssociatedDeviceTidStatsResult-print-a.patch;apply=no \
     file://Set_properties.sh;subdir=git \
 	file://Set_properties_logan.sh;subdir=git \
 "

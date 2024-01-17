@@ -19,12 +19,12 @@ SRC_URI_append = " \
     file://utopia.service \
 "
 
-SRC_URI_remove_dunfell = "file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
+SRC_URI_remove = "file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
 
 SRC_URI += "file://0003-add-dependency-to-pandm.patch;apply=no"
 SRC_URI += "file://0004-fix-out-of-array-access.patch;apply=no"
 
-SRC_URI_append_dunfell = " file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch;apply=no"
+SRC_URI_append = " file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch;apply=no"
 
 
 # we need to patch to code for Filogic
@@ -34,11 +34,9 @@ do_filogic_patches() {
         bbnote "Patching 0003-add-dependency-to-pandm.patch"
         patch -p1 < ${WORKDIR}/0003-add-dependency-to-pandm.patch
         patch -p1 < ${WORKDIR}/0004-fix-out-of-array-access.patch
-        if [ "${@bb.utils.contains('DISTRO_CODENAME', 'dunfell', 'dunfell', '', d)}" = "dunfell" ] ; then
-            bbnote "Patching 0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
-            patch -p1 < ${WORKDIR}/0001-DBusLoop-SSL_state-TLS_ST_OK.patch
+        bbnote "Patching 0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
+        patch -p1 < ${WORKDIR}/0001-DBusLoop-SSL_state-TLS_ST_OK.patch
 
-        fi
        touch patch_applied
     fi
 }

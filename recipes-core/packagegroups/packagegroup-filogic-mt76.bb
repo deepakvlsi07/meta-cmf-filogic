@@ -4,7 +4,6 @@ LICENSE = "MIT"
 
 inherit packagegroup
 
-DEPENDS = "libnl"
 
 PACKAGES = " \
 	  packagegroup-filogic-mt76 \

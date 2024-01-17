@@ -5,9 +5,9 @@ SRC_URI += " \
             file://rdkb.cfg \
            "
 
-do_install_append_dunfell() {
+do_install_append() {
 	rm ${D}${sysconfdir}/syslog.conf
 }
 
-FILES_${PN}-syslog_remove_dunfell = "${sysconfdir}/syslog.conf"
+FILES_${PN}-syslog_remove = "${sysconfdir}/syslog.conf"
 

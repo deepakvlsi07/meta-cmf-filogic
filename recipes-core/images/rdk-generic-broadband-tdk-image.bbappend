@@ -28,7 +28,7 @@ IMAGE_INSTALL += " \
     util-linux-readprofile \    
     iputils \ 
     bc \ 
-    python-core \
+    ${@bb.utils.contains('DISTRO_FEATURES','kirkstone','','python-core',d)} \
     pptp-linux \
     rp-pppoe  \
     procps \

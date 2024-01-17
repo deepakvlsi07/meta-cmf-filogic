@@ -1,5 +1,7 @@
 do_install_append_broadband() {
  rm -rf ${D}${base_sbindir}/hwclock
+ rm -rf ${D}${base_sbindir}/swapon
+ rm -rf ${D}${base_sbindir}/swapoff
  rm -rf ${D}${base_bindir}/more
  rm -rf ${D}${base_bindir}/kill
  rm -rf ${D}${base_bindir}/dmesg
@@ -73,8 +75,3 @@ do_install_append_broadband() {
  rm -rf ${D}${bindir}/uuidparse
  rm -rf ${D}${bindir}/wall
 }
-do_install_append_dunfell_broadband() {
- rm -rf ${D}${base_sbindir}/swapon
- rm -rf ${D}${base_sbindir}/swapoff
-}
-

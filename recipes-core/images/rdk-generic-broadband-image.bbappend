@@ -29,8 +29,8 @@ IMAGE_INSTALL += " \
     coreutils \
     util-linux-readprofile \    
     iputils \ 
-    bc \ 
-    python-core \
+    bc \
+    ${@bb.utils.contains('DISTRO_FEATURES','kirkstone','','python-core',d)} \ 
     dosfstools \
     pptp-linux \
     rp-pppoe  \  

@@ -19,7 +19,8 @@ SRC_URI_append = " \
     file://checkwifi.sh \
     file://radio_param_def.cfg \
     file://synclease.sh \
-    file://*.patch;apply=no \
+    file://handle_mesh-rename-opensync.patch;apply=no \
+    file://avoid_gssidcount_error.patch;apply=no \
 "
 
 # we need to patch to code for ccsp-wifi-agent
@@ -34,7 +35,7 @@ do_ccspwifiagent_patches() {
 }
 addtask ccspwifiagent_patches after do_unpack before do_configure
 
-EXTRA_OECONF_append  = " --with-ccsp-arch=arm"
+EXTRA_OECONF_append_dunfell  = " --with-ccsp-arch=arm"
 
 do_install_append(){
     install -m 777 ${D}/usr/bin/CcspWifiSsp -t ${D}/usr/ccsp/wifi/
@@ -52,6 +53,7 @@ FILES_${PN} += " \
     ${prefix}/ccsp/wifi/checkwifi.sh \
     ${prefix}/ccsp/wifi/radio_param_def.cfg \
     ${prefix}/ccsp/wifi/synclease.sh \
+    ${prefix}/bin/wifi_events_consumer \
 "
 
 LDFLAGS_append_dunfell = " -lpthread"

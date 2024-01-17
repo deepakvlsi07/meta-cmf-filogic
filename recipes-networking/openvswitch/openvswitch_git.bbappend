@@ -1,6 +1,6 @@
-DEPENDS_remove_dunfell = "virtual/kernel bridge-utils"
-DEPENDS_append_class-target_dunfell = " virtual/kernel kernel-devsrc"
-DEPENDS_append_class-target_dunfell = " bridge-utils"
+DEPENDS_remove = "virtual/kernel bridge-utils"
+DEPENDS_append_class-target = " virtual/kernel kernel-devsrc"
+DEPENDS_append_class-target = " bridge-utils"
 EXTRA_OECONF += "--enable-ssl"
 
 EXTRA_OECONF_class-target_dunfell += "--with-linux=${STAGING_KERNEL_BUILDDIR} --with-linux-source=${STAGING_KERNEL_DIR} KARCH=${UBOOT_ARCH} PYTHON=python3 PYTHON3=python3 PERL=${bindir}/perl "

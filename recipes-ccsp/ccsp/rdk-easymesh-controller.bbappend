@@ -1,7 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI_append = " \
-    file://*.patch;apply=no \
+    file://001-fix-64bit-build-error.patch;apply=no \
+    file://002-change-scan-interface-name-prefix.patch;apply=no \
 "
 
 do_filogic_patches() {

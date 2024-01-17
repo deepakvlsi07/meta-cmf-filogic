@@ -21,7 +21,7 @@ LDFLAGS_remove = " \
 
 CFLAGS_remove = "-Werror"
 
-EXTRA_OECONF_append  = " --with-ccsp-arch=arm"
+EXTRA_OECONF_append_dunfell  = " --with-ccsp-arch=arm"
 
 do_configure_prepend () {
    #for WanManager support
@@ -130,6 +130,7 @@ do_install_append(){
 FILES_${PN}-ccsp += " \
     ${prefix}/ccsp/pam/CcspPandMSsp \
     /fss/gw/usr/sbin/ip \
+    ${prefix}/ccsp/pam/TR181-USGv2.XML \
 "
 
 RDEPENDS_${PN}-ccsp_append_dunfell = " bash"

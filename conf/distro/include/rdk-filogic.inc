@@ -19,11 +19,21 @@ DISTRO_FEATURES_append = " webconfig_bin"
 # RDKB-44824: CoreNetLib move bb file location
 DISTRO_FEATURES_append = " core-net-lib"
 
+# RDKB-48800: Install DHCP Manager service file
+DISTRO_FEATURES_append_broadband = " dhcp_manager"
+
+# Fix MeshAgent build errors
+DISTRO_FEATURES_append_broadband = " WanFailOverSupportEnable"
+
+DISTRO_FEATURES_append_kirkstone = " kirkstone"
+DISTRO_FEATURES_NATIVE_append_kirkstone = " kirkstone"
+
 DISTRO_FEATURES_append = " meshwifi"
 DISTRO_FEATURES_append = " ipv6"
 DISTRO_FEATURES_append = " rdkb_wan_manager"
 DISTRO_FEATURES_append = " filogic"
-WHITELIST_GPL-3.0 += " binutils libbfd"
 #DISTRO_FEATURES_append = " easymesh-controller"
 #DISTRO_FEATURES_append = " emmc"
 #DISTRO_FEATURES_append = " samba"
+HOSTTOOLS += " python"
+

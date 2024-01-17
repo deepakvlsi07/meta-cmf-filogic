@@ -4,7 +4,7 @@ DEPENDS_append = " kernel-autoconf utopia-headers libsyswrapper telemetry"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-EXTRA_OECONF_append  = " --with-ccsp-arch=arm"
+EXTRA_OECONF_append_dunfell  = " --with-ccsp-arch=arm"
 EXTRA_OECONF_remove  = "--with-ccsp-platform=bcm"
 
 SRC_URI_append = " \
@@ -14,7 +14,7 @@ SRC_URI_append = " \
     file://0004-enable-sshd-by-default-at-bootup.patch;apply=no \
     file://service_bridge_mtk.sh \
 "
-SRC_URI_append_dunfell = "file://0001-Work-around-for-brlan0-issue.patch;apply=no"
+SRC_URI_append = "file://0001-Work-around-for-brlan0-issue.patch;apply=no"
 
 SRC_URI += "file://posix-gwprovapp.patch;apply=no"
 #This patch will add dummy swctl api which is originally given by brcm for XB3.
@@ -52,7 +52,7 @@ do_filogic_patches() {
     fi
 }
 
-do_filogic_patches-append_dunfell() {
+do_filogic_patches-append() {
     cd ${S}
     if [ ! -e dunfell_filogic_patch_applied ]; then
 	patch -p1 < ${WORKDIR}/0001-Work-around-for-brlan0-issue.patch
