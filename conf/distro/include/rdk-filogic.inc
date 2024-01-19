@@ -20,7 +20,7 @@ DISTRO_FEATURES_append = " webconfig_bin"
 DISTRO_FEATURES_append = " core-net-lib"
 
 # RDKB-48800: Install DHCP Manager service file
-DISTRO_FEATURES_append_broadband = " dhcp_manager"
+#DISTRO_FEATURES_append_broadband = " dhcp_manager"
 
 # Fix MeshAgent build errors
 DISTRO_FEATURES_append_broadband = " WanFailOverSupportEnable"
