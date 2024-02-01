@@ -8,7 +8,8 @@ SRC_URI_append += " \
 
 do_filogic_patches() {
     cd ${S}
-    if [ ! -e filogic_patch_applied ]; then
+
+    if [ ! -e filogic_patch_applied ] && [ "${PROJECT_BRANCH}" = "rdk-next" ]; then
         patch -p1 < ${WORKDIR}/Fix-ccsp-eth-agent-build-error.patch
         touch filogic_patch_applied
     fi
