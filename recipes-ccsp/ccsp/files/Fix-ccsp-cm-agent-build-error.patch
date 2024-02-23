@@ -1,0 +1,37 @@
+From 691fcd84fb980f918eaf012fef83022f1c4a4fbc Mon Sep 17 00:00:00 2001
+From: Fang Zhao <fang.zhao@mediatek.com>
+Date: Fri, 23 Feb 2024 11:50:39 +0800
+Subject: [PATCH] fix ccsp cm agent build fail issue.
+
+Signed-off-by: Fang Zhao <fang.zhao@mediatek.com>
+---
+ source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c b/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c
+index 208bc7d..1b4f43c 100644
+--- a/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c
++++ b/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c
+@@ -62,7 +62,7 @@ rbusDataElement_t cmAgentRbusDataElements[] = {
+ 
+ 	{DOCSIS_LINK_STATUS_TR181, RBUS_ELEMENT_TYPE_EVENT, {getBoolHandler, NULL, NULL, NULL, eventSubHandler, NULL}},
+ 	{DOCSIS_LINKDOWN_TR181, RBUS_ELEMENT_TYPE_EVENT, {getBoolHandler, SetBoolHandler, NULL, NULL, NULL, NULL}},
+-	{DOCSIS_LINKDOWNTIMEOUT_TR181, RBUS_ELEMENT_TYPE_EVENT, {getuintHandler, SetUintHandler, NULL, NULL, NULL, NULL}}
++	{DOCSIS_LINKDOWNTIMEOUT_TR181, RBUS_ELEMENT_TYPE_EVENT, {getuintHandler, SetUintHandler, NULL, NULL, NULL, NULL}},
+ 	{CABLE_MODEM_RF_SIGNAL_STATUS, RBUS_ELEMENT_TYPE_EVENT, {getBoolHandler, NULL, NULL, NULL, eventSubHandler, NULL}},
+ 
+ 
+@@ -506,7 +506,9 @@ BOOL SetDocsisLinkdowSignalfunc(fpDocsisLinkdownSignal CreateThreadandSendCondSi
+ 	cmAgent_Link_Status.pDocsisLinkdowSignal=CreateThreadandSendCondSignalToPthreadfunc;
+ 	return TRUE;
+ }
+-  publishCableModemRfSignalStatus(): publish CableModemRfSignalStatus event after event value gets updated
++/*******************************************************************************
++
++publishCableModemRfSignalStatus(): publish CableModemRfSignalStatus event after event value gets updated
+ 
+  ********************************************************************************/
+ void publishCableModemRfSignalStatus() {
+-- 
+2.18.0
+
