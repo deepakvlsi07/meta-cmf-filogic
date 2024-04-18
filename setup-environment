@@ -55,6 +55,16 @@ BBLAYERS =+ "\${RDKROOT}/meta-filogic-logan"
 EOF
 fi
 
+if [[ ! -d  ../meta-filogic-logan/recipes-wifi/hostapd/files/patches ]]
+then
+	sh ../meta-cmf-filogic/mtk_scripts/sync_hostapd_patch.sh hostapd
+fi
+
+if [[ ! -d  ../meta-filogic-logan/recipes-wifi/wpa-supplicant/files/patches ]]
+then
+	sh ../meta-cmf-filogic/mtk_scripts/sync_hostapd_patch.sh wpa_supplicant
+fi
+
 # Add meta-rdk-opensync only if not already present.
 if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-rdk-opensync') -eq 0 ]] && [[ -d  ../meta-rdk-opensync ]]
 then
