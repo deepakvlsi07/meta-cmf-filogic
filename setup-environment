@@ -55,12 +55,12 @@ BBLAYERS =+ "\${RDKROOT}/meta-filogic-logan"
 EOF
 fi
 
-if [[ ! -d  ../meta-filogic-logan/recipes-wifi/hostapd/files/patches ]]
+if [[ -d  ../meta-filogic-logan ]] && [[ ! -d  ../meta-filogic-logan/recipes-wifi/hostapd/files/patches ]]
 then
 	sh ../meta-cmf-filogic/mtk_scripts/sync_hostapd_patch.sh hostapd
 fi
 
-if [[ ! -d  ../meta-filogic-logan/recipes-wifi/wpa-supplicant/files/patches ]]
+if [[ -d  ../meta-filogic-logan ]] && [[ ! -d  ../meta-filogic-logan/recipes-wifi/wpa-supplicant/files/patches ]]
 then
 	sh ../meta-cmf-filogic/mtk_scripts/sync_hostapd_patch.sh wpa_supplicant
 fi
