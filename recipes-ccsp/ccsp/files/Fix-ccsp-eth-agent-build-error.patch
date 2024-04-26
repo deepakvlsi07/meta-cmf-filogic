@@ -1,0 +1,27 @@
+From de1631bd9636e579cce830022a97f6232e2c217e Mon Sep 17 00:00:00 2001
+From: Allen Ye <allen.ye@mediatek.com>
+Date: Wed, 31 Jan 2024 10:27:09 +0800
+Subject: [PATCH] Fix build error
+
+---
+ source/TR-181/board_sbapi/cosa_ethernet_apis.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/TR-181/board_sbapi/cosa_ethernet_apis.c b/source/TR-181/board_sbapi/cosa_ethernet_apis.c
+index efa3c57..cc66856 100644
+--- a/source/TR-181/board_sbapi/cosa_ethernet_apis.c
++++ b/source/TR-181/board_sbapi/cosa_ethernet_apis.c
+@@ -1539,8 +1539,8 @@ ANSC_STATUS CosaDmlIfaceFinalize(char *pValue, BOOL isAutoWanMode)
+     else
+     {
+         char acSetParamName[256];
+-        char acTmpCableValue[32] = {0};
+-        char acTmpEthValue[32] = {0};
++        char acTmpCableValue[64] = {0};
++        char acTmpEthValue[64] = {0};
+         if (ethwanEnabled == TRUE)
+         {
+             snprintf(acTmpCableValue, sizeof(acTmpCableValue), "%s", ETHWAN_DOCSIS_INF_NAME);
+-- 
+2.18.0
+
