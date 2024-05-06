@@ -5,3 +5,4 @@ After=hostapd.service
 [Service]
 Type=forking
 ExecStart=/bin/sh -c '/usr/ccsp/wifi/checkwifi.sh'
+StartLimitBurst=0
