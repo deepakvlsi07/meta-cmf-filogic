@@ -32,6 +32,7 @@ RDEPENDS_packagegroup-filogic-logan = " \
     logan-insmod \
     mwctl \
     ated-ext \
+	sigma-daemon \
     switch \
     luasocket \
     ${@bb.utils.contains('DISTRO_FEATURES', 'ccn34', 'ioctl-test', '', d)} \
