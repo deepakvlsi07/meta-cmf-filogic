@@ -65,6 +65,14 @@ then
 	sh ../meta-cmf-filogic/mtk_scripts/sync_hostapd_patch.sh wpa_supplicant
 fi
 
+# Add meta-rdk-wan only if not already present.
+if [ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-rdk-wan') -eq 0 -a -d  $TOP_DIR/meta-rdk-wan ]
+then
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-rdk-wan"
+EOF
+fi
+
 # Add meta-rdk-opensync only if not already present.
 if [[ $(grep '^BBLAYERS' conf/bblayers.conf | grep -c 'meta-rdk-opensync') -eq 0 ]] && [[ -d  ../meta-rdk-opensync ]]
 then
