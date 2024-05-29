@@ -19,12 +19,11 @@ SRC_URI_append = " \
     file://utopia.service \
 "
 
-SRC_URI_remove = "file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
+SRC_URI_remove_dunfell = "file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
 
 SRC_URI += "file://0003-add-dependency-to-pandm.patch;apply=no"
-SRC_URI += "file://0004-fix-out-of-array-access.patch;apply=no"
 
-SRC_URI_append = " file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch;apply=no"
+SRC_URI_append_dunfell = " file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch;apply=no"
 
 
 # we need to patch to code for Filogic
@@ -33,10 +32,11 @@ do_filogic_patches() {
     if [ ! -e patch_applied ]; then
         bbnote "Patching 0003-add-dependency-to-pandm.patch"
         patch -p1 < ${WORKDIR}/0003-add-dependency-to-pandm.patch
-        patch -p1 < ${WORKDIR}/0004-fix-out-of-array-access.patch
-        bbnote "Patching 0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
-        patch -p1 < ${WORKDIR}/0001-DBusLoop-SSL_state-TLS_ST_OK.patch
+        if [ "${@bb.utils.contains('DISTRO_CODENAME', 'dunfell', 'dunfell', '', d)}" = "dunfell" ] ; then
+            bbnote "Patching 0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
+            patch -p1 < ${WORKDIR}/0001-DBusLoop-SSL_state-TLS_ST_OK.patch
 
+        fi
        touch patch_applied
     fi
 }
@@ -73,9 +73,8 @@ do_install_append_class-target(){
     install -D -m 0644 ${S}/systemd_units/CcspLMLite.service ${D}${systemd_unitdir}/system/CcspLMLite.service
     install -D -m 0644 ${S}/systemd_units/CcspTr069PaSsp.service ${D}${systemd_unitdir}/system/CcspTr069PaSsp.service
     install -D -m 0644 ${S}/systemd_units/snmpSubAgent.service ${D}${systemd_unitdir}/system/snmpSubAgent.service
-    install -D -m 0644 ${S}/systemd_units/snmpSubAgent.service ${D}${systemd_unitdir}/system/snmpSubAgent.service
     install -D -m 0644 ${S}/systemd_units/CcspEthAgent.service ${D}${systemd_unitdir}/system/CcspEthAgent.service
-
+    install -D -m 0644 ${S}/systemd_units/CcspTelemetry.service ${D}${systemd_unitdir}/system/CcspTelemetry.service
     #rfc service file
     install -D -m 0644 ${S}/systemd_units/rfc.service ${D}${systemd_unitdir}/system/rfc.service
 
@@ -109,6 +108,13 @@ do_install_append_class-target(){
     #change for Filogic
     sed -i 's/PIDFile/#&/' ${D}${systemd_unitdir}/system/CcspPandMSsp.service 
 
+    #Telemetry support
+     sed -i "/Type=oneshot/a EnvironmentFile=\/etc/\device.properties" ${D}${systemd_unitdir}/system/CcspTelemetry.service
+     sed -i "/EnvironmentFile=\/etc\/device.properties/a EnvironmentFile=\/etc\/dcm.properties" ${D}${systemd_unitdir}/system/CcspTelemetry.service
+     sed -i "/EnvironmentFile=\/etc\/dcm.properties/a ExecStartPre=\/bin\/sh -c '\/bin\/touch \/rdklogs\/logs\/dcmscript.log'" ${D}${systemd_unitdir}/system/CcspTelemetry.service
+     sed -i "s/ExecStart=\/bin\/sh -c '\/lib\/rdk\/dcm.service \&'/ExecStart=\/bin\/sh -c '\/lib\/rdk\/StartDCM.sh \>\> \/rdklogs\/logs\/telemetry.log \&'/g" ${D}${systemd_unitdir}/system/CcspTelemetry.service
+     sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/CcspTelemetry.service
+
     #WanManager - RdkWanManager.service
      DISTRO_WAN_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','true','false',d)}"
      if [ $DISTRO_WAN_ENABLED = 'true' ]; then
@@ -119,7 +125,6 @@ do_install_append_class-target(){
      install -D -m 0644 ${WORKDIR}/utopia.service ${D}${systemd_unitdir}/system/utopia.service
      install -D -m 0644 ${S}/systemd_units/RdkTelcoVoiceManager.service ${D}${systemd_unitdir}/system/RdkTelcoVoiceManager.service
      install -D -m 0644 ${S}/systemd_units/RdkVlanManager.service ${D}${systemd_unitdir}/system/RdkVlanManager.service
-     sed -i "s/After=CcspCrSsp.service/After=CcspCrSsp.service utopia.service PsmSsp.service CcspEthAgent.service/g" ${D}${systemd_unitdir}/system/RdkVlanManager.service
     fi
 
      DISTRO_FW_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','fwupgrade_manager','true','false',d)}"
@@ -133,6 +138,16 @@ if [ \"\$IsErouterRunningStatus\" == 0 ]; then \
 ethtool -s erouter0 speed 1000 \
 fi' ${D}/usr/ccsp/ccspPAMCPCheck.sh
 
+     DISTRO_OneWiFi_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','OneWifi','true','false',d)}"
+     if [ $DISTRO_OneWiFi_ENABLED = 'true' ]; then
+         install -D -m 0644 ${S}/systemd_units/onewifi.service ${D}${systemd_unitdir}/system/onewifi.service
+         sed -i "s/Unit=ccspwifiagent.service/Unit=onewifi.service/g"  ${D}${systemd_unitdir}/system/filogicwifiinitialized.path
+         sed -i "/OSW_DRV_TARGET_DISABLED=1/a ExecStartPre=\/bin\/sh \/usr\/ccsp\/wifi\/onewifi_pre_start.sh"  ${D}${systemd_unitdir}/system/onewifi.service
+     fi
+
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'true', 'false', d)}; then
+        install -D -m 0644 ${S}/systemd_units/webconfig.service ${D}${systemd_unitdir}/system/webconfig.service
+    fi
 }
 
 do_install_append_dunfell_class-target () {
@@ -140,7 +155,6 @@ do_install_append_dunfell_class-target () {
     sed -i '/CcspCrSsp.service/c After=CcspCrSsp.service gwprovethwan.service' ${D}${systemd_unitdir}/system/PsmSsp.service
 }
 
-SYSTEMD_SERVICE_${PN} += "ccspwifiagent.service"
 SYSTEMD_SERVICE_${PN} += "CcspCrSsp.service"
 SYSTEMD_SERVICE_${PN} += "CcspPandMSsp.service"
 SYSTEMD_SERVICE_${PN} += "PsmSsp.service"
@@ -159,8 +173,11 @@ SYSTEMD_SERVICE_${PN} += "wifi-initialized.target"
 SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.path"
 SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.service"
 SYSTEMD_SERVICE_${PN} += "rfc.service"
+SYSTEMD_SERVICE_${PN} += "CcspTelemetry.service"
 SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', 'RdkWanManager.service utopia.service RdkVlanManager.service ', '', d)}"
 SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', 'RdkFwUpgradeManager.service ', '', d)}"
+SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'onewifi.service ', 'ccspwifiagent.service', d)}"
+SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webconfig.service', '', d)}"
 
 FILES_${PN}_append = " \
     /usr/ccsp/ccspSysConfigEarly.sh \
@@ -168,7 +185,6 @@ FILES_${PN}_append = " \
     /usr/ccsp/utopiaInitCheck.sh \
     /usr/ccsp/ccspPAMCPCheck.sh \
     /usr/ccsp/ProcessResetCheck.sh \
-    ${systemd_unitdir}/system/ccspwifiagent.service \
     ${systemd_unitdir}/system/CcspCrSsp.service \
     ${systemd_unitdir}/system/CcspPandMSsp.service \
     ${systemd_unitdir}/system/PsmSsp.service \
@@ -187,6 +203,8 @@ FILES_${PN}_append = " \
     ${systemd_unitdir}/system/ProcessResetDetect.path \
     ${systemd_unitdir}/system/ProcessResetDetect.service \
     ${systemd_unitdir}/system/rfc.service \
+    ${systemd_unitdir}/system/CcspTelemetry.service \
 "
 FILES_${PN}_append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' ${systemd_unitdir}/system/RdkWanManager.service ${systemd_unitdir}/system/utopia.service ${systemd_unitdir}/system/RdkVlanManager.service ${systemd_unitdir}/system/RdkTelcoVoiceManager.service ', '', d)}"
 FILES_${PN}_append = "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', ' ${systemd_unitdir}/system/RdkFwUpgradeManager.service ', '', d)}"
+FILES_${PN}_append = "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' ${systemd_unitdir}/system/onewifi.service ', '  ${systemd_unitdir}/system/ccspwifiagent.service ', d)}"

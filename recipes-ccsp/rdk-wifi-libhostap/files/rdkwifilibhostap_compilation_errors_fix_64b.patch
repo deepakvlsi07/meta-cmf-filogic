@@ -1,0 +1,10 @@
+--- git/source/hostap-2.10/src/Makefile.am	2023-06-15 15:49:18.872238320 +0000
++++ git/source/hostap-2.10/src/Makefile.am	2023-06-15 15:48:44.796752075 +0000
+@@ -158,6 +158,7 @@
+ libhostap_la_SOURCES += utils/ip_addr.c
+ libhostap_la_SOURCES += utils/uuid.c
+ libhostap_la_SOURCES += utils/base64.c
++libhostap_la_SOURCES += utils/crc32.c
+ 
+ libhostap_la_SOURCES += crypto/random.c
+ #libhostap_la_SOURCES += crypto/md5.c

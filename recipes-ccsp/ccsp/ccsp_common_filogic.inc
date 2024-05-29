@@ -10,5 +10,7 @@ CFLAGS_append += "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' 
 
 CFLAGS_append_aarch64 = " -D_64BIT_ARCH_SUPPORT_ "
 
+LDFLAGS_append = " -lpthread -lcrypto"
+
 DEPENDS += "breakpad-wrapper"
 LDFLAGS += "-lbreakpadwrapper"

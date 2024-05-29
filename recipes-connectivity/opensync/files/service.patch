@@ -1,3 +1,6 @@
+Source: Mateusz Bajorski <mbajorski@plume.com>
+Subject: Add IMAGE_DEPLOYMENT_PROFILES specifications and backhaul credential
+
 diff --git a/service-provider/academy/build/provider.mk b/service-provider/academy/build/provider.mk
 new file mode 100644
 index 0000000..c81cafd

@@ -1,0 +1,28 @@
+diff --git a/src/config_parser.c b/src/config_parser.c
+index 2d9cde0..34af2c9 100644
+--- a/src/config_parser.c
++++ b/src/config_parser.c
+@@ -26,7 +26,7 @@
+ #define RADIO_CONFIG "radio_config"
+ #define VAP_CONFIG "vap_config"
+ //#define TEST_DIR_PATH "../config/"
+-#define TEST_DIR_PATH "./"
++#define TEST_DIR_PATH "/etc/"
+ #define MIN_NUM_RADIOS 1
+ #define RET_OK 0
+ #define RET_ERR -1
+diff --git a/src/test_wifi_hal_ap.c b/src/test_wifi_hal_ap.c
+index a2ae20b..e70a722 100644
+--- a/src/test_wifi_hal_ap.c
++++ b/src/test_wifi_hal_ap.c
+@@ -3089,8 +3089,8 @@ static INT test_wifi_apDeAuthEvent_callback(int apIndex, char *mac, int reason)
+ void test_wifi_apDeAuthEvent_callback_register(void)
+ {
+     /* Positive */
+-    wifi_apDeAuthEvent_callback_register(&test_wifi_apDeAuthEvent_callback);
+-    wifi_apDeAuthEvent_callback_register(NULL);
++    //wifi_apDeAuthEvent_callback_register(&test_wifi_apDeAuthEvent_callback);
++    //wifi_apDeAuthEvent_callback_register(NULL);
+ 
+     /* Negative - N/A */
+ }

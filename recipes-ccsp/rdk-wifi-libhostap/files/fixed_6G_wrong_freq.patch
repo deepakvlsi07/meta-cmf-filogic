@@ -1,0 +1,21 @@
+diff --git a/source/hostap-2.10/src/common/ieee802_11_common.c b/source/hostap-2.10//src/common/ieee802_11_common.c
+index 18bdd5d17..bb83b99a4 100644
+--- a/source/hostap-2.10/src/common/ieee802_11_common.c
++++ b/source/hostap-2.10/src/common/ieee802_11_common.c
+@@ -1476,13 +1476,11 @@ static int ieee80211_chan_to_freq_global(u8 op_class, u8 chan)
+ 	case 135: /* UHB channels, 80+80 MHz: 7, 23, 39.. */
+ 		if (chan < 1 || chan > 233)
+ 			return -1;
+-#ifndef CONFIG_DRIVER_BRCM
+-		return 5940 + chan * 5;
+-#else
++
+ 		/* New 6GHz channelization - May 2020 */
+ 		if (chan == 2) return 5935;
+-		else return 5950 + chan * 5;
+-#endif /* CONFIG_DRIVER_BRCM */
++
++		return 5950 + chan * 5;
+ 	case 136: /* UHB channels, 20 MHz: 2 */
+ 		if (chan == 2)
+ 			return 5935;

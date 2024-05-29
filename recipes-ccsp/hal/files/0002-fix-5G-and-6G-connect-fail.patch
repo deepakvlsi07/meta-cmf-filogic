@@ -1,0 +1,341 @@
+From 12d23aa04385369d86468d080b114a82ef8a3b38 Mon Sep 17 00:00:00 2001
+From: Rex Lu <rex.lu@mediatek.com>
+Date: Wed, 29 May 2024 14:08:06 +0800
+Subject: [PATCH] fix 5G and 6G connect fail
+
+---
+ src/wifi_hal_hostapd.c       | 20 +++---------------
+ src/wifi_hal_nl80211.c       | 39 +++++++++---------------------------
+ src/wifi_hal_nl80211_utils.c | 20 ++++++++++++++++--
+ 3 files changed, 30 insertions(+), 49 deletions(-)
+
+diff --git a/src/wifi_hal_hostapd.c b/src/wifi_hal_hostapd.c
+index 7921406..96f1f56 100644
+--- a/src/wifi_hal_hostapd.c
++++ b/src/wifi_hal_hostapd.c
+@@ -1397,7 +1397,6 @@ int update_hostap_iface(wifi_interface_info_t *interface)
+     */
+ #endif
+ 
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+     iface->drv_flags = radio->driver_data.capa.flags;
+     //iface->drv_flags |= WPA_DRIVER_FLAGS_INACTIVITY_TIMER;
+     iface->drv_flags |= WPA_DRIVER_FLAGS_EAPOL_TX_STATUS;
+@@ -1435,20 +1434,7 @@ int update_hostap_iface(wifi_interface_info_t *interface)
+     iface->extended_capa = radio->driver_data.extended_capa;
+     iface->extended_capa_mask = radio->driver_data.extended_capa_mask;
+     iface->extended_capa_len = radio->driver_data.extended_capa_len;
+-#else
+-    iface->drv_flags = WPA_DRIVER_FLAGS_INACTIVITY_TIMER;
+-    iface->drv_flags |= WPA_DRIVER_FLAGS_EAPOL_TX_STATUS;
+-    iface->drv_flags |= WPA_DRIVER_FLAGS_AP_MLME;
+-    iface->drv_flags |= WPA_DRIVER_FLAGS_AP_CSA;
+-    // XXX: Such ability should be retrieved during NL80211_CMD_GET_WIPHY
+-    if (g_wifi_hal.platform_flags & PLATFORM_FLAGS_PROBE_RESP_OFFLOAD) {
+-        iface->drv_flags |= WPA_DRIVER_FLAGS_PROBE_RESP_OFFLOAD;
+-    }
+ 
+-    if (iface->current_mode->vht_capab & VHT_CAP_SUPP_CHAN_WIDTH_160MHZ) {
+-        iface->conf->vht_capab |= VHT_CAP_SUPP_CHAN_WIDTH_160MHZ;
+-    }
+-#endif // CMXB7_PORT && VNTXER5_PORT
+     if(preassoc_supp_rates) {
+       os_free(preassoc_supp_rates);
+       preassoc_supp_rates = NULL;
+@@ -1669,14 +1655,14 @@ int update_hostap_config_params(wifi_radio_info_t *radio)
+     }
+ 
+     if (param->variant & WIFI_80211_VARIANT_AX) {
+-        if (param->band == WIFI_FREQUENCY_5_BAND) {
++        if (param->band == WIFI_FREQUENCY_5_BAND || param->band == WIFI_FREQUENCY_6_BAND) {
+             iconf->hw_mode = HOSTAPD_MODE_IEEE80211A;
+             iconf->ieee80211ac = 1;
+         } else {
+             iconf->hw_mode = HOSTAPD_MODE_IEEE80211G;
+         }
+         iconf->ieee80211ax = 1;
+-        //iconf->ieee80211n = 1;
++        iconf->ieee80211n = 1;
+         //iconf->require_ht = 1;
+         //iconf->require_vht = 1;
+     }
+@@ -1733,7 +1719,7 @@ int update_hostap_config_params(wifi_radio_info_t *radio)
+     }
+ #endif
+     iconf->vht_oper_chwidth = bandwidth;
+-    
++    iconf->op_class = param->op_class;
+     //validate_config_params
+     if (hostapd_config_check(iconf, 1) < 0) {
+         pthread_mutex_unlock(&g_wifi_hal.hapd_lock);
+diff --git a/src/wifi_hal_nl80211.c b/src/wifi_hal_nl80211.c
+index dd5da8b..4d27e45 100644
+--- a/src/wifi_hal_nl80211.c
++++ b/src/wifi_hal_nl80211.c
+@@ -57,7 +57,6 @@ struct family_data {
+     int id;
+ };
+ 
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+ struct phy_info_arg {
+     u16 *num_modes;
+     struct hostapd_hw_modes *modes;
+@@ -65,7 +64,6 @@ struct phy_info_arg {
+     int failed;
+     u8 dfs_domain;
+ };
+-#endif
+ 
+ void prepare_interface_fdset(wifi_hal_priv_t *priv)
+ {
+@@ -2540,7 +2538,6 @@ skip:   found = 0;
+     return mode;
+ }
+ 
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+ static void phy_info_iftype_copy(struct hostapd_hw_modes *mode,
+                  enum ieee80211_op_mode opmode,
+                  struct nlattr **tb, struct nlattr **tb_flags)
+@@ -2548,9 +2545,7 @@ static void phy_info_iftype_copy(struct hostapd_hw_modes *mode,
+     enum nl80211_iftype iftype;
+     size_t len;
+     struct he_capabilities *he_capab = &mode->he_capab[opmode];
+-#ifdef CMXB7_PORT
+     struct eht_capabilities *eht_capab = &mode->eht_capab[opmode];
+-#endif // CMXB7_PORT
+ 
+     switch (opmode) {
+     case IEEE80211_MODE_INFRA:
+@@ -2623,7 +2618,6 @@ static void phy_info_iftype_copy(struct hostapd_hw_modes *mode,
+               len);
+     }
+ 
+-#ifdef CMXB7_PORT
+     if (tb[NL80211_BAND_IFTYPE_ATTR_HE_6GHZ_CAPA]) {
+         u16 capa;
+ 
+@@ -2676,7 +2670,6 @@ static void phy_info_iftype_copy(struct hostapd_hw_modes *mode,
+               nla_data(tb[NL80211_BAND_IFTYPE_ATTR_EHT_CAP_PPE]),
+               len);
+     }
+-#endif // CMXB7_PORT
+ }
+ 
+ static int wiphy_info_iface_comb_process(wifi_radio_info_t *radio,
+@@ -2835,7 +2828,6 @@ static unsigned int get_akm_suites_info(struct nlattr *tb)
+     return key_mgmt;
+ }
+ 
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+ static void get_iface_akm_suites_info(wifi_radio_info_t *radio,
+                     struct nlattr *nl_akms)
+ {
+@@ -2900,7 +2892,6 @@ static void get_iface_akm_suites_info(wifi_radio_info_t *radio,
+                 key_mgmt);
+     }
+ }
+-#endif // CMXB7_PORT && VNTXER5_PORT
+ 
+ static void wiphy_info_feature_flags(wifi_radio_info_t *radio,
+                      struct nlattr *tb)
+@@ -3038,12 +3029,12 @@ static void wiphy_info_ext_feature_flags(wifi_radio_info_t *radio,
+                   NL80211_EXT_FEATURE_BEACON_RATE_VHT)) {
+         capa->flags |= WPA_DRIVER_FLAGS_BEACON_RATE_VHT;
+     }
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
++
+     if (ext_feature_isset(ext_features, len,
+                   NL80211_EXT_FEATURE_BEACON_RATE_HE)) {
+         capa->flags2 |= WPA_DRIVER_FLAGS2_BEACON_RATE_HE;
+     }
+-#endif // CMXB7_PORT
++
+     if (ext_feature_isset(ext_features, len,
+                   NL80211_EXT_FEATURE_SET_SCAN_DWELL)) {
+         capa->rrm_flags |= WPA_DRIVER_FLAGS_SUPPORT_SET_SCAN_DWELL;
+@@ -3106,7 +3097,7 @@ static void wiphy_info_ext_feature_flags(wifi_radio_info_t *radio,
+         capa->flags |= WPA_DRIVER_FLAGS_OCE_STA;
+     }
+ #endif /* CONFIG_MBO */
+-#if defined CMXB7_PORT || defined(VNTXER5_PORT)
++
+     if (ext_feature_isset(ext_features, len,
+                   NL80211_EXT_FEATURE_ENABLE_FTM_RESPONDER)) {
+         capa->flags |= WPA_DRIVER_FLAGS_FTM_RESPONDER;
+@@ -3172,7 +3163,7 @@ static void wiphy_info_ext_feature_flags(wifi_radio_info_t *radio,
+                   NL80211_EXT_FEATURE_OPERATING_CHANNEL_VALIDATION)) {
+         capa->flags2 |= WPA_DRIVER_FLAGS2_OCV;
+     }
+-#endif // CMXB7_PORT
++
+     /* XXX: is not present in nl80211_copy.h, maybe needs to be fixed
+     if (ext_feature_isset(ext_features, len,
+                   NL80211_EXT_FEATURE_RADAR_BACKGROUND)) {
+@@ -3348,7 +3339,6 @@ static int phy_info_iftype(struct hostapd_hw_modes *mode,
+ 
+     return NL_OK;
+ }
+-#endif
+ 
+ static int phy_info_band(wifi_radio_info_t *radio, struct nlattr *nl_band)
+ {
+@@ -3460,9 +3450,7 @@ static int regulatory_domain_set_info_handler(struct nl_msg *msg, void *arg)
+ static int wiphy_dump_handler(struct nl_msg *msg, void *arg)
+ {
+     wifi_radio_info_t *radio;
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+     struct wpa_driver_capa *capa;
+-#endif // CMXB7_PORT && VNTXER5_PORT
+     struct nlattr *tb[NL80211_ATTR_MAX + 1];
+     struct genlmsghdr *gnlh;
+     //unsigned int *cmd;
+@@ -3479,14 +3467,12 @@ static int wiphy_dump_handler(struct nl_msg *msg, void *arg)
+ 
+     nla_parse(tb, NL80211_ATTR_MAX, genlmsg_attrdata(gnlh, 0), genlmsg_attrlen(gnlh, 0), NULL);
+ 
+-#if !defined(VNTXER5_PORT)
+     for (j = 0; j < g_wifi_hal.num_radios; j++)
+     {
+         if (strcmp(g_wifi_hal.radio_info[j].name, nla_get_string(tb[NL80211_ATTR_WIPHY_NAME])) == 0) {
+             return NL_SKIP;
+         }
+     }
+-#endif
+ 
+     phy_index = nla_get_u32(tb[NL80211_ATTR_WIPHY]);
+     rdk_radio_index = get_rdk_radio_index(phy_index);
+@@ -3525,7 +3511,7 @@ static int wiphy_dump_handler(struct nl_msg *msg, void *arg)
+     if (tb[NL80211_ATTR_WIPHY_NAME]) {
+         strcpy(radio->name, nla_get_string(tb[NL80211_ATTR_WIPHY_NAME]));
+     }
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
++
+     capa = &radio->driver_data.capa;
+ 
+     if (tb[NL80211_ATTR_MAX_NUM_SCAN_SSIDS]) {
+@@ -3691,7 +3677,7 @@ static int wiphy_dump_handler(struct nl_msg *msg, void *arg)
+         wifi_hal_info_print("%s:%d: nl80211: wiphy supported key_mgmt 0x%x\n", __func__, __LINE__,
+                 capa->key_mgmt);
+     }
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
++
+     if (tb[NL80211_ATTR_IFTYPE_AKM_SUITES]) {
+         struct nlattr *nl_if;
+         int rem_if;
+@@ -3699,7 +3685,7 @@ static int wiphy_dump_handler(struct nl_msg *msg, void *arg)
+         nla_for_each_nested(nl_if, tb[NL80211_ATTR_IFTYPE_AKM_SUITES], rem_if)
+             get_iface_akm_suites_info(radio, nl_if);
+     }
+-#endif // CMXB7_PORT && VNTXER5_PORT
++
+     if (tb[NL80211_ATTR_OFFCHANNEL_TX_OK]) {
+         wifi_hal_info_print("%s:%d: nl80211: Using driver-based off-channel TX\n", __func__, __LINE__);
+         capa->flags |= WPA_DRIVER_FLAGS_OFFCHANNEL_TX;
+@@ -3787,7 +3773,7 @@ static int wiphy_dump_handler(struct nl_msg *msg, void *arg)
+     if (tb[NL80211_ATTR_WIPHY_SELF_MANAGED_REG]) {
+         capa->flags |= WPA_DRIVER_FLAGS_SELF_MANAGED_REGULATORY;
+     }
+-#endif // CMXB7_PORT && VNTXER5_PORT
++
+     if (tb[NL80211_ATTR_WDEV]) {
+         radio->dev_id = nla_get_u64(tb[NL80211_ATTR_WDEV]);
+     }
+@@ -4024,7 +4010,6 @@ static int interface_info_handler(struct nl_msg *msg, void *arg)
+     return NL_SKIP;
+ }
+ 
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+ static int phy_info_rates_get_hw_features(struct hostapd_hw_modes *mode, struct nlattr *tb)
+ {
+     static struct nla_policy rate_policy[NL80211_BITRATE_ATTR_MAX + 1] = {
+@@ -4067,7 +4052,6 @@ static int phy_info_rates_get_hw_features(struct hostapd_hw_modes *mode, struct
+ 
+     return NL_OK;
+ }
+-#endif
+ 
+ static int phy_info_handler(struct nl_msg *msg, void *arg)
+ {
+@@ -4470,7 +4454,6 @@ int init_nl80211()
+     for (i = 0; i < g_wifi_hal.num_radios; i++) {
+         radio = &g_wifi_hal.radio_info[i];
+ 
+-#ifdef CMXB7_PORT
+         if (radio->driver_data.auth_supported) {
+             radio->driver_data.capa.flags |= WPA_DRIVER_FLAGS_SME;
+         }
+@@ -4518,7 +4501,7 @@ int init_nl80211()
+         if (radio->driver_data.update_ft_ies_supported) {
+             radio->driver_data.capa.flags |= WPA_DRIVER_FLAGS_UPDATE_FT_IES;
+         }
+-#endif
++
+         // initialize the interface map
+         radio->interface_map = hash_map_create();
+ 
+@@ -8513,7 +8496,6 @@ fail:
+     return ret;
+ }
+ 
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+ static int cw2ecw(unsigned int cw)
+ {
+     int bit;
+@@ -9366,12 +9348,10 @@ static int nl80211_set_regulatory_flags(struct phy_info_arg *results)
+ 
+     return nl80211_send_and_recv(msg, nl80211_get_reg, results, NULL, NULL);
+ }
+-#endif
+ 
+ struct hostapd_hw_modes *
+ wifi_drv_get_hw_feature_data(void *priv, u16 *num_modes, u16 *flags, u8 *dfs_domain)
+ {
+-#if defined(CMXB7_PORT) || defined(VNTXER5_PORT)
+     struct nl_msg *msg; 
+     struct phy_info_arg result = {
+         .num_modes = num_modes,
+@@ -9426,7 +9406,6 @@ wifi_drv_get_hw_feature_data(void *priv, u16 *num_modes, u16 *flags, u8 *dfs_dom
+         nl80211_dump_chan_list(modes, *num_modes);
+         return modes;
+     }
+-#endif
+     return NULL;
+ }
+ 
+diff --git a/src/wifi_hal_nl80211_utils.c b/src/wifi_hal_nl80211_utils.c
+index da9dc33..b524ecd 100644
+--- a/src/wifi_hal_nl80211_utils.c
++++ b/src/wifi_hal_nl80211_utils.c
+@@ -1825,11 +1825,27 @@ int get_op_class_from_radio_params(wifi_radio_operationParam_t *param)
+ 
+ #if HOSTAPD_VERSION >= 210 //2.10
+     if (param->band == WIFI_FREQUENCY_6_BAND) {
+-        int freq, global_op_class = -1;
++        int freq, idx, global_op_class = -1;
+ 
+         freq = (param->channel == 2) ? 5935 : (5950 + (param->channel * 5));
+         if (is_6ghz_freq(freq)) {
+-            global_op_class = 131 + center_idx_to_bw_6ghz(param->channel);
++            switch (param->channelWidth) {
++            case WIFI_CHANNELBANDWIDTH_40MHZ:
++                idx = 1;
++                break;
++            case WIFI_CHANNELBANDWIDTH_80MHZ:
++                idx = 2;
++                break;
++            case WIFI_CHANNELBANDWIDTH_160MHZ:
++                idx = 3;
++                break;
++            case WIFI_CHANNELBANDWIDTH_20MHZ:
++            default:
++                idx = 0;
++                break;
++            }
++
++            global_op_class = 131 + idx;
+         }
+         return global_op_class;
+     }
+-- 
+2.18.0
+

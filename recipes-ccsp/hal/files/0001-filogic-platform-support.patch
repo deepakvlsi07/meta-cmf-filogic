@@ -1,0 +1,343 @@
+From 26ae462db9f0ad61ff3199412d7a4455259682eb Mon Sep 17 00:00:00 2001
+From: Rex Lu <rex.lu@mediatek.com>
+Date: Wed, 29 May 2024 11:16:08 +0800
+Subject: [PATCH] filogic platform support
+
+---
+ platform/mtk-filogic/platform_filogic.c | 206 ++++++++++++++++++++++++
+ src/Makefile.am                         |   4 +
+ src/configure.ac                        |   1 +
+ src/wifi_hal_nl80211_utils.c            |  36 ++++-
+ src/wifi_hal_priv.h                     |   8 +-
+ 5 files changed, 250 insertions(+), 5 deletions(-)
+ create mode 100644 platform/mtk-filogic/platform_filogic.c
+
+diff --git a/platform/mtk-filogic/platform_filogic.c b/platform/mtk-filogic/platform_filogic.c
+new file mode 100644
+index 0000000..0d09599
+--- /dev/null
++++ b/platform/mtk-filogic/platform_filogic.c
+@@ -0,0 +1,206 @@
++#include <stddef.h>
++#include <string.h>
++#include <stdlib.h>
++#include "wifi_hal_priv.h"
++#include "wifi_hal.h"
++
++int platform_pre_init()
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_post_init(wifi_vap_info_map_t *vap_map)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    system("brctl addif brlan0 wifi0");
++    system("brctl addif brlan0 wifi1");
++    system("brctl addif brlan0 wifi2");
++    return 0;
++}
++
++
++int platform_set_radio(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_set_radio_pre_init(wifi_radio_index_t index, wifi_radio_operationParam_t *operationParam)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_create_vap(wifi_radio_index_t index, wifi_vap_info_map_t *map)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int nvram_get_vap_enable_status(bool *vap_enable, int vap_index)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int nvram_get_current_security_mode(wifi_security_modes_t *security_mode,int vap_index)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_get_keypassphrase_default(char *password, int vap_index)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);   
++    /*password is not sensitive,won't grant access to real devices*/
++    strcpy(password,"12345678");
++    return 0;
++}
++
++int platform_get_ssid_default(char *ssid, int vap_index)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);   
++    sprintf(ssid,"filogic-onewifi%d",vap_index);
++    return 0;
++}
++
++int platform_get_wps_pin_default(char *pin)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);  
++    /* dummy pin value */
++    strcpy(pin,"45276453"); 
++    return 0;
++}
++
++int platform_wps_event(wifi_wps_event_t data)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);  
++    return 0;
++}
++
++int platform_get_country_code_default(char *code)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);  
++    strcpy(code,"US");
++    return 0;
++}
++
++int nvram_get_current_password(char *l_password, int vap_index)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__); 
++    /*password is not sensitive,won't grant access to real devices*/
++    strcpy(l_password,"12345678");
++    return 0;
++}
++
++int nvram_get_current_ssid(char *l_ssid, int vap_index)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__); 
++    sprintf(l_ssid,"filogic-onewifi%d",vap_index);
++    return 0;
++}
++
++int platform_pre_create_vap(wifi_radio_index_t index, wifi_vap_info_map_t *map)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_flags_init(int *flags)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);
++    return 0;
++}
++
++int platform_get_aid(void* priv, u16* aid, const u8* addr)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_free_aid(void* priv, u16* aid)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_sync_done(void* priv)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_get_channel_bandwidth(wifi_radio_index_t index,  wifi_channelBandwidth_t *channelWidth)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_update_radio_presence(void)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int nvram_get_mgmt_frame_power_control(int vap_index, int* output_dbm)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;
++}
++
++int platform_set_txpower(void* priv, uint txpower)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);
++    return 0;
++}
++
++int platform_get_radius_key_default(char *radius_key)
++{
++    wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);    
++    return 0;	
++}
++
++INT wifi_setRadioDfsAtBootUpEnable(INT radioIndex, BOOL enabled)
++{
++    return RETURN_OK;
++}
++INT wifi_setApMacAddressControlMode(INT apIndex, INT filterMode)
++{
++    return RETURN_OK;
++}
++INT wifi_setApManagementFramePowerControl(INT wlanIndex, INT ManagementFramePowerControl)
++{
++   return RETURN_OK;
++}
++
++int platform_get_acl_num(int vap_index, uint *acl_count)
++{
++    return 0;
++}
++
++int platform_get_vendor_oui(char *vendor_oui, int vendor_oui_len)
++{
++    return -1;
++}
++
++int platform_set_neighbor_report(uint index, uint add, mac_address_t mac)
++{
++    return 0;
++}
++
++int platform_get_radio_phytemperature(wifi_radio_index_t index,
++    wifi_radioTemperature_t *radioPhyTemperature)
++{
++    return 0;
++}
++
++int wifi_setQamPlus(void *priv)
++{
++    return 0;
++}
++
++int wifi_setApRetrylimit(void *priv)
++{
++    return 0;
++}
+\ No newline at end of file
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 055bb1d..5974ed1 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -104,6 +104,10 @@ librdk_wifihal_la_CPPFLAGS += -I$(top_srcdir)/../platform/raspberry-pi
+ librdk_wifihal_la_SOURCES += ../platform/raspberry-pi/platform_pi.c
+ endif
+ 
++if MTK_FILOGIC
++librdk_wifihal_la_CPPFLAGS += -I$(top_srcdir)/../platform/mtk-filogic
++librdk_wifihal_la_SOURCES += ../platform/mtk-filogic/platform_filogic.c
++endif
+ include_HEADERS = wifi_hal_rdk.h wifi_hal_rdk_framework.h ieee80211.h ../util_crypto/aes_siv.h
+ 
+ if ONE_WIFIBUILD
+diff --git a/src/configure.ac b/src/configure.ac
+index f1ca7d2..03c4d97 100644
+--- a/src/configure.ac
++++ b/src/configure.ac
+@@ -52,6 +52,7 @@ AM_CONDITIONAL([SCXER10_PORT], [test "x$SCXER10_PORT" = "xtrue"])
+ AM_CONDITIONAL([SKYSR213_PORT], [test "x$SKYSR213_PORT" = "xtrue"])
+ AM_CONDITIONAL([CMXB7_PORT], [test "x$CMXB7_PORT" = "xtrue"])
+ AM_CONDITIONAL([HAL_IPC], [test "x$HAL_IPC" = "xtrue"])
++AM_CONDITIONAL([MTK_FILOGIC], [test "x$MTK_FILOGIC" = "xtrue"])
+ 
+ AC_PREFIX_DEFAULT(`pwd`)
+ AC_ENABLE_SHARED
+diff --git a/src/wifi_hal_nl80211_utils.c b/src/wifi_hal_nl80211_utils.c
+index 02251a3..da9dc33 100644
+--- a/src/wifi_hal_nl80211_utils.c
++++ b/src/wifi_hal_nl80211_utils.c
+@@ -285,6 +285,10 @@ wifi_interface_name_idex_map_t interface_index_map[] = {
+ #endif
+ 
+     // for Intel based platforms
++#ifdef MTK_FILOGIC
++    {0, 0,  "wifi0",     "brlan0",    0,    0,     "private_ssid_2g"},
++    {1, 1,  "wifi1",     "brlan0",    0,    1,     "private_ssid_5g"},
++#endif
+ };
+ 
+ static radio_interface_mapping_t l_radio_interface_map[] = {
+@@ -331,6 +335,10 @@ static radio_interface_mapping_t l_radio_interface_map[] = {
+     { 0, 0, "radio1", "wlan0"},
+     { 1, 1, "radio2", "wlan1"},
+ #endif
++#ifdef MTK_FILOGIC
++    { 0, 0, "radio1", "wifi0"},
++    { 1, 1, "radio2", "wifi1"},
++#endif
+ };
+ 
+ const wifi_driver_info_t  driver_info = {
+@@ -614,7 +622,33 @@ const wifi_driver_info_t  driver_info = {
+     platform_set_neighbor_report,
+     platform_get_radio_phytemperature,
+ #endif
+-    
++#ifdef MTK_FILOGIC
++    "filogic",
++    "cfg80211",
++    {"Filogic Wireless Gateway","Filogic","Filogic","Filogic","Model Description","Model URL","267","WPS Access Point","Manufacturer URL"},
++    platform_pre_init,
++    platform_post_init,
++    platform_set_radio,
++    platform_set_radio_pre_init,
++    platform_pre_create_vap,
++    platform_create_vap,
++    platform_get_ssid_default,
++    platform_get_keypassphrase_default,
++    platform_get_radius_key_default,
++    platform_get_wps_pin_default,
++    platform_get_country_code_default,
++    platform_wps_event,
++    platform_flags_init,
++    platform_get_aid,
++    platform_free_aid,
++    platform_sync_done,
++    platform_update_radio_presence,
++    platform_set_txpower,
++    platform_get_acl_num,
++    platform_get_vendor_oui,
++    platform_set_neighbor_report,
++    platform_get_radio_phytemperature,
++#endif    
+ };
+ 
+ static struct wifiCountryEnumStrMap wifi_country_map[] =
+diff --git a/src/wifi_hal_priv.h b/src/wifi_hal_priv.h
+index abdfe12..a1b173b 100644
+--- a/src/wifi_hal_priv.h
++++ b/src/wifi_hal_priv.h
+@@ -177,16 +177,16 @@ extern "C" {
+ #define MAX_CHANNEL_2G              11
+ 
+ /* 5GHz radio */
+-#define MIN_FREQ_MHZ_5G             5180
+-#define MAX_FREQ_MHZ_5G             5825
++#define MIN_FREQ_MHZ_5G             4920
++#define MAX_FREQ_MHZ_5G             5885
+ #define MIN_CHANNEL_5G              36
+-#define MAX_CHANNEL_5G              165
++#define MAX_CHANNEL_5G              177
+ 
+ /* 6GHz radio */
+ #define MIN_FREQ_MHZ_6G             5935
+ #define MAX_FREQ_MHZ_6G             7115
+ #define MIN_CHANNEL_6G              1
+-#define MAX_CHANNEL_6G              229
++#define MAX_CHANNEL_6G              233
+ 
+ #define MAX_WPS_CONN_TIMEOUT        120
+ 
+-- 
+2.18.0
+
