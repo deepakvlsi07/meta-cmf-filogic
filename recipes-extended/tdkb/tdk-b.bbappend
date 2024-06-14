@@ -1,10 +1,12 @@
 EXTRA_OECONF_append = " --enable-ert --enable-platform"
 
-SRC_URI += "${CMF_GIT_ROOT}/rdkb/devices/turris/tdkb;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};destsuffix=git/platform/turris;name=tdkbturris"
+SRC_URI_append = " \
+   ${CMF_GIT_ROOT}/rdkb/devices/raspberrypi/tdkb;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};destsuffix=git/platform/raspberrypi;name=tdkbraspberrypi \
+"
+SRCREV_tdkbraspberrypi = "${AUTOREV}"
+do_fetch[vardeps] += "SRCREV_tdkbraspberrypi"
+SRCREV_FORMAT = "tdk_tdkbraspberrypi"
 
-SRCREV_tdkturris = "${AUTOREV}"
-do_fetch[vardeps] += "SRCREV_tdkbturris"
-SRCREV_FORMAT = "tdk_tdkbturris"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
@@ -36,8 +38,8 @@ addtask mtk_patches after do_unpack before do_compile
 do_install_append () {
     install -d ${D}${tdkdir}
     install -d ${D}/etc
-    install -p -m 755 ${S}/platform/turris/agent/scripts/*.sh ${D}${tdkdir}
-    install -p -m 755 ${S}/platform/turris/agent/scripts/tdk_platform.properties ${D}/etc/
+    install -p -m 755 ${S}/platform/raspberrypi/agent/scripts/*.sh ${D}${tdkdir}
+    install -p -m 755 ${S}/platform/raspberrypi/agent/scripts/tdk_platform.properties ${D}/etc/
     install -p -m 755 ${S}/Set_properties.sh ${D}${tdkdir}
     install -p -m 755 ${S}/Set_properties_logan.sh ${D}${tdkdir}
 }
