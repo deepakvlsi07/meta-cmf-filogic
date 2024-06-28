@@ -4,6 +4,7 @@ FILESEXTRAPATHS_append := "${THISDIR}/files:"
 
 SRC_URI_append += " \
     file://Fix-ccsp-eth-agent-build-error.patch;apply=no \
+    ${@bb.utils.contains('DISTRO_FEATURES','lan0_as_wan','file://support_lan0_as_wan.patch','',d)} \
 "
 
 do_filogic_patches() {
@@ -17,6 +18,7 @@ do_filogic_patches() {
 addtask filogic_patches after do_unpack before do_configure
 
 CFLAGS_aarch64_append = " -Werror=format-truncation=1 "
+CFLAGS_aarch64_append = " -Wno-format-truncation -Wno-implicit-function-declaration -Wno-error "
 
 EXTRA_OECONF_append_dunfell  = " --with-ccsp-arch=arm"
 

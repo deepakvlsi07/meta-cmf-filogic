@@ -7,6 +7,7 @@ CFLAGS_append += " -U_COSA_SIM_ -fno-exceptions -ffunction-sections -fdata-secti
            -DBUILD_WEB -D_NO_ANSC_ZLIB_ -D_DEBUG -U_ANSC_IPV6_COMPATIBLE_ -DUSE_NOTIFY_COMPONENT \
            -D_PLATFORM_TURRIS_ -DENABLE_SD_NOTIFY -DCOSA_DML_WIFI_FEATURE_LoadPsmDefaults -UPARODUS_ENABLE -D_WIFI_AX_SUPPORT_ -D_2_5G_ETHERNET_SUPPORT_ -DETH_6_PORTS"
 CFLAGS_append += "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' -DFEATURE_RDKB_WAN_MANAGER ', '', d)}"
+CFLAGS_append  += " ${@bb.utils.contains('DISTRO_FEATURES', 'WanManagerUnificationEnable', '-DWAN_MANAGER_UNIFICATION_ENABLED', '', d)}"
 
 CFLAGS_append_aarch64 = " -D_64BIT_ARCH_SUPPORT_ "
 
